@@ -6,23 +6,60 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0 && tsc --noEmit",
+    "lint:next": "next lint",
+    "preview": "vite preview",
+    "prepare": "husky install",
+    "module:check": "ncu",
+    "module:update": "ncu -u"
+  },
+  "lint-staged": {
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@hookform/devtools": "^4.3.1",
+    "@hookform/resolvers": "^3.1.0",
+    "@mui/material": "^5.13.2",
+    "@tanstack/react-query": "^4.29.11",
+    "@tanstack/react-query-devtools": "^4.29.11",
+    "axios": "^1.4.0",
+    "dayjs": "^1.11.7",
+    "framer-motion": "^10.12.16",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.1",
+    "react-icons": "^4.8.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
     "@vitejs/plugin-react": "^4.0.0",
-    "eslint": "^8.38.0",
+    "eslint": "^8.41.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.3.4",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "eslint-plugin-react-refresh": "^0.4.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "npm-check-updates": "^16.10.12",
+    "postcss": "^8.4.23",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9"
   }
 }
