@@ -59,6 +59,7 @@
     "lint-staged": "^13.2.2",
     "npm-check-updates": "^16.10.12",
     "postcss": "^8.4.23",
+    "postcss-preset-env": "^8.4.1",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.9"

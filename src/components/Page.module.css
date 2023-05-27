@@ -1,0 +1,12 @@
+.container {
+  background-color: green;
+  cursor: pointer;
+  user-select: none;
+  &:hover {
+    background-color: gray;
+  }
+  .card {
+    padding: 2em;
+    background-color: aqua;
+  }
+}
