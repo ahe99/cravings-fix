@@ -14,14 +14,24 @@
   .header {
     grid-area: header;
     background-color: gray;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
   }
 
   .main {
     grid-area: main;
+    padding: 1rem;
   }
 
   .left_drawer {
     grid-area: left_drawer;
     background-color: lightgray;
+  }
+  .nav_item {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.4;
+    }
   }
 }
