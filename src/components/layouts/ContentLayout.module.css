@@ -1,8 +1,8 @@
 .content_layout {
-  --height-header: 4rem;
-  --width-left-drawer: 10rem;
-  --breadcrumb-font-size: 1.2rem;
-  --breadcrumb-font-weight: 800;
+  --height-header: 5rem;
+  --width-left-drawer: 12rem;
+  --nav-link-font-size: 1.2rem;
+  --nav-link-font-weight: 800;
 
   width: 100vw;
   height: 100vh;
@@ -16,10 +16,21 @@
 
   .header {
     grid-area: header;
-    background-color: gray;
+    background-color: lightgray;
     display: flex;
     align-items: center;
-    padding: 1rem;
+    padding-left: 1rem;
+
+    & img {
+      width: 10rem;
+      height: 4rem;
+    }
+    & span {
+      font-size: 1.2rem;
+      border-left: 2px dashed gray;
+      margin-left: 1rem;
+      padding-left: 1rem;
+    }
   }
 
   .main {
@@ -35,15 +46,15 @@
   .breadcrumb_link_disabled {
     text-decoration: none;
     color: black;
-    font-weight: var(--breadcrumb-font-weight);
-    font-size: var(--breadcrumb-font-size);
+    font-weight: var(--nav-link-font-weight);
+    font-size: var(--nav-link-font-size);
   }
 
   .breadcrumb_link {
     text-decoration: none;
     color: gray;
-    font-weight: var(--breadcrumb-font-weight);
-    font-size: var(--breadcrumb-font-size);
+    font-weight: var(--nav-link-font-weight);
+    font-size: var(--nav-link-font-size);
 
     &:hover {
       opacity: 0.4;
@@ -52,12 +63,16 @@
 
   .left_drawer {
     grid-area: left_drawer;
-    background-color: lightgray;
+    background-color: rgba(211, 211, 211, 0.5);
   }
   .nav_item {
     cursor: pointer;
+    font-size: var(--nav-link-font-size);
+    transition: ease-in-out;
+    transition-duration: 0.12s;
+
     &:hover {
-      opacity: 0.4;
+      background-color: lightcyan;
     }
   }
 }

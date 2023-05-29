@@ -43,7 +43,12 @@ export const ContentLayout = ({ children }: PropsWithChildren) => {
   )
 }
 const ContentHeader = () => {
-  return <header className={CSS.header}>Cravings Fix | Admin</header>
+  return (
+    <header className={CSS.header}>
+      <img src="/logo.png" />
+      <span>Admin</span>
+    </header>
+  )
 }
 
 const ContentBody = ({ children }: PropsWithChildren) => {
