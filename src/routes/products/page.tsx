@@ -1,9 +1,7 @@
+import { ProductsPage } from '@/components/pages/ProductsPage'
+
 const ProductsRoute = () => {
-  return (
-    <div>
-      <div>products</div>
-    </div>
-  )
+  return <ProductsPage />
 }
 ProductsRoute.layouts = 'content'
 ProductsRoute.displayName = 'ProductsRoute'
