@@ -1,6 +1,9 @@
 .content_layout {
   --height-header: 4rem;
   --width-left-drawer: 10rem;
+  --breadcrumb-font-size: 1.2rem;
+  --breadcrumb-font-weight: 800;
+
   width: 100vw;
   height: 100vh;
 
@@ -20,9 +23,31 @@
   }
 
   .main {
+    background-color: ghostwhite;
     grid-area: main;
     padding: 1rem;
     overflow-x: hidden;
+  }
+  .breadcrumbs {
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb_link_disabled {
+    text-decoration: none;
+    color: black;
+    font-weight: var(--breadcrumb-font-weight);
+    font-size: var(--breadcrumb-font-size);
+  }
+
+  .breadcrumb_link {
+    text-decoration: none;
+    color: gray;
+    font-weight: var(--breadcrumb-font-weight);
+    font-size: var(--breadcrumb-font-size);
+
+    &:hover {
+      opacity: 0.4;
+    }
   }
 
   .left_drawer {
