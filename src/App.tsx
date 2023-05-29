@@ -7,8 +7,6 @@ import { ROOT_ROUTES } from './routes'
 import RedirectRoute from './routes/page'
 import { DefaultLayout, ContentLayout, NoLayout } from '@/components/layouts'
 
-import './App.css'
-
 const APP_LAYOUTS = {
   default: DefaultLayout,
   content: ContentLayout,

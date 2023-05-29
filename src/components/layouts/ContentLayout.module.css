@@ -1,0 +1,27 @@
+.content_layout {
+  --height-header: 4rem;
+  --width-left-drawer: 10rem;
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-areas:
+    'header      header'
+    'left_drawer main';
+  grid-template-rows: var(--height-header) 1fr;
+  grid-template-columns: var(--width-left-drawer) 1fr;
+
+  .header {
+    grid-area: header;
+    background-color: gray;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .left_drawer {
+    grid-area: left_drawer;
+    background-color: lightgray;
+  }
+}
