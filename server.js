@@ -13,7 +13,6 @@ const JAVASCRIPT_KEY = process.env.B4A_JAVASCRIPT_KEY
 const MASTER_KEY = process.env.B4A_MASTER_KEY
 Parse.initialize(APP_ID, JAVASCRIPT_KEY, MASTER_KEY)
 Parse.serverURL = process.env.B4A_BASE_URL
-console.log(APP_ID, JAVASCRIPT_KEY, MASTER_KEY, process.env.B4A_BASE_URL)
 
 //app
 const app = express()
