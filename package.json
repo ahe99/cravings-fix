@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "format": "prettier --verbose --write '**/*/.js'"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "prettier": "^2.8.8"
   }
 }
