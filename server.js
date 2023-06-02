@@ -2,6 +2,8 @@
 const express = require('express')
 const Parse = require('parse/node')
 
+const { ZodError } = require('zod')
+
 const cors = require('cors')
 const dotenv = require('dotenv')
 const dotenvExpand = require('dotenv-expand')
@@ -32,6 +34,26 @@ app.use(express.json())
 
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)
+
+app.use((err, req, res, next) => {
+  // The error id is attached to `res.sentry` to be returned
+  // and optionally displayed to the user for support.
+  if (err instanceof ClientError || err instanceof ServerError) {
+    return res
+      .status(err.statusCode)
+      .json({ name: err.name, message: err.message })
+  }
+  if (err instanceof ZodError) {
+    return res.status(400).json({ error: err.issues })
+  }
+  if (err instanceof Error) {
+    logger.error(err.stack)
+  } else {
+    logger.error(err)
+  }
+  res.status(500).send(responseMessage[500])
+  next(err)
+})
 
 app.listen(port, () => {
   console.log('e-commerce-api is running at port: ', port)

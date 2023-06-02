@@ -18,6 +18,7 @@ module.exports = {
       })
       .catch(function (error) {
         console.log('Error: ' + error.code + ' ' + error.message)
+        next(error)
       })
   },
   getSingleFood: (req, res) => {
@@ -27,7 +28,7 @@ module.exports = {
       .equalTo('objectId', id)
       .find()
       .then((food) => {
-        if (foods) {
+        if (food) {
           res.json(food)
         } else {
           console.log('Nothing found, please try again')
@@ -35,6 +36,7 @@ module.exports = {
       })
       .catch(function (error) {
         console.log('Error: ' + error.code + ' ' + error.message)
+        next(error)
       })
   },
   addFood: async (req, res) => {
@@ -60,8 +62,10 @@ module.exports = {
         const result = await newFood.save()
         // Access the Parse Object attributes using the .GET method
         console.log('Food created', result)
+        res.json(result)
       } catch (error) {
         console.error('Error while creating Food: ', error)
+        next(error)
       }
     }
   },
@@ -91,11 +95,14 @@ module.exports = {
         console.log(response.get('category_id'))
         console.log(response.get('image'))
         console.log('Food updated', response)
+        res.json(response)
       } catch (error) {
         console.error('Error while updating Food', error)
+        next(error)
       }
     } catch (error) {
       console.error('Error while retrieving object Food', error)
+      next(error)
     }
   },
   deleteFood: async (req, res) => {
@@ -106,11 +113,14 @@ module.exports = {
       try {
         const response = await object.destroy()
         console.log('Deleted ParseObject', response)
+        res.json(response)
       } catch (error) {
         console.error('Error while deleting ParseObject', error)
+        next(error)
       }
     } catch (error) {
       console.error('Error while retrieving ParseObject', error)
+      next(error)
     }
   },
 }
