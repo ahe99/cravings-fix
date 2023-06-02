@@ -19,13 +19,13 @@ router.put('/:id', validateResource(PatchProductRequestSchema), food.updateFood)
 router.patch(
   '/:id',
   validateResource(PatchProductRequestSchema),
-  food.updateFood
+  food.updateFood,
 )
 
 router.delete(
   '/:id',
   validateResource(DeleteProductRequestSchema),
-  food.deleteFood
+  food.deleteFood,
 )
 
 module.exports = router

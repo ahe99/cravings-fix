@@ -1,4 +1,4 @@
-//initializes
+// initializes
 const express = require('express')
 const Parse = require('parse/node')
 const { ZodError } = require('zod')
@@ -14,24 +14,24 @@ const {
   responseMessage,
 } = require('./utils/errorException')
 
-//parse
+// parse
 const APP_ID = process.env.B4A_APP_ID
 const JAVASCRIPT_KEY = process.env.B4A_JAVASCRIPT_KEY
 const MASTER_KEY = process.env.B4A_MASTER_KEY
 Parse.initialize(APP_ID, JAVASCRIPT_KEY, MASTER_KEY)
 Parse.serverURL = process.env.B4A_BASE_URL
 
-//app
+// app
 const app = express()
 
-//port
+// port
 const port = process.env.PORT || 6400
 
-//routes
+// routes
 const homeRoute = require('./routes/home')
 const foodRoute = require('./routes/food')
 
-//middleware
+// middleware
 app.use(cors())
 
 app.use(express.urlencoded({ extended: true }))

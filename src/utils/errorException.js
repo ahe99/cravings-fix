@@ -1,3 +1,13 @@
+const responseMessage = {
+  400: 'Bad Request',
+  401: 'Unauthorized',
+  403: 'Forbidden',
+  404: 'Not Found',
+  408: 'Request Timeout',
+  409: 'Conflict',
+  500: 'Internal Server Error',
+}
+
 class ErrorWithStatus {
   name
   message
@@ -33,15 +43,7 @@ class WorkOrderStationError extends ServiceError {}
 class KanbanRecordError extends ServiceError {}
 
 module.exports = {
-  responseMessage: {
-    400: 'Bad Request',
-    401: 'Unauthorized',
-    403: 'Forbidden',
-    404: 'Not Found',
-    408: 'Request Timeout',
-    409: 'Conflict',
-    500: 'Internal Server Error',
-  },
+  responseMessage,
   ErrorWithStatus,
   ClientError,
   ServerError,

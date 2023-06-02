@@ -38,7 +38,7 @@ module.exports = {
       })
   },
   addFood: async (req, res, next) => {
-    if (typeof req.body == undefined) {
+    if (typeof req.body === 'undefined') {
       res.json({
         status: 'error',
         message: 'data is undefined',
@@ -57,7 +57,7 @@ module.exports = {
       //   new Parse.File('resume.txt', { base64: btoa('My file content') })
       // )
       try {
-        const result = await newFood.save(null, { useMasterKey: true })
+        const result = await newFood.save()
         // Access the Parse Object attributes using the .GET method
         console.log('Food created', result)
         res.json(result)
