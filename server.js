@@ -1,14 +1,19 @@
 //initializes
 const express = require('express')
 const Parse = require('parse/node')
-
 const { ZodError } = require('zod')
-
 const cors = require('cors')
 const dotenv = require('dotenv')
 const dotenvExpand = require('dotenv-expand')
 const myEnv = dotenv.config()
 dotenvExpand.expand(myEnv)
+
+const {
+  ClientError,
+  ServerError,
+  responseMessage,
+} = require('./utils/errorException')
+
 //parse
 const APP_ID = process.env.B4A_APP_ID
 const JAVASCRIPT_KEY = process.env.B4A_JAVASCRIPT_KEY
@@ -47,9 +52,9 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: err.issues })
   }
   if (err instanceof Error) {
-    logger.error(err.stack)
+    console.log('Error: ', err)
   } else {
-    logger.error(err)
+    console.log('Error: ', err)
   }
   res.status(500).send(responseMessage[500])
   next(err)

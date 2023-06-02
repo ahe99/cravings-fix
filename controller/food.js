@@ -1,13 +1,12 @@
 const Parse = require('parse/node')
 const Food = Parse.Object.extend('Food')
-const query = new Parse.Query(Food)
+const FoodQuery = new Parse.Query(Food)
 
 module.exports = {
-  getAllFoods: (req, res) => {
+  getAllFoods: (req, res, next) => {
     const name = req.query.name
     console.log('getAllFoods')
-    query
-      .contains('name', name)
+    FoodQuery.contains('name', name)
       .find()
       .then((foods) => {
         if (foods) {
@@ -21,11 +20,10 @@ module.exports = {
         next(error)
       })
   },
-  getSingleFood: (req, res) => {
+  getSingleFood: (req, res, next) => {
     console.log('getSingleFood')
     const id = req.params.id
-    query
-      .equalTo('objectId', id)
+    FoodQuery.equalTo('objectId', id)
       .find()
       .then((food) => {
         if (food) {
@@ -39,7 +37,7 @@ module.exports = {
         next(error)
       })
   },
-  addFood: async (req, res) => {
+  addFood: async (req, res, next) => {
     if (typeof req.body == undefined) {
       res.json({
         status: 'error',
@@ -59,7 +57,7 @@ module.exports = {
       //   new Parse.File('resume.txt', { base64: btoa('My file content') })
       // )
       try {
-        const result = await newFood.save()
+        const result = await newFood.save(null, { useMasterKey: true })
         // Access the Parse Object attributes using the .GET method
         console.log('Food created', result)
         res.json(result)
@@ -69,11 +67,12 @@ module.exports = {
       }
     }
   },
-  updateFood: async (req, res) => {
+  updateFood: async (req, res, next) => {
     try {
       const { id } = req.params
+      console.log('id', id)
       const { name, description, price, stock_quantity, category_id } = req.body
-      const currentFood = await query.get(id)
+      const currentFood = await FoodQuery.get(id)
       currentFood.set('name', name)
       currentFood.set('description', description)
       currentFood.set('price', price)
@@ -84,7 +83,7 @@ module.exports = {
       //   new Parse.File('resume.txt', { base64: btoa('My file content') })
       // )
       try {
-        const response = await object.save()
+        const response = await currentFood.save()
         // You can use the "get" method to get the value of an attribute
         // Ex: response.get("<ATTRIBUTE_NAME>")
         // Access the Parse Object attributes using the .GET method
@@ -105,11 +104,12 @@ module.exports = {
       next(error)
     }
   },
-  deleteFood: async (req, res) => {
-    const { id } = req.params.id
+  deleteFood: async (req, res, next) => {
+    const { id } = req.params
+    console.log('id', id)
     try {
       // here you put the objectId that you want to delete
-      const object = await query.get(id)
+      const object = await FoodQuery.get(id)
       try {
         const response = await object.destroy()
         console.log('Deleted ParseObject', response)

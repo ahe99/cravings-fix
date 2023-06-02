@@ -20,13 +20,13 @@ module.exports = {
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            foodQuery.equalTo('objectId', id).count()
+            foodQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
         {
           message: 'FOOD_NOT_FOUND',
-        }
+        },
       ),
     }),
   }),
@@ -36,18 +36,21 @@ module.exports = {
       name: z.string().max(20),
       description: z.string().optional(),
       price: z.number().min(0),
-      stock_quantity: z.number().min(0),
-      category_id: z.string().refine(
-        (category_id) => async (id) => {
-          const count = await Promise.resolve(
-            categoryQuery.equalTo('objectId', category_id).count()
-          )
-          return count !== 0
-        },
-        {
-          message: 'CATEGORY_NOT_FOUND',
-        }
-      ),
+      stock_quantity: z.number().min(0).optional(),
+      category_id: z
+        .string()
+        .refine(
+          async (category_id) => {
+            const count = await Promise.resolve(
+              categoryQuery.equalTo('objectId', category_id).count(),
+            )
+            return count !== 0
+          },
+          {
+            message: 'CATEGORY_NOT_FOUND',
+          },
+        )
+        .optional(),
     }),
   }),
   PatchProductRequestSchema: z.object({
@@ -55,13 +58,13 @@ module.exports = {
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            foodQuery.equalTo('objectId', id).count()
+            foodQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
         {
           message: 'FOOD_NOT_FOUND',
-        }
+        },
       ),
     }),
     body: z
@@ -73,13 +76,13 @@ module.exports = {
         category_id: z.string().refine(
           (category_id) => async (id) => {
             const count = await Promise.resolve(
-              categoryQuery.equalTo('objectId', category_id).count()
+              categoryQuery.equalTo('objectId', category_id).count(),
             )
             return count !== 0
           },
           {
             message: 'CATEGORY_NOT_FOUND',
-          }
+          },
         ),
       })
       .partial()
@@ -89,11 +92,17 @@ module.exports = {
   }),
   DeleteProductRequestSchema: z.object({
     params: z.object({
-      id: z
-        .string()
-        .refine((id) => foodQuery.exists({ where: { objectId: id } }), {
+      id: z.string().refine(
+        async (id) => {
+          const count = await Promise.resolve(
+            foodQuery.equalTo('objectId', id).count(),
+          )
+          return count !== 0
+        },
+        {
           message: 'FOOD_NOT_FOUND',
-        }),
+        },
+      ),
     }),
   }),
 }
