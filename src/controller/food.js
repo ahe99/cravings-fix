@@ -4,7 +4,7 @@ const FoodQuery = new Parse.Query(Food)
 
 module.exports = {
   getAllFoods: (req, res, next) => {
-    const name = req.query.name
+    const name = req.query.name || ''
     console.log('getAllFoods')
     FoodQuery.contains('name', name)
       .find()
