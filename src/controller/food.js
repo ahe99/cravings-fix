@@ -1,6 +1,8 @@
 const Parse = require('parse/node')
 const Food = Parse.Object.extend('Food')
+const Category = Parse.Object.extend('Category')
 const FoodQuery = new Parse.Query(Food)
+const CategoryQuery = new Parse.Query(Category)
 
 module.exports = {
   getAllFoods: (req, res, next) => {
@@ -51,7 +53,11 @@ module.exports = {
       newFood.set('description', description)
       newFood.set('price', price)
       newFood.set('stock_quantity', stock_quantity)
-      newFood.set('category_id', category_id)
+
+      const category = await CategoryQuery.get(category_id)
+      if (category) {
+        newFood.set('category_id', category.toPointer())
+      }
       // newFood.set(
       //   'image',
       //   new Parse.File('resume.txt', { base64: btoa('My file content') })
@@ -77,7 +83,12 @@ module.exports = {
       currentFood.set('description', description)
       currentFood.set('price', price)
       currentFood.set('stock_quantity', stock_quantity)
-      currentFood.set('category_id', category_id)
+
+      const category = await CategoryQuery.get(category_id)
+      if (category) {
+        currentFood.set('category_id', category.toPointer())
+      }
+
       // currentFood.set(
       //   'image',
       //   new Parse.File('resume.txt', { base64: btoa('My file content') })
