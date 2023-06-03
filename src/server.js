@@ -30,6 +30,7 @@ const port = process.env.PORT || 6400
 // routes
 const homeRoute = require('./routes/home')
 const foodRoute = require('./routes/food')
+const categoryRoute = require('./routes/category')
 
 // middleware
 app.use(cors())
@@ -39,6 +40,7 @@ app.use(express.json())
 
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)
+app.use('/categories', categoryRoute)
 
 app.use((err, req, res, next) => {
   // The error id is attached to `res.sentry` to be returned

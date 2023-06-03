@@ -2,8 +2,8 @@ const { z } = require('zod')
 const Parse = require('parse/node')
 const Food = Parse.Object.extend('Food')
 const Category = Parse.Object.extend('Category')
-const foodQuery = new Parse.Query(Food)
-const categoryQuery = new Parse.Query(Category)
+const FoodQuery = new Parse.Query(Food)
+const CategoryQuery = new Parse.Query(Category)
 
 module.exports = {
   GetFoodsRequestSchema: z.object({
@@ -20,7 +20,7 @@ module.exports = {
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            foodQuery.equalTo('objectId', id).count(),
+            FoodQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
@@ -42,7 +42,7 @@ module.exports = {
         .refine(
           async (category_id) => {
             const count = await Promise.resolve(
-              categoryQuery.equalTo('objectId', category_id).count(),
+              CategoryQuery.equalTo('objectId', category_id).count(),
             )
             return count !== 0
           },
@@ -58,7 +58,7 @@ module.exports = {
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            foodQuery.equalTo('objectId', id).count(),
+            FoodQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
@@ -76,7 +76,7 @@ module.exports = {
         category_id: z.string().refine(
           (category_id) => async (id) => {
             const count = await Promise.resolve(
-              categoryQuery.equalTo('objectId', category_id).count(),
+              CategoryQuery.equalTo('objectId', category_id).count(),
             )
             return count !== 0
           },
@@ -95,7 +95,7 @@ module.exports = {
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            foodQuery.equalTo('objectId', id).count(),
+            FoodQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
