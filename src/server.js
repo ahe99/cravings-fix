@@ -1,6 +1,7 @@
 // initializes
 const express = require('express')
 const Parse = require('parse/node')
+const bodyParser = require('body-parser')
 const { ZodError } = require('zod')
 const cors = require('cors')
 const dotenv = require('dotenv')
@@ -37,8 +38,8 @@ const roleRoute = require('./routes/role')
 // middleware
 app.use(cors())
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)

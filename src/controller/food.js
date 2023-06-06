@@ -7,7 +7,6 @@ const CategoryQuery = new Parse.Query(Category)
 module.exports = {
   getAllFoods: (req, res, next) => {
     const name = req.query.name || ''
-    console.log('getAllFoods')
     FoodQuery.contains('name', name)
       .find()
       .then((foods) => {
@@ -23,7 +22,6 @@ module.exports = {
       })
   },
   getSingleFood: (req, res, next) => {
-    console.log('getSingleFood')
     const id = req.params.id
     FoodQuery.equalTo('objectId', id)
       .find()
@@ -54,9 +52,16 @@ module.exports = {
       newFood.set('price', price)
       newFood.set('stock_quantity', stock_quantity)
 
-      const category = await CategoryQuery.get(category_id)
-      if (category) {
-        newFood.set('category_id', category.toPointer())
+      if (category_id) {
+        const category = await CategoryQuery.get(category_id)
+        if (category) {
+          newFood.set('category_id', category.toPointer())
+        } else {
+          res.json({
+            status: 'error',
+            message: 'category not found',
+          })
+        }
       }
       // newFood.set(
       //   'image',
@@ -76,34 +81,20 @@ module.exports = {
   updateFood: async (req, res, next) => {
     try {
       const { id } = req.params
-      console.log('id', id)
       const { name, description, price, stock_quantity, category_id } = req.body
       const currentFood = await FoodQuery.get(id)
       currentFood.set('name', name)
       currentFood.set('description', description)
       currentFood.set('price', price)
       currentFood.set('stock_quantity', stock_quantity)
-
       const category = await CategoryQuery.get(category_id)
       if (category) {
         currentFood.set('category_id', category.toPointer())
       }
 
-      // currentFood.set(
-      //   'image',
-      //   new Parse.File('resume.txt', { base64: btoa('My file content') })
-      // )
       try {
         const response = await currentFood.save()
-        // You can use the "get" method to get the value of an attribute
-        // Ex: response.get("<ATTRIBUTE_NAME>")
-        // Access the Parse Object attributes using the .GET method
-        console.log(response.get('name'))
-        console.log(response.get('description'))
-        console.log(response.get('price'))
-        console.log(response.get('stock_quantity'))
-        console.log(response.get('category_id'))
-        console.log(response.get('image'))
+
         console.log('Food updated', response)
         res.json(response)
       } catch (error) {
@@ -117,7 +108,6 @@ module.exports = {
   },
   deleteFood: async (req, res, next) => {
     const { id } = req.params
-    console.log('id', id)
     try {
       // here you put the objectId that you want to delete
       const object = await FoodQuery.get(id)
@@ -131,6 +121,43 @@ module.exports = {
       }
     } catch (error) {
       console.error('Error while retrieving ParseObject', error)
+      next(error)
+    }
+  },
+  // getSingleImage: (req, res, next) => {
+  //   const id = req.params.id
+  //   FoodQuery.equalTo('objectId', id)
+  //     .find()
+  //     .then((food) => {
+  //       if (food) {
+  //         // error
+  //         res.json(food[0].image)
+  //       } else {
+  //         console.log('Nothing found, please try again')
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log('Error: ' + error.code + ' ' + error.message)
+  //       next(error)
+  //     })
+  // },
+  updateImage: async (req, res, next) => {
+    const id = req.params.id
+
+    const currentFood = await FoodQuery.get(id)
+    const fileData = req.file
+    const parseFile = new Parse.File(fileData.originalname, {
+      base64: fileData.buffer.toString('base64'),
+    })
+
+    currentFood.set('image', parseFile)
+    try {
+      const result = await currentFood.save()
+      // Access the Parse Object attributes using the .GET method
+      console.log('Food updated', result)
+      res.json(result)
+    } catch (error) {
+      console.error('Error while creating Image: ', error)
       next(error)
     }
   },
