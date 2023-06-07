@@ -8,7 +8,6 @@ const { parseFromB4AObject } = require('../helpers/format')
 
 const getFormattedFood = (food = {}) => {
   const parsedFood = parseFromB4AObject(food)
-  console.log('parsedFood', parsedFood)
   return {
     ...parsedFood,
     image: {
