@@ -32,7 +32,6 @@ const upload = multer({
 
 router.get('/', validateResource(GetFoodsRequestSchema), food.getAllFoods)
 router.get('/:id', validateResource(GetFoodRequestSchema), food.getSingleFood)
-// router.get('/image/:id', food.getSingleImage)
 
 router.post('/', validateResource(PostProductCreateSchema), food.addFood)
 router.post('/image/:id', upload.single('image'), food.updateImage)
