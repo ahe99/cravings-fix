@@ -10,7 +10,7 @@ const getFormattedBanner = (food = {}) => {
   return {
     ...parsedBanner,
     image: {
-      url: parsedBanner.image?.url ?? '',
+      src: parsedBanner.image?.url ?? '',
     },
   }
 }
@@ -106,7 +106,7 @@ module.exports = {
         msg: 'Banner updated',
         objectId: formattedBanner.objectId,
         image: {
-          url: formattedBanner.image.url,
+          src: formattedBanner.image.url,
         },
       })
       console.log('Banner updated', result)

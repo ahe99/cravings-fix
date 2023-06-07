@@ -12,7 +12,7 @@ const getFormattedFood = (food = {}) => {
   return {
     ...parsedFood,
     image: {
-      url: parsedFood.image?.url ?? '',
+      src: parsedFood.image?.url ?? '',
     },
     category_id: parsedFood.category_id?.objectId ?? '',
   }
@@ -179,7 +179,7 @@ module.exports = {
         msg: 'Food updated',
         objectId: formattedFood.objectId,
         image: {
-          url: formattedFood.image.url,
+          src: formattedFood.image.url,
         },
       })
       console.log('Food updated', result)
