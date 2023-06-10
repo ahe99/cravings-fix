@@ -13,4 +13,17 @@ module.exports = {
       })
       .partial(),
   }),
+  GetUserLoginRequestSchema: z.object({
+    body: z.object({
+      username: z.string().min(4).max(20),
+      password: z.string().min(4).max(20),
+    }),
+  }),
+  PostUserRequestSchema: z.object({
+    body: z.object({
+      email: z.string().email().optional(),
+      username: z.string().min(4).max(20),
+      password: z.string().min(4).max(20),
+    }),
+  }),
 }
