@@ -35,6 +35,7 @@ const categoryRoute = require('./routes/category')
 const userRoute = require('./routes/user')
 const roleRoute = require('./routes/role')
 const bannerRoute = require('./routes/banners')
+const orderRoute = require('./routes/order')
 
 // middleware
 app.use(cors())
@@ -48,6 +49,7 @@ app.use('/categories', categoryRoute)
 app.use('/users', userRoute)
 app.use('/roles', roleRoute)
 app.use('/banners', bannerRoute)
+app.use('/orders', orderRoute)
 
 app.use((err, req, res, next) => {
   // The error id is attached to `res.sentry` to be returned

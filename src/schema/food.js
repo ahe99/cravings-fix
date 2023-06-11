@@ -31,7 +31,7 @@ module.exports = {
     }),
   }),
 
-  PostProductCreateSchema: z.object({
+  PostFoodCreateSchema: z.object({
     body: z.object({
       name: z.string().max(20),
       description: z.string().optional(),
@@ -53,7 +53,7 @@ module.exports = {
         .optional(),
     }),
   }),
-  PatchProductRequestSchema: z.object({
+  PatchFoodRequestSchema: z.object({
     params: z.object({
       id: z.string().refine(
         async (id) => {
@@ -90,7 +90,7 @@ module.exports = {
         message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
       }),
   }),
-  DeleteProductRequestSchema: z.object({
+  DeleteFoodRequestSchema: z.object({
     params: z.object({
       id: z.string().refine(
         async (id) => {

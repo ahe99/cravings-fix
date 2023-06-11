@@ -5,9 +5,9 @@ const { validateResource } = require('../middleware/validate')
 const {
   GetFoodRequestSchema,
   GetFoodsRequestSchema,
-  PostProductCreateSchema,
-  PatchProductRequestSchema,
-  DeleteProductRequestSchema,
+  PostFoodCreateSchema,
+  PatchFoodRequestSchema,
+  DeleteFoodRequestSchema,
 } = require('../schema/food')
 const path = require('path')
 const multer = require('multer')
@@ -33,19 +33,15 @@ const upload = multer({
 router.get('/', validateResource(GetFoodsRequestSchema), food.getAllFoods)
 router.get('/:id', validateResource(GetFoodRequestSchema), food.getSingleFood)
 
-router.post('/', validateResource(PostProductCreateSchema), food.addFood)
+router.post('/', validateResource(PostFoodCreateSchema), food.addFood)
 router.post('/image/:id', upload.single('image'), food.updateImage)
 
-router.put('/:id', validateResource(PatchProductRequestSchema), food.updateFood)
-router.patch(
-  '/:id',
-  validateResource(PatchProductRequestSchema),
-  food.updateFood,
-)
+router.put('/:id', validateResource(PatchFoodRequestSchema), food.updateFood)
+router.patch('/:id', validateResource(PatchFoodRequestSchema), food.updateFood)
 
 router.delete(
   '/:id',
-  validateResource(DeleteProductRequestSchema),
+  validateResource(DeleteFoodRequestSchema),
   food.deleteFood,
 )
 
