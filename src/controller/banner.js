@@ -6,7 +6,7 @@ const { parseFromB4AObject } = require('../helpers/format')
 
 const getFormattedBanner = (food = {}) => {
   const parsedBanner = parseFromB4AObject(food)
-  console.log('parsedBanner', parsedBanner)
+
   return {
     ...parsedBanner,
     image: {
@@ -51,34 +51,26 @@ module.exports = {
       })
   },
   addBanner: async (req, res, next) => {
-    if (typeof req.body === 'undefined') {
-      res.json({
-        status: 'error',
-        message: 'data is undefined',
-      })
-    } else {
-      const newBanner = new Parse.Object('Banner')
-      const { name, description } = req.body
-      const fileData = req.file
+    const newBanner = new Parse.Object('Banner')
+    const { name, description } = req.body
+    const fileData = req.file
 
-      const parseFile = new Parse.File(fileData.originalname, {
-        base64: fileData.buffer.toString('base64'),
-      })
+    const parseFile = new Parse.File(fileData.originalname, {
+      base64: fileData.buffer.toString('base64'),
+    })
 
-      newBanner.set('name', name)
-      newBanner.set('description', description)
-      newBanner.set('image', parseFile)
-      try {
-        const result = await newBanner.save()
-        // Access the Parse Object attributes using the .GET method
-        const formattedBanner = getFormattedBanner(result)
+    newBanner.set('name', name)
+    newBanner.set('description', description)
+    newBanner.set('image', parseFile)
+    try {
+      const result = await newBanner.save()
+      // Access the Parse Object attributes using the .GET method
+      const formattedBanner = getFormattedBanner(result)
 
-        console.log('Banner created', formattedBanner)
-        res.json(formattedBanner)
-      } catch (error) {
-        console.error('Error while creating Banner: ', error)
-        next(error)
-      }
+      res.json(formattedBanner)
+    } catch (error) {
+      console.error('Error while creating Banner: ', error)
+      next(error)
     }
   },
   updateBanner: async (req, res, next) => {
@@ -100,7 +92,6 @@ module.exports = {
       const result = await currentBanner.save()
       // Access the Parse Object attributes using the .GET method
       const formattedBanner = getFormattedBanner(result)
-      console.log('Banner updated', formattedBanner)
 
       res.json({
         msg: 'Banner updated',
@@ -109,7 +100,6 @@ module.exports = {
           src: formattedBanner.image.url,
         },
       })
-      console.log('Banner updated', result)
       res.json(result)
     } catch (error) {
       console.error('Error while creating Image: ', error)
@@ -125,7 +115,6 @@ module.exports = {
         const response = await object.destroy()
 
         const formattedBanner = getFormattedBanner(response)
-        console.log('Banner Deleted', formattedBanner)
 
         res.json({
           msg: 'Banner Deleted',

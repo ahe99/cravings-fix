@@ -34,7 +34,7 @@ const foodRoute = require('./routes/food')
 const categoryRoute = require('./routes/category')
 const userRoute = require('./routes/user')
 const roleRoute = require('./routes/role')
-const bannerRoute = require('./routes/banners')
+const bannerRoute = require('./routes/banner')
 const orderRoute = require('./routes/order')
 
 // middleware
@@ -48,7 +48,7 @@ app.use('/foods', foodRoute)
 app.use('/categories', categoryRoute)
 app.use('/users', userRoute)
 app.use('/roles', roleRoute)
-app.use('/banners', bannerRoute)
+app.use('/banner', bannerRoute)
 app.use('/orders', orderRoute)
 
 app.use((err, req, res, next) => {

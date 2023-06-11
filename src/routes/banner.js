@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const banners = require('../controller/banners')
+const banners = require('../controller/banner')
 const { upload } = require('../middleware/file')
 
 router.get('/', banners.getAllBanners)

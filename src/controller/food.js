@@ -85,7 +85,6 @@ module.exports = {
         // Access the Parse Object attributes using the .GET method
         const formattedFood = getFormattedFood(result)
 
-        console.log('Food created', formattedFood)
         res.json(formattedFood)
       } catch (error) {
         console.error('Error while creating Food: ', error)
@@ -94,67 +93,55 @@ module.exports = {
     }
   },
   updateFood: async (req, res, next) => {
-    try {
-      const id = req.params.id
-      const { name, description, price, stock_quantity, category_id } = req.body
-      const currentFood = await FoodQuery.get(id)
-      currentFood.set('name', name)
-      currentFood.set('description', description)
-      currentFood.set('price', price)
-      currentFood.set('stock_quantity', stock_quantity)
+    const id = req.params.id
+    const { name, description, price, stock_quantity, category_id } = req.body
+    const currentFood = await FoodQuery.get(id)
+    currentFood.set('name', name)
+    currentFood.set('description', description)
+    currentFood.set('price', price)
+    currentFood.set('stock_quantity', stock_quantity)
 
-      if (category_id) {
-        const category = await CategoryQuery.get(category_id)
-        if (category) {
-          currentFood.set('category_id', category.toPointer())
-        } else {
-          res.json({
-            status: 'error',
-            message: 'category not found',
-          })
-        }
-      }
-
-      try {
-        const response = await currentFood.save()
-
-        const formattedFood = getFormattedFood(response)
-        console.log('Food updated', formattedFood)
-
+    if (category_id) {
+      const category = await CategoryQuery.get(category_id)
+      if (category) {
+        currentFood.set('category_id', category.toPointer())
+      } else {
         res.json({
-          msg: 'Food updated',
-          objectId: formattedFood.objectId,
+          status: 'error',
+          message: 'category not found',
         })
-      } catch (error) {
-        console.error('Error while updating Food', error)
-        next(error)
       }
+    }
+
+    try {
+      const response = await currentFood.save()
+
+      const formattedFood = getFormattedFood(response)
+
+      res.json({
+        msg: 'Food updated',
+        objectId: formattedFood.objectId,
+      })
     } catch (error) {
-      console.error('Error while retrieving object Food', error)
+      console.error('Error while updating Food', error)
       next(error)
     }
   },
   deleteFood: async (req, res, next) => {
     const { id } = req.params
+    // here you put the objectId that you want to delete
+    const object = await FoodQuery.get(id)
     try {
-      // here you put the objectId that you want to delete
-      const object = await FoodQuery.get(id)
-      try {
-        const response = await object.destroy()
+      const response = await object.destroy()
 
-        const formattedFood = getFormattedFood(response)
-        console.log('Food Deleted', formattedFood)
+      const formattedFood = getFormattedFood(response)
 
-        res.json({
-          msg: 'Food Deleted',
-          objectId: formattedFood.objectId,
-        })
-      } catch (error) {
-        console.error('Error while deleting ParseObject', error)
-        next(error)
-      }
+      res.json({
+        msg: 'Food Deleted',
+        objectId: formattedFood.objectId,
+      })
     } catch (error) {
-      console.error('Error while retrieving ParseObject', error)
+      console.error('Error while deleting ParseObject', error)
       next(error)
     }
   },
@@ -172,7 +159,6 @@ module.exports = {
       const result = await currentFood.save()
       // Access the Parse Object attributes using the .GET method
       const formattedFood = getFormattedFood(result)
-      console.log('Food updated', formattedFood)
 
       res.json({
         msg: 'Food updated',
@@ -181,7 +167,6 @@ module.exports = {
           src: formattedFood.image.url,
         },
       })
-      console.log('Food updated', result)
       res.json(result)
     } catch (error) {
       console.error('Error while creating Image: ', error)

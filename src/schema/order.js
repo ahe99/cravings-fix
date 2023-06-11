@@ -33,9 +33,12 @@ module.exports = {
   PostOrderCreateSchema: z.object({
     body: z.object({
       foods: z.array().refine(
-        async (foods) => {
+        async (foodIds) => {
+          // need to be validate
           return await Promise.all(
-            foods.map((foodId) => FoodQuery.equalTo('objectId', foodId)),
+            foodIds.map((foodId) =>
+              FoodQuery.equalTo('objectId', foodId).first(),
+            ),
           )
         },
         {

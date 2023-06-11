@@ -1,10 +1,10 @@
 const { z } = require('zod')
 const Parse = require('parse/node')
-const Category = Parse.Object.extend('Category')
-const CategoryQuery = new Parse.Query(Category)
+const Banner = Parse.Object.extend('Banner')
+const BannerQuery = new Parse.Query(Banner)
 
 module.exports = {
-  GetCategoriesRequestSchema: z.object({
+  GetBannersRequestSchema: z.object({
     query: z
       .object({
         name: z.string().max(20),
@@ -13,59 +13,67 @@ module.exports = {
       })
       .partial(),
   }),
-  GetCategoryRequestSchema: z.object({
+  GetBannerRequestSchema: z.object({
     params: z.object({
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            CategoryQuery.equalTo('objectId', id).count(),
+            BannerQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
         {
-          message: 'CATEGORY_NOT_FOUND',
+          message: 'BANNER_NOT_FOUND',
         },
       ),
     }),
   }),
-  PostCategoryCreateSchema: z.object({
-    body: z.object({
-      name: z.string().max(20),
-    }),
+  PostBannerCreateSchema: z.object({
+    body: z
+      .object({
+        name: z.string().max(20),
+        description: z.string(),
+      })
+      .partial()
+      .refine((body) => !(Object.keys(body).length === 0), {
+        message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
+      }),
   }),
-  PatchCategoryRequestSchema: z.object({
+  PatchBannerRequestSchema: z.object({
     params: z.object({
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            CategoryQuery.equalTo('objectId', id).count(),
+            BannerQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
         {
-          message: 'CATEGORY_NOT_FOUND',
+          message: 'BANNER_NOT_FOUND',
         },
       ),
     }),
     body: z
       .object({
         name: z.string().max(20),
+        description: z.string(),
       })
+      .partial()
       .refine((body) => !(Object.keys(body).length === 0), {
         message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
       }),
   }),
-  DeleteCategoryRequestSchema: z.object({
+  DeleteBannerRequestSchema: z.object({
     params: z.object({
       id: z.string().refine(
         async (id) => {
           const count = await Promise.resolve(
-            CategoryQuery.equalTo('objectId', id).count(),
+            BannerQuery.equalTo('objectId', id).count(),
           )
           return count !== 0
         },
         {
-          message: 'CATEGORY_NOT_FOUND',
+          message: 'BANNER_NOT_FOUND',
         },
       ),
     }),
