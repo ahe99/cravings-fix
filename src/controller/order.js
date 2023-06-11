@@ -1,23 +1,32 @@
 const Parse = require('parse/node')
 const Order = Parse.Object.extend('Order')
-const OrderQuery = new Parse.Query(Order)
 
 const Food = Parse.Object.extend('Food')
-const FoodQuery = new Parse.Query(Food)
 
 const SessionQuery = new Parse.Query(Parse.Session)
 
-const { parseFromB4AObject, toPointer } = require('../helpers/format')
+const {
+  parseFromB4AObject,
+  toPointer,
+  fromPointerToId,
+} = require('../helpers/format')
 
 const getFormattedOrder = async (order = {}) => {
-  const parsedOrder = parseFromB4AObject(order)
+  const items = await order.relation('items').query().find()
 
-  const { foods } = parsedOrder
-  const formattedFoods = await Promise.all(foods.map(getFoodFromPointer))
+  const parsedOrder = parseFromB4AObject(order)
+  const { objectId, owner, createdAt, updatedAt } = parsedOrder
+
+  const formattedOrderItem = await Promise.all(
+    items.map(getOrderItemFromPointer),
+  )
 
   return {
-    ...parsedOrder,
-    foods: formattedFoods,
+    objectId,
+    createdAt,
+    updatedAt,
+    owner: fromPointerToId(owner),
+    items: formattedOrderItem,
   }
 }
 
@@ -32,14 +41,38 @@ const getFormattedFood = (food = {}) => {
   }
 }
 
-const getFoodFromPointer = async (food) => {
-  const { objectId } = food
-  const foodObject = await FoodQuery.equalTo('objectId', objectId).first()
-  return getFormattedFood(foodObject)
+const getOrderItemFromPointer = async (orderItem) => {
+  const {
+    food: { objectId: foodId },
+    quantity,
+  } = parseFromB4AObject(orderItem)
+
+  const FoodQuery = new Parse.Query(Food)
+  const foodObject = await FoodQuery.equalTo('objectId', foodId).first()
+  const formattedFood = getFormattedFood(foodObject)
+  return {
+    ...formattedFood,
+    quantity,
+  }
+}
+
+const createOrderItem = async (item) => {
+  const { id, quantity } = item
+  const newOrderItem = new Parse.Object('OrderItem')
+
+  newOrderItem.set('food', toPointer('Food', id))
+  newOrderItem.set('quantity', quantity)
+  try {
+    const result = await newOrderItem.save()
+    return result
+  } catch (e) {
+    throw new Error(e)
+  }
 }
 
 module.exports = {
   getAllOrders: async (req, res, next) => {
+    const OrderQuery = new Parse.Query(Order)
     OrderQuery.find()
       .then((orders) => {
         if (orders) {
@@ -57,6 +90,7 @@ module.exports = {
   },
   getSingleOrder: (req, res, next) => {
     const id = req.params.id
+    const OrderQuery = new Parse.Query(Order)
     OrderQuery.equalTo('objectId', id)
       .first()
       .then((order) => {
@@ -87,6 +121,7 @@ module.exports = {
 
       const userPointer = toPointer('_User', currentUserId)
 
+      const OrderQuery = new Parse.Query(Order)
       OrderQuery.equalTo('owner', userPointer)
         .find()
         .then((orders) => {
@@ -114,22 +149,23 @@ module.exports = {
         .include('user')
         .first({ useMasterKey: true }),
     )
-
     const currentUserId = currentSession.toJSON().user.objectId
-
-    const userPointer = toPointer('_User', currentUserId)
-
     const newOrder = new Parse.Object('Order')
+
     const { foods } = req.body
 
-    const foodPointers = foods.map((foodId) => toPointer('Food', foodId))
-
-    newOrder.set('owner', userPointer)
-    newOrder.set('foods', foodPointers)
     try {
+      newOrder.set('owner', toPointer('_User', currentUserId))
+      const currentOrderRelation = newOrder.relation('items')
+
+      const items = await Promise.all(foods.map(createOrderItem))
+      items.forEach((item) => {
+        currentOrderRelation.add(item)
+      })
+
       const result = await newOrder.save()
       // Access the Parse Object attributes using the .GET method
-      const formattedOrder = getFormattedOrder(result)
+      const formattedOrder = await getFormattedOrder(result)
 
       console.log('Order created', formattedOrder)
       res.json(formattedOrder)
@@ -141,14 +177,22 @@ module.exports = {
   updateOrder: async (req, res, next) => {
     const id = req.params.id
     const { foods } = req.body
-    const currentOrder = await OrderQuery.get(id)
-    const foodPointers = foods.map((foodId) => toPointer('Food', foodId))
 
-    currentOrder.set('foods', foodPointers)
+    const OrderQuery = new Parse.Query(Order)
+    const currentOrder = await OrderQuery.get(id)
+    const currentOrderRelation = currentOrder.relation('items')
+    const currentOrderItems = await currentOrderRelation.query().find()
+    currentOrderRelation.remove(currentOrderItems)
+
     try {
+      const items = await Promise.all(foods.map(createOrderItem))
+      items.forEach((item) => {
+        currentOrderRelation.add(item)
+      })
+
       const response = await currentOrder.save()
 
-      const formattedOrder = getFormattedOrder(response)
+      const formattedOrder = await getFormattedOrder(response)
       console.log('Order updated', formattedOrder)
 
       res.json({
@@ -163,11 +207,12 @@ module.exports = {
   deleteOrder: async (req, res, next) => {
     const { id } = req.params
     // here you put the objectId that you want to delete
+    const OrderQuery = new Parse.Query(Order)
     const object = await OrderQuery.get(id)
     try {
       const response = await object.destroy()
 
-      const formattedOrder = getFormattedOrder(response)
+      const formattedOrder = await getFormattedOrder(response)
       console.log('Order Deleted', formattedOrder)
 
       res.json({

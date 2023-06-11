@@ -32,19 +32,23 @@ module.exports = {
   }),
   PostOrderCreateSchema: z.object({
     body: z.object({
-      foods: z.array().refine(
-        async (foodIds) => {
-          // need to be validate
-          return await Promise.all(
-            foodIds.map((foodId) =>
-              FoodQuery.equalTo('objectId', foodId).first(),
-            ),
-          )
-        },
-        {
-          message: 'FOOD_NOT_FOUND',
-        },
-      ),
+      foods: z
+        .object({
+          id: z.string().refine(
+            async (foodId) => {
+              // need to be validate
+              const count = await Promise.resolve(
+                FoodQuery.equalTo(foodId).count(),
+              )
+              return count !== 0
+            },
+            {
+              message: 'FOOD_NOT_FOUND',
+            },
+          ),
+          quantity: z.number().positive(),
+        })
+        .array(),
     }),
   }),
   PatchOrderRequestSchema: z.object({
@@ -62,16 +66,23 @@ module.exports = {
       ),
     }),
     body: z.object({
-      foods: z.array().refine(
-        async (foods) => {
-          return await Promise.all(
-            foods.map((foodId) => FoodQuery.equalTo('objectId', foodId)),
-          )
-        },
-        {
-          message: 'FOOD_NOT_FOUND',
-        },
-      ),
+      foods: z
+        .object({
+          id: z.string().refine(
+            async (foodId) => {
+              // need to be validate
+              const count = await Promise.resolve(
+                FoodQuery.equalTo(foodId).count(),
+              )
+              return count !== 0
+            },
+            {
+              message: 'FOOD_NOT_FOUND',
+            },
+          ),
+          quantity: z.number().positive(),
+        })
+        .array(),
     }),
   }),
   DeleteOrderRequestSchema: z.object({

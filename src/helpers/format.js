@@ -9,4 +9,8 @@ module.exports = {
       objectId,
     }
   },
+  fromPointerToId: (pointer) => {
+    const { objectId } = pointer
+    return objectId
+  },
 }

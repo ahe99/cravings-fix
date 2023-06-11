@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { validateResource } = require('../middleware/validate')
+const { isAuth } = require('../middleware/auth')
 const {
   GetUsersRequestSchema,
   GetUserLoginRequestSchema,
@@ -9,7 +10,7 @@ const {
 const user = require('../controller/user')
 
 router.get('/', validateResource(GetUsersRequestSchema), user.getAllUser)
-router.get('/me', user.getCurrentUser)
+router.get('/me', isAuth, user.getCurrentUser)
 
 router.post('/', validateResource(PostUserRequestSchema), user.addUser)
 router.post(
