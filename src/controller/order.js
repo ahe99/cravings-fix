@@ -21,12 +21,19 @@ const getFormattedOrder = async (order = {}) => {
     items.map(getOrderItemFromPointer),
   )
 
+  const totalPrice = formattedOrderItem.reduce(
+    (accumulator, currentItem) =>
+      accumulator + currentItem.price * currentItem.quantity,
+    0,
+  )
+
   return {
     objectId,
     createdAt,
     updatedAt,
     owner: fromPointerToId(owner),
     items: formattedOrderItem,
+    totalPrice,
   }
 }
 
