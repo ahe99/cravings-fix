@@ -26,7 +26,7 @@ Parse.serverURL = process.env.B4A_BASE_URL
 const app = express()
 
 // port
-const port = process.env.PORT || 6400
+const port = process.env.PORT || 80
 
 // routes
 const homeRoute = require('./routes/home')
