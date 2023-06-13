@@ -4,6 +4,8 @@ const Order = Parse.Object.extend('Order')
 const Food = Parse.Object.extend('Food')
 const OrderQuery = new Parse.Query(Order)
 const FoodQuery = new Parse.Query(Food)
+const User = new Parse.User()
+const UserQuery = new Parse.Query(User)
 
 module.exports = {
   GetOrdersRequestSchema: z.object({
@@ -12,6 +14,15 @@ module.exports = {
         name: z.string().max(20),
         limit: z.string().regex(/^\d+$/),
         offset: z.string().regex(/^\d+$/),
+        userId: z.string().refine(
+          (userId) => {
+            const count = UserQuery.equalTo('objectId', userId).count()
+            return count !== 0
+          },
+          {
+            message: 'USER_NOT_FOUND',
+          },
+        ),
       })
       .partial(),
   }),

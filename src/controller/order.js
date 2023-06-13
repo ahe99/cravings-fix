@@ -72,7 +72,13 @@ const createOrderItem = async (item) => {
 
 module.exports = {
   getAllOrders: async (req, res, next) => {
+    const userId = req.query.userId
+
     const OrderQuery = new Parse.Query(Order)
+    if (userId) {
+      const userPointer = toPointer('_User', userId)
+      OrderQuery.equalTo('owner', userPointer)
+    }
     OrderQuery.find()
       .then((orders) => {
         if (orders) {
