@@ -1,37 +1,10 @@
 import { PropsWithChildren } from 'react'
-import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import BreadcrumbsBase from '@mui/material/Breadcrumbs'
 
 import CSS from './ContentLayout.module.css'
-
-const ContentBreadcrumbs = () => {
-  const { pathname } = useLocation()
-  const routes = pathname.split('/')
-  const filterRoutes = routes.filter((_, index) => index !== 0)
-
-  return (
-    <BreadcrumbsBase className={CSS.breadcrumbs}>
-      <Link className={CSS.breadcrumb_link} to="/">
-        Home
-      </Link>
-
-      {filterRoutes.map((route, index) =>
-        index === filterRoutes.length - 1 ? (
-          <span key={route} className={CSS.breadcrumb_link_disabled}>
-            {getPageTitleByPath(route)}
-          </span>
-        ) : (
-          <Link className={CSS.breadcrumb_link} to={route} key={route}>
-            {getPageTitleByPath(route)}
-          </Link>
-        ),
-      )}
-    </BreadcrumbsBase>
-  )
-}
 
 export const ContentLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -52,26 +25,7 @@ const ContentHeader = () => {
 }
 
 const ContentBody = ({ children }: PropsWithChildren) => {
-  return (
-    <main className={CSS.main}>
-      <ContentBreadcrumbs />
-      {children}
-    </main>
-  )
-}
-
-const getPageTitleByPath = (currentPath = '') => {
-  const mapping = {
-    dashboard: 'Dashboard',
-    customers: 'Customers',
-    orders: 'Oders',
-    products: 'Products',
-    admins: 'Admins',
-  }
-
-  const pageTitle = mapping[currentPath as keyof typeof mapping]
-
-  return typeof pageTitle === 'string' ? pageTitle : currentPath
+  return <main className={CSS.main}>{children}</main>
 }
 
 const MAIN_ROUTES = [

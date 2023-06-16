@@ -1,0 +1,21 @@
+.breadcrumbs {
+  margin-bottom: 1rem;
+
+  .breadcrumb_link_disabled {
+    text-decoration: none;
+    color: black;
+    font-weight: var(--nav-link-font-weight);
+    font-size: var(--nav-link-font-size);
+  }
+
+  .breadcrumb_link {
+    text-decoration: none;
+    color: gray;
+    font-weight: var(--nav-link-font-weight);
+    font-size: var(--nav-link-font-size);
+
+    &:hover {
+      opacity: 0.4;
+    }
+  }
+}
