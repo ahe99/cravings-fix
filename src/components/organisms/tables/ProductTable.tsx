@@ -19,7 +19,7 @@ import CSS from './ProducsTable.module.css'
 
 interface ProductTableProps {
   products: Product[]
-  onClickItem?: (productId: Product['id']) => void
+  onClickItem?: (productId: Product['objectId']) => void
 }
 interface HeadCell {
   id: keyof Product
@@ -133,7 +133,7 @@ export const ProductTable = ({
         <TableBody>
           {paginatedProducts.map(
             ({
-              id,
+              objectId,
               name,
               price,
               stock_quantity,
@@ -143,13 +143,13 @@ export const ProductTable = ({
               image,
             }) => (
               <TableRow
-                key={id}
+                key={objectId}
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': { opacity: 0.4 },
                 }}
                 hover={true}
-                onClick={() => onClickItem(id)}
+                onClick={() => onClickItem(objectId)}
               >
                 <TableCell component="th" scope="row">
                   <img
