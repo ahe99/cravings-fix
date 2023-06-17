@@ -22,6 +22,22 @@ module.exports = {
         next(error)
       })
   },
+  getSingleUser: async (req, res, next) => {
+    const id = req.params.id
+    UserQuery.equalTo('objectId', id)
+      .first()
+      .then((user) => {
+        if (user) {
+          res.json(user)
+        } else {
+          console.log('Nothing found, please try again')
+        }
+      })
+      .catch(function (error) {
+        console.log('Error: ' + error.code + ' ' + error.message)
+        next(error)
+      })
+  },
   addUser: async (req, res, next) => {
     const { username, email, password } = req.body
 

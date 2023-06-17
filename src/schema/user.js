@@ -1,7 +1,7 @@
 const { z } = require('zod')
-// const Parse = require('parse/node')
-// const User = new Parse.User()
-// const UserQuery = new Parse.Query(User)
+const Parse = require('parse/node')
+const User = new Parse.User()
+const UserQuery = new Parse.Query(User)
 
 module.exports = {
   GetUsersRequestSchema: z.object({
@@ -13,6 +13,22 @@ module.exports = {
       })
       .partial(),
   }),
+  GetUserRequestSchema: z.object({
+    params: z.object({
+      id: z.string().refine(
+        async (id) => {
+          const count = await Promise.resolve(
+            UserQuery.equalTo('objectId', id).count(),
+          )
+          return count !== 0
+        },
+        {
+          message: 'USER_NOT_FOUND',
+        },
+      ),
+    }),
+  }),
+
   GetUserLoginRequestSchema: z.object({
     body: z.object({
       username: z.string().min(4).max(20),

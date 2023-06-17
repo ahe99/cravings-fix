@@ -22,7 +22,7 @@ module.exports = {
   getSingleCategory: (req, res, next) => {
     const id = req.params.id
     CategoryQuery.equalTo('objectId', id)
-      .find()
+      .first()
       .then((category) => {
         if (category) {
           res.json(category)
