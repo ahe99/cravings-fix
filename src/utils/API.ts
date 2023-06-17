@@ -5,19 +5,19 @@ export const API = {
 
   routes: {
     user: {
-      data: (param: string | number) => `/user/${param ?? ''}`,
-      update: (param: string | number) => `/user/${param ?? ''}`,
-      delete: (param: string | number) => `/user/${param ?? ''}`,
+      data: (param: string | number) => `/users/${param ?? ''}`,
+      update: (param: string | number) => `/users/${param ?? ''}`,
+      delete: (param: string | number) => `/users/${param ?? ''}`,
       list: '/users',
       login: '/login',
       register: '/users',
     },
     products: {
-      list: '/products',
-      data: (param: string | number) => `/products/${param ?? ''}`,
-      create: '/products',
-      update: (param: string | number) => `/products/${param ?? ''}`,
-      delete: (param: string | number) => `/products/${param ?? ''}`,
+      list: '/foods',
+      data: (param: string | number) => `/foods/${param ?? ''}`,
+      create: '/foods',
+      update: (param: string | number) => `/foods/${param ?? ''}`,
+      delete: (param: string | number) => `/foods/${param ?? ''}`,
     },
     recently: {
       list: '/recently',
@@ -33,7 +33,16 @@ export const API = {
     orders: {
       list: '/orders',
       data: (param: string | number) => `/orders/${param ?? ''}`,
+      update: (param: string | number) => `/orders/${param}`,
+      delete: (param: string | number) => `/orders/${param}`,
       create: '/orders',
+    },
+    categories: {
+      list: '/categories',
+      data: (param: string | number) => `/categories/${param ?? ''}`,
+      update: (param: string | number) => `/categories/${param}`,
+      delete: (param: string | number) => `/categories/${param}`,
+      create: '/categories',
     },
     banners: {
       list: '/banners',

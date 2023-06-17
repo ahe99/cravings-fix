@@ -1,14 +1,14 @@
 export type ImageType = {
-  blurHash: string
   src: string
 }
 
 export type Product = {
-  id: string
+  objectId: string
   name: string
   description: string
   price: number
   stock_quantity: number
+  category_id: string
   category_name: string
   createdAt: string
   updatedAt: string
@@ -18,11 +18,10 @@ export type CartProduct = Product & {
   quantity: number
 }
 export type Order = {
-  id: string
-  products: CartProduct[]
+  objectId: string
+  items: CartProduct[]
   createdAt: string
   updatedAt: string
-  buyer: string
+  owner: string
   totalPrice: number
-  description: string
 }

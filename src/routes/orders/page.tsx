@@ -1,9 +1,7 @@
+import { OrdersPage } from '@/components/pages'
+
 const OrdersRoute = () => {
-  return (
-    <div>
-      <div>orders</div>
-    </div>
-  )
+  return <OrdersPage />
 }
 OrdersRoute.layouts = 'content'
 OrdersRoute.displayName = 'OrdersRoute'

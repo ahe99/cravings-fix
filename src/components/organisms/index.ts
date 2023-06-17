@@ -1,1 +1,2 @@
-export * from './tables/ProductsTable'
+export * from './tables/OrderTable'
+export * from './tables/ProductTable'
