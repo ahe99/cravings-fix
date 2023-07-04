@@ -9,24 +9,8 @@
     "lint": "eslint src --ext ts,tsx && tsc --noEmit",
     "lint:next": "next lint",
     "preview": "vite preview",
-    "prepare": "husky install",
     "module:check": "ncu",
     "module:update": "ncu -u"
-  },
-  "lint-staged": {
-    "package.json": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.css": [
-      "prettier --write"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -57,8 +41,6 @@
     "eslint": "^8.41.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
     "npm-check-updates": "^16.10.12",
     "postcss": "^8.4.23",
     "postcss-preset-env": "^8.4.1",
