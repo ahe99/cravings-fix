@@ -1,0 +1,8 @@
+{
+  "name": "e-commerce",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
+}
