@@ -3,6 +3,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['parsefiles.back4app.com', 'cdn.glitch.global'],
   },

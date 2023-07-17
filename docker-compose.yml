@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  client:
+    build: ./app/client
+    restart: on-failure
+    env_file: ./app/client/.env
+    ports:
+      - '3400:3400'
+    volumes:
+      - './app/client:/usr/src/client'
+      - '/usr/src/client/node_modules'
+  admin:
+    build: ./app/admin
+    restart: on-failure
+    env_file: ./app/admin/.env
+    ports:
+      - '3500:3500'
+    volumes:
+      - './app/admin:/usr/src/admin'
+      - '/usr/src/admin/node_modules'
+  api:
+    build: ./app/api
+    restart: on-failure
+    env_file:
+      - ./app/api/.env
+      - ./.env.minio
+      - ./.env.mongo
+    ports:
+      - '3600:3600'
+    volumes:
+      - './app/api:/usr/src/api'
+      - '/usr/src/api/node_modules'
+    depends_on:
+      - mongodb
+  minio:
+    image: 'minio/minio'
+    restart: on-failure
+    command: 'server /export --console-address :9001'
+    volumes:
+      - 'minio-data-user:/root/.minio'
+      - 'minio-data-export:/export'
+    env_file:
+      - ./.env.minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+  mongodb:
+    image: mongo
+    restart: on-failure
+    ports:
+      - '27017:27017'
+    env_file:
+      - ./.env.mongo
+
+networks:
+  service:
+    driver: bridge
+
+volumes:
+  minio-data-user:
+    driver: local
+  minio-data-export:
+    driver: local

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { Metadata } from 'next'
 
 import { Header, Footer, Provider } from '@/components/templates'
@@ -14,11 +15,7 @@ export const metadata: Metadata = {
   icons: '/favicon.ico',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>

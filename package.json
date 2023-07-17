@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "pnpm -r run dev",
+    "start": "pnpm -r start",
+    "build": "pnpm --filter=!api build",
     "dev:client": "pnpm run -C app/client dev",
     "dev:api": "pnpm run -C app/api dev",
     "dev:admin": "pnpm run -C app/api dev"

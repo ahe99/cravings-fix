@@ -1,10 +1,11 @@
 {
-  "name": "e-commerce-admin",
+  "name": "admin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite  --port 3500",
+    "start": "vite preview --port 3500",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx && tsc --noEmit",
     "lint:next": "next lint",

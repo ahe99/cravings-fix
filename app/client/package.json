@@ -1,12 +1,12 @@
 {
-  "name": "e-commerce",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev  -p 3500",
+    "dev": "next dev  -p 3400",
     "build": "next build",
-    "bs": "next build && next start -p 3500",
-    "start": "next start -p 3500",
+    "bs": "next build && next start -p 3400",
+    "start": "next start -p 3400",
     "lint": "eslint --ext .ts,.tsx ./src && tsc --noEmit",
     "lint:next": "next lint",
     "json-server": "json-server --watch .json/main.json --port 3030"
