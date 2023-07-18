@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const home = require('../controller/home')
 
-router.get('/', home.indexPage)
+import { indexPage } from '../controller/home'
+
+router.get('/', indexPage)
 
 module.exports = router

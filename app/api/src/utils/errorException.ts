@@ -1,4 +1,13 @@
-const responseMessage = {
+interface ResponseMessage {
+  400: string
+  401: string
+  403: string
+  404: string
+  408: string
+  409: string
+  500: string
+}
+const responseMessage: ResponseMessage = {
   400: 'Bad Request',
   401: 'Unauthorized',
   403: 'Forbidden',
@@ -9,10 +18,10 @@ const responseMessage = {
 }
 
 class ErrorWithStatus {
-  name
-  message
-  statusCode
-  constructor(statusCode, message) {
+  name: string
+  message: string
+  statusCode: number
+  constructor(statusCode: keyof ResponseMessage, message: string) {
     Error.captureStackTrace(this, this.constructor)
     this.name = this.constructor.name
     this.message = message || responseMessage[statusCode]
@@ -42,7 +51,7 @@ class ProductStationError extends ServiceError {}
 class WorkOrderStationError extends ServiceError {}
 class KanbanRecordError extends ServiceError {}
 
-module.exports = {
+export {
   responseMessage,
   ErrorWithStatus,
   ClientError,
