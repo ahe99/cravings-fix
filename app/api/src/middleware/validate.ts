@@ -1,5 +1,9 @@
-module.exports = {
-  validateResource: (schema) => async (req, res, next) => {
+import { ZodSchema } from 'zod'
+import { RequestHandler } from 'express'
+
+export const validateResource =
+  (schema: ZodSchema): RequestHandler =>
+  async (req, res, next) => {
     try {
       const validateResult = await schema.safeParseAsync({
         body: req.body,
@@ -24,5 +28,4 @@ module.exports = {
     } catch (err) {
       return res.status(400).json(err)
     }
-  },
-}
+  }

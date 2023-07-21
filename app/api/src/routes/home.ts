@@ -5,4 +5,4 @@ import { indexPage } from '../controller/home'
 
 router.get('/', indexPage)
 
-module.exports = router
+export = router

@@ -1,156 +1,100 @@
 import { RequestHandler } from 'express'
-import { SomeModel } from '../models/food'
+import { FoodModel } from '../models/food'
 
-// const Parse = require('parse/node')
-// const Food = Parse.Object.extend('Food')
-// const Category = Parse.Object.extend('Category')
-// const FoodQuery = new Parse.Query(Food)
-// const CategoryQuery = new Parse.Query(Category)
-
-// const { parseFromB4AObject } = require('../helpers/format')
-
-// const getFormattedFood = (food = {}) => {
-//   const parsedFood = parseFromB4AObject(food)
-//   return {
-//     ...parsedFood,
-//     image: {
-//       src: parsedFood.image?.url ?? '',
-//     },
-//     category_id: parsedFood.category_id?.objectId ?? '',
-//   }
-// }
 export const getAllFoods: RequestHandler = async (req, res, next) => {
-  const newSome = new SomeModel()
-  // newSome.a = '134'
+  const {
+    query: { name, limit = '50', offset = '0' },
+  } = req
 
   try {
-    const result = await newSome.save()
-    // const result = await SomeModel.find().exec()
+    let foodQuery = FoodModel.find().skip(Number(offset))
+
+    if (typeof name === 'string') {
+      foodQuery = foodQuery.find({ name })
+    }
+    if (limit !== '-1') {
+      foodQuery = foodQuery.limit(Number(limit))
+    }
+    const result = await foodQuery.exec()
 
     res.json(result)
   } catch (e) {
     next(e)
   }
-  // newSome.save()
 }
 
-// getAllFoods: (req, res, next) => {
-//   const name = req.query.name || ''
-//   FoodQuery.contains('name', name)
-//     .find()
-//     .then((foods) => {
-//       if (foods) {
-//         const formattedFoods = foods.map(getFormattedFood)
-//         res.json(formattedFoods)
-//       } else {
-//         console.log('Nothing found, please try again')
-//       }
-//     })
-//     .catch(function (error) {
-//       console.log('Error: ' + error.code + ' ' + error.message)
-//       next(error)
-//     })
-// },
-// getSingleFood: (req, res, next) => {
-//   const id = req.params.id
-//   FoodQuery.equalTo('objectId', id)
-//     .first()
-//     .then((food) => {
-//       if (food) {
-//         const formattedFood = getFormattedFood(food)
-//         res.json(formattedFood)
-//       } else {
-//         console.log('Nothing found, please try again')
-//       }
-//     })
-//     .catch(function (error) {
-//       console.log('Error: ' + error.code + ' ' + error.message)
-//       next(error)
-//     })
-// },
-// addFood: async (req, res, next) => {
-//   if (typeof req.body === 'undefined') {
-//     res.json({
-//       status: 'error',
-//       message: 'data is undefined',
-//     })
-//   } else {
-//     const newFood = new Parse.Object('Food')
-//     const { name, description, price, stock_quantity, category_id } = req.body
-//     newFood.set('name', name)
-//     newFood.set('description', description)
-//     newFood.set('price', price)
-//     newFood.set('stock_quantity', stock_quantity)
-//     if (category_id) {
-//       const category = await CategoryQuery.get(category_id)
-//       if (category) {
-//         newFood.set('category_id', category.toPointer())
-//       } else {
-//         res.json({
-//           status: 'error',
-//           message: 'category not found',
-//         })
-//       }
-//     }
-//     try {
-//       const result = await newFood.save()
-//       // Access the Parse Object attributes using the .GET method
-//       const formattedFood = getFormattedFood(result)
-//       res.json(formattedFood)
-//     } catch (error) {
-//       console.error('Error while creating Food: ', error)
-//       next(error)
-//     }
-//   }
-// },
-// updateFood: async (req, res, next) => {
-//   const id = req.params.id
-//   const { name, description, price, stock_quantity, category_id } = req.body
-//   const currentFood = await FoodQuery.get(id)
-//   currentFood.set('name', name)
-//   currentFood.set('description', description)
-//   currentFood.set('price', price)
-//   currentFood.set('stock_quantity', stock_quantity)
-//   if (category_id) {
-//     const category = await CategoryQuery.get(category_id)
-//     if (category) {
-//       currentFood.set('category_id', category.toPointer())
-//     } else {
-//       res.json({
-//         status: 'error',
-//         message: 'category not found',
-//       })
-//     }
-//   }
-//   try {
-//     const response = await currentFood.save()
-//     const formattedFood = getFormattedFood(response)
-//     res.json({
-//       msg: 'Food updated',
-//       objectId: formattedFood.objectId,
-//     })
-//   } catch (error) {
-//     console.error('Error while updating Food', error)
-//     next(error)
-//   }
-// },
-// deleteFood: async (req, res, next) => {
-//   const { id } = req.params
-//   // here you put the objectId that you want to delete
-//   const object = await FoodQuery.get(id)
-//   try {
-//     const response = await object.destroy()
-//     const formattedFood = getFormattedFood(response)
-//     res.json({
-//       msg: 'Food Deleted',
-//       objectId: formattedFood.objectId,
-//     })
-//   } catch (error) {
-//     console.error('Error while deleting ParseObject', error)
-//     next(error)
-//   }
-// },
-// updateImage: async (req, res, next) => {
+export const addFood: RequestHandler = async (req, res, next) => {
+  const newFood = new FoodModel()
+  const { name, description, stockQuantity, price } = req.body
+
+  newFood.name = name
+  newFood.description = description
+  newFood.stockQuantity = stockQuantity
+  newFood.price = price
+
+  try {
+    const result = await newFood.save()
+
+    res.json(result)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const getSingleFood: RequestHandler = async (req, res, next) => {
+  const id = req.params.id
+
+  try {
+    const result = await FoodModel.findById(id)
+
+    res.json(result)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const updateFood: RequestHandler = async (req, res, next) => {
+  const id = req.params.id
+
+  // if (categoryId) {
+  //   if (category) {
+
+  //   } else {
+  //     res.json({
+  //       status: 'error',
+  //       message: 'category not found',
+  //     })
+  //   }
+  // }
+  try {
+    const updatedFood = await FoodModel.findByIdAndUpdate(id, {
+      ...req.body,
+    })
+
+    res.json({
+      msg: 'Food updated',
+      objectId: updatedFood?.id,
+    })
+  } catch (error) {
+    console.error('Error while updating Food', error)
+    next(error)
+  }
+}
+
+export const deleteFood: RequestHandler = async (req, res, next) => {
+  const { id } = req.params
+  try {
+    const response = await FoodModel.findByIdAndDelete(id)
+    res.json({
+      msg: 'Food Deleted',
+      data: response,
+    })
+  } catch (error) {
+    console.error('Error while deleting ParseObject', error)
+    next(error)
+  }
+}
+// export const updateImage: RequestHandler = async (req, res, next) => {
 //   const id = req.params.id
 //   const currentFood = await FoodQuery.get(id)
 //   const fileData = req.file
@@ -174,4 +118,4 @@ export const getAllFoods: RequestHandler = async (req, res, next) => {
 //     console.error('Error while creating Image: ', error)
 //     next(error)
 //   }
-// },
+// }

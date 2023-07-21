@@ -1,10 +1,28 @@
 import { Schema, model } from 'mongoose'
 
-const exampleSchema = new Schema({
-  a: {
-    type: String,
-    required: true,
+const FoodSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    price: {
+      type: Number,
+      default: 0,
+    },
+    stockQuantity: {
+      type: Number,
+      default: 0,
+    },
+    categoryId: {},
   },
-  d: Date,
-})
-export const SomeModel = model('TestModel', exampleSchema)
+  {
+    timestamps: true,
+  },
+)
+export const FoodModel = model('FoodModel', FoodSchema)
