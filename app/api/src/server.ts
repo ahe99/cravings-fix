@@ -12,6 +12,17 @@ import { ZodError } from 'zod'
 import cors from 'cors'
 import mongoose, { MongooseError } from 'mongoose'
 
+import initSwagger from './models/swagger'
+
+// routes
+import homeRoute from './routes/home'
+import foodRoute from './routes/food'
+// import categoryRoute from ./routes/category'
+// import userRoute from ./routes/user'
+// import roleRoute from ./routes/role'
+// import bannerRoute from ./routes/banner'
+// import orderRoute from ./routes/order'
+
 // const Parse = require('parse/node')
 const bodyParser = require('body-parser')
 
@@ -34,14 +45,7 @@ const app: Application = express()
 // port
 const port = process.env.PORT || 3600
 
-// routes
-const homeRoute = require('./routes/home')
-const foodRoute = require('./routes/food')
-// const categoryRoute = require('./routes/category')
-// const userRoute = require('./routes/user')
-// const roleRoute = require('./routes/role')
-// const bannerRoute = require('./routes/banner')
-// const orderRoute = require('./routes/order')
+initSwagger(app)
 
 // middleware
 app.use(cors())
