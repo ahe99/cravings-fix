@@ -17,7 +17,7 @@ import initSwagger from './models/swagger'
 // routes
 import homeRoute from './routes/home'
 import foodRoute from './routes/food'
-// import categoryRoute from ./routes/category'
+import categoryRoute from './routes/category'
 // import userRoute from ./routes/user'
 // import roleRoute from ./routes/role'
 // import bannerRoute from ./routes/banner'
@@ -55,7 +55,7 @@ app.use(bodyParser.json())
 
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)
-// app.use('/categories', categoryRoute)
+app.use('/categories', categoryRoute)
 // app.use('/users', userRoute)
 // app.use('/roles', roleRoute)
 // app.use('/banner', bannerRoute)

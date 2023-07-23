@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { FoodModel } from '../models/food'
+import { CategoryModel } from '../models/category'
 
-export const GetFoodsRequestSchema = z.object({
+export const GetCategoriesRequestSchema = z.object({
   query: z
     .object({
       name: z.string().max(20),
@@ -12,21 +12,21 @@ export const GetFoodsRequestSchema = z.object({
     .partial(),
 })
 
-export const GetFoodRequestSchema = z.object({
+export const GetCategoryRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await FoodModel.find({ _id }).count()
+        const count = await CategoryModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'FOOD_NOT_FOUND',
+        message: 'CATEGORY_NOT_FOUND',
       },
     ),
   }),
 })
 
-export const PostFoodCreateSchema = z.object({
+export const PostCategoryCreateSchema = z.object({
   body: z.object({
     name: z.string().max(20),
     description: z.string().optional(),
@@ -40,15 +40,15 @@ export const PostFoodCreateSchema = z.object({
     //   .optional(),
   }),
 })
-export const PatchFoodRequestSchema = z.object({
+export const PatchCategoryRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await FoodModel.find({ _id }).count().exec()
+        const count = await CategoryModel.find({ _id }).count().exec()
         return count !== 0
       },
       {
-        message: 'FOOD_NOT_FOUND',
+        message: 'CATEGORY_NOT_FOUND',
       },
     ),
   }),
@@ -67,15 +67,15 @@ export const PatchFoodRequestSchema = z.object({
       message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
     }),
 })
-export const DeleteFoodRequestSchema = z.object({
+export const DeleteCategoryRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await FoodModel.find({ _id }).count()
+        const count = await CategoryModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'FOOD_NOT_FOUND',
+        message: 'CATEGORY_NOT_FOUND',
       },
     ),
   }),
