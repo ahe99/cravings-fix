@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { FoodModel } from '../models/food'
+import { CategoryModel } from '../models/category'
 
 export const GetFoodsRequestSchema = z.object({
   query: z
@@ -32,12 +33,18 @@ export const PostFoodCreateSchema = z.object({
     description: z.string().optional(),
     price: z.number().min(0).default(0),
     stockQuantity: z.number().min(0).default(0).optional(),
-    // categoryId: z
-    //   .string()
-    //   .refine(async (categoryId) => {}, {
-    //     message: 'CATEGORY_NOT_FOUND',
-    //   })
-    //   .optional(),
+    categoryId: z
+      .string()
+      .refine(
+        async (categoryId) => {
+          const count = await CategoryModel.find({ _id: categoryId }).count()
+          return count !== 0
+        },
+        {
+          message: 'CATEGORY_NOT_FOUND',
+        },
+      )
+      .optional(),
   }),
 })
 export const PatchFoodRequestSchema = z.object({
@@ -58,9 +65,15 @@ export const PatchFoodRequestSchema = z.object({
       description: z.string(),
       price: z.number().min(0),
       stockQuantity: z.number().min(0),
-      // categoryId: z.string().refine((categoryId) => async (id) => {}, {
-      //   message: 'CATEGORY_NOT_FOUND',
-      // }),
+      categoryId: z.string().refine(
+        async (categoryId) => {
+          const count = await CategoryModel.find({ _id: categoryId }).count()
+          return count !== 0
+        },
+        {
+          message: 'CATEGORY_NOT_FOUND',
+        },
+      ),
     })
     .partial()
     .refine((body) => !(Object.keys(body).length === 0), {

@@ -85,12 +85,15 @@ router.get('/', validateResource(GetFoodsRequestSchema), getAllFoods)
  *                   type: integer
  *                 price:
  *                   type: number
+ *                 categoryId:
+ *                   type: string
  *               example:
- *                 _id: 1234567890
+ *                 _id: "1234567890"
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
  *                 price: 9.99
+ *                 categoryId: "1234567890"
  *       404:
  *         description: Food item with the provided ID not found.
  *       500:
@@ -120,11 +123,14 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *                 type: integer
  *               price:
  *                 type: number
+ *               categoryId:
+ *                   type: string
  *             example:
  *               name: Sample Food
  *               description: This is a sample food item.
  *               stockQuantity: 10
  *               price: 9.99
+ *               categoryId: "1234567890"
  *     responses:
  *       200:
  *         description: Successfully added the food item.
@@ -143,12 +149,15 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *                   type: integer
  *                 price:
  *                   type: number
+ *                 categoryId:
+ *                   type: string
  *               example:
- *                 _id: 1234567890
+ *                 _id: "1234567890"
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
  *                 price: 9.99
+ *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */
@@ -186,11 +195,14 @@ router.post('/', validateResource(PostFoodCreateSchema), addFood)
  *                 type: integer
  *               price:
  *                 type: number
+ *               categoryId:
+ *                   type: string
  *             example:
  *               name: Sample Food
  *               description: This is a sample food item.
  *               stockQuantity: 10
  *               price: 9.99
+ *               categoryId: "1234567890"
  *     responses:
  *       200:
  *         description: Successfully updated the food item.
@@ -209,12 +221,15 @@ router.post('/', validateResource(PostFoodCreateSchema), addFood)
  *                   type: integer
  *                 price:
  *                   type: number
+ *                 categoryId:
+ *                   type: string
  *               example:
- *                 _id: 1234567890
+ *                 _id: "1234567890"
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
  *                 price: 9.99
+ *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */
@@ -254,12 +269,15 @@ router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
  *                   type: integer
  *                 price:
  *                   type: number
+ *                 categoryId:
+ *                   type: string
  *               example:
- *                 _id: 1234567890
+ *                 _id: "1234567890"
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
  *                 price: 9.99
+ *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */

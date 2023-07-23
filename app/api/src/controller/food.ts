@@ -25,12 +25,16 @@ export const getAllFoods: RequestHandler = async (req, res, next) => {
 
 export const addFood: RequestHandler = async (req, res, next) => {
   const newFood = new FoodModel()
-  const { name, description, stockQuantity, price } = req.body
+  const { name, description, stockQuantity, price, categoryId } = req.body
 
   newFood.name = name
   newFood.description = description
   newFood.stockQuantity = stockQuantity
   newFood.price = price
+
+  if (categoryId) {
+    newFood.categoryId = categoryId
+  }
 
   try {
     const result = await newFood.save()
@@ -56,16 +60,6 @@ export const getSingleFood: RequestHandler = async (req, res, next) => {
 export const updateFood: RequestHandler = async (req, res, next) => {
   const id = req.params.id
 
-  // if (categoryId) {
-  //   if (category) {
-
-  //   } else {
-  //     res.json({
-  //       status: 'error',
-  //       message: 'category not found',
-  //     })
-  //   }
-  // }
   try {
     const updatedFood = await FoodModel.findByIdAndUpdate(id, {
       ...req.body,

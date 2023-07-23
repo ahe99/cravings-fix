@@ -19,7 +19,11 @@ const FoodSchema = new Schema(
       type: Number,
       default: 0,
     },
-    categoryId: {},
+    categoryId: {
+      type: Schema.ObjectId,
+      ref: 'CategoryModel',
+      required: false,
+    },
   },
   {
     timestamps: true,
