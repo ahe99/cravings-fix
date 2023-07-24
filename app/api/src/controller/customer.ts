@@ -61,10 +61,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     if (validation) {
       const token = jwt.sign(
-        {
-          email,
-          password,
-        },
+        CustomerModel.toApiCustomerSchema(user),
         config.jwt.secret,
         { expiresIn: config.jwt.expiry },
       )
@@ -86,6 +83,20 @@ export const getSingleCustomer: RequestHandler = async (req, res, next) => {
 
   try {
     const result = await CustomerModel.findById(id)
+
+    res.json(CustomerModel.toApiCustomerSchema(result))
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const getCurrentCustomer: RequestHandler = async (req, res, next) => {
+  const {
+    headers: { user_id },
+  } = req
+
+  try {
+    const result = await CustomerModel.findById(user_id)
 
     res.json(CustomerModel.toApiCustomerSchema(result))
   } catch (e) {

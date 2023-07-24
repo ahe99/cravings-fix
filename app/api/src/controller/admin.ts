@@ -61,10 +61,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     if (validation) {
       const token = jwt.sign(
-        {
-          email,
-          password,
-        },
+        AdminModel.toApiAdminSchema(user),
         config.jwt.secret,
         { expiresIn: config.jwt.expiry },
       )
@@ -86,6 +83,20 @@ export const getSingleAdmin: RequestHandler = async (req, res, next) => {
 
   try {
     const result = await AdminModel.findById(id)
+
+    res.json(AdminModel.toApiAdminSchema(result))
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const getCurrentAdmin: RequestHandler = async (req, res, next) => {
+  const {
+    headers: { user_id },
+  } = req
+
+  try {
+    const result = await AdminModel.findById(user_id)
 
     res.json(AdminModel.toApiAdminSchema(result))
   } catch (e) {

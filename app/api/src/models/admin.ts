@@ -19,8 +19,9 @@ const AdminSchema = new Schema(
   {
     statics: {
       toApiAdminSchema: (data) => {
-        const { username, email } = data
+        const { username, email, _id } = data
         return {
+          _id,
           username,
           email,
         }

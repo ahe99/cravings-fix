@@ -1,6 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
+import { isCustomer } from '../middleware/auth'
 import { validateResource } from '../middleware/validate'
 import {
   GetCustomersRequestSchema,
@@ -17,6 +18,7 @@ import {
   login,
   updateCustomer,
   deleteCustomer,
+  getCurrentCustomer,
 } from '../controller/customer'
 
 /**
@@ -62,7 +64,27 @@ import {
  */
 router.get('/', validateResource(GetCustomersRequestSchema), getAllCustomers)
 
-// router.get('/me', getCurrentUser)
+/**
+ * @swagger
+ * /customers/me:
+ *   get:
+ *     summary: Get current customer
+ *     tags: [customers]
+ *     security:
+ *        - token: []
+ *     responses:
+ *       200:
+ *         description: Successfully fetched current customer.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Customer'
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/me', isCustomer, getCurrentCustomer)
 
 /**
  * @swagger

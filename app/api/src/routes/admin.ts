@@ -17,7 +17,9 @@ import {
   login,
   updateAdmin,
   deleteAdmin,
+  getCurrentAdmin,
 } from '../controller/admin'
+import { isAdmin } from '../middleware/auth'
 
 /**
  * @swagger
@@ -62,7 +64,27 @@ import {
  */
 router.get('/', validateResource(GetAdminsRequestSchema), getAllAdmins)
 
-// router.get('/me', getCurrentUser)
+/**
+ * @swagger
+ * /admins/me:
+ *   get:
+ *     summary: Get current admin
+ *     tags: [admins]
+ *     security:
+ *        - token: []
+ *     responses:
+ *       200:
+ *         description: Successfully fetched current admin.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Admin'
+ *       500:
+ *         description: Internal server error.
+ */
+router.get('/me', isAdmin, getCurrentAdmin)
 
 /**
  * @swagger
@@ -90,11 +112,7 @@ router.get('/', validateResource(GetAdminsRequestSchema), getAllAdmins)
  *       500:
  *         description: Internal server error.
  */
-router.get(
-  '/:id',
-  validateResource(GetAdminRequestSchema),
-  getSingleAdmin,
-)
+router.get('/:id', validateResource(GetAdminRequestSchema), getSingleAdmin)
 
 /**
  * @swagger
@@ -223,11 +241,7 @@ router.post('/login', validateResource(PostAdminLoginSchema), login)
  *         description: Internal server error.
  */
 router.put('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
-router.patch(
-  '/:id',
-  validateResource(PatchAdminRequestSchema),
-  updateAdmin,
-)
+router.patch('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
 
 /**
  * @swagger
@@ -258,11 +272,7 @@ router.patch(
  *       500:
  *         description: Internal server error.
  */
-router.delete(
-  '/:id',
-  validateResource(DeleteAdminRequestSchema),
-  deleteAdmin,
-)
+router.delete('/:id', validateResource(DeleteAdminRequestSchema), deleteAdmin)
 
 export = router
 

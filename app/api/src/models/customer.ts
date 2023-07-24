@@ -19,8 +19,9 @@ const CustomerSchema = new Schema(
   {
     statics: {
       toApiCustomerSchema: (data) => {
-        const { username, email } = data
+        const { username, email, _id } = data
         return {
+          _id,
           username,
           email,
         }
