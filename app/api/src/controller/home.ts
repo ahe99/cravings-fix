@@ -7,12 +7,12 @@ const homePage = `
 <!DOCTYPE html>
 <html>
 <head>
-  <title>e-commerce-api</title>
+  <title>cravings-fix-api</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-  e-commerce-api is running
+cravings-fix-api is running
 </body>
 </html>
 `

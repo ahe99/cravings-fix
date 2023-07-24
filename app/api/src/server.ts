@@ -1,23 +1,17 @@
 // initializes
-import express, {
-  Application,
-  Express,
-  NextFunction,
-  Request,
-  Response,
-} from 'express'
-import dotenv from 'dotenv'
-import dotenvExpand from 'dotenv-expand'
+import express, { Application, NextFunction, Request, Response } from 'express'
 import { ZodError } from 'zod'
 import cors from 'cors'
 import mongoose, { MongooseError } from 'mongoose'
 
+import config from './helpers/config'
 import initSwagger from './models/swagger'
 
 // routes
 import homeRoute from './routes/home'
 import foodRoute from './routes/food'
 import categoryRoute from './routes/category'
+import customerRoute from './routes/customer'
 // import userRoute from ./routes/user'
 // import roleRoute from ./routes/role'
 // import bannerRoute from ./routes/banner'
@@ -26,9 +20,6 @@ import categoryRoute from './routes/category'
 // const Parse = require('parse/node')
 const bodyParser = require('body-parser')
 
-const myEnv = dotenv.config()
-dotenvExpand.expand(myEnv)
-
 import {
   ClientError,
   ServerError,
@@ -36,14 +27,13 @@ import {
 } from './utils/errorException'
 
 //mongodb
-mongoose.connect(process.env.MONGO_URI ?? 'mongo')
+mongoose.connect(config.mongodb.uri ?? 'mongo')
 mongoose.set('strictQuery', false)
 
 // app
 const app: Application = express()
-
 // port
-const port = process.env.PORT || 3600
+const port = config.app.port || 3600
 
 initSwagger(app)
 
@@ -56,6 +46,7 @@ app.use(bodyParser.json())
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)
 app.use('/categories', categoryRoute)
+app.use('/customers', customerRoute)
 // app.use('/users', userRoute)
 // app.use('/roles', roleRoute)
 // app.use('/banner', bannerRoute)
@@ -85,7 +76,7 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
 })
 
 app.listen(port, () => {
-  console.log('e-commerce-api is running at port: ', port)
+  console.log('cravings-fix-api is running at port: ', port)
 })
 
 module.exports = app
