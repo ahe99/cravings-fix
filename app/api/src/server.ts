@@ -12,6 +12,7 @@ import homeRoute from './routes/home'
 import foodRoute from './routes/food'
 import categoryRoute from './routes/category'
 import customerRoute from './routes/customer'
+import adminRoute from './routes/admin'
 // import userRoute from ./routes/user'
 // import roleRoute from ./routes/role'
 // import bannerRoute from ./routes/banner'
@@ -47,6 +48,7 @@ app.use('/', homeRoute)
 app.use('/foods', foodRoute)
 app.use('/categories', categoryRoute)
 app.use('/customers', customerRoute)
+app.use('/admins', adminRoute)
 // app.use('/users', userRoute)
 // app.use('/roles', roleRoute)
 // app.use('/banner', bannerRoute)
