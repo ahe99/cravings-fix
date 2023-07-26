@@ -92,11 +92,11 @@ export const getSingleCustomer: RequestHandler = async (req, res, next) => {
 
 export const getCurrentCustomer: RequestHandler = async (req, res, next) => {
   const {
-    headers: { user_id },
+    headers: { userId },
   } = req
 
   try {
-    const result = await CustomerModel.findById(user_id)
+    const result = await CustomerModel.findById(userId)
 
     res.json(CustomerModel.toApiCustomerSchema(result))
   } catch (e) {

@@ -92,11 +92,11 @@ export const getSingleAdmin: RequestHandler = async (req, res, next) => {
 
 export const getCurrentAdmin: RequestHandler = async (req, res, next) => {
   const {
-    headers: { user_id },
+    headers: { userId },
   } = req
 
   try {
-    const result = await AdminModel.findById(user_id)
+    const result = await AdminModel.findById(userId)
 
     res.json(AdminModel.toApiAdminSchema(result))
   } catch (e) {
