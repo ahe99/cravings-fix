@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { AdminModel } from '../models/admin'
+import { CustomerModel } from '../models/customer.model'
 
-export const GetAdminsRequestSchema = z.object({
+export const GetCustomersRequestSchema = z.object({
   query: z
     .object({
       name: z.string().max(20),
@@ -12,21 +12,21 @@ export const GetAdminsRequestSchema = z.object({
     .partial(),
 })
 
-export const GetAdminRequestSchema = z.object({
+export const GetCustomerRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count()
+        const count = await CustomerModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'CUSTOMER_NOT_FOUND',
       },
     ),
   }),
 })
 
-export const PostAdminCreateSchema = z.object({
+export const PostCustomerCreateSchema = z.object({
   body: z.object({
     username: z.string().min(1).max(20),
     email: z
@@ -37,7 +37,7 @@ export const PostAdminCreateSchema = z.object({
   }),
 })
 
-export const PostAdminLoginSchema = z.object({
+export const PostCustomerLoginSchema = z.object({
   body: z.object({
     email: z
       .string()
@@ -48,15 +48,15 @@ export const PostAdminLoginSchema = z.object({
 })
 
 
-export const PatchAdminRequestSchema = z.object({
+export const PatchCustomerRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count().exec()
+        const count = await CustomerModel.find({ _id }).count().exec()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'CUSTOMER_NOT_FOUND',
       },
     ),
   }),
@@ -70,15 +70,15 @@ export const PatchAdminRequestSchema = z.object({
       message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
     }),
 })
-export const DeleteAdminRequestSchema = z.object({
+export const DeleteCustomerRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count()
+        const count = await CustomerModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'CUSTOMER_NOT_FOUND',
       },
     ),
   }),

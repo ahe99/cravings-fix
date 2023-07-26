@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { FoodModel } from '../models/food'
+import { FoodModel } from '../models/food.model'
 
 export const getAllFoods: RequestHandler = async (req, res, next) => {
   const {

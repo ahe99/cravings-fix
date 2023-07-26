@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-import { FoodModel } from '../models/food'
-import { CategoryModel } from '../models/category'
+import { FoodModel } from '../models/food.model'
+import { CategoryModel } from '../models/category.model'
 
 export const GetFoodsRequestSchema = z.object({
   query: z

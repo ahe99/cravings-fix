@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { CategoryModel } from '../models/category'
+import { CategoryModel } from '../models/category.model'
 
 export const GetCategoriesRequestSchema = z.object({
   query: z

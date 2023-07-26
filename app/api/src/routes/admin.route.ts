@@ -1,131 +1,127 @@
 import express from 'express'
 const router = express.Router()
 
-import { isCustomer } from '../middleware/auth'
-import { validateResource } from '../middleware/validate'
+import { validateResource } from '../middleware/validate.middleware'
 import {
-  GetCustomersRequestSchema,
-  GetCustomerRequestSchema,
-  PostCustomerCreateSchema,
-  PostCustomerLoginSchema,
-  PatchCustomerRequestSchema,
-  DeleteCustomerRequestSchema,
-} from '../schema/customer'
+  GetAdminsRequestSchema,
+  GetAdminRequestSchema,
+  PostAdminCreateSchema,
+  PostAdminLoginSchema,
+  PatchAdminRequestSchema,
+  DeleteAdminRequestSchema,
+} from '../schema/admin.schema'
 import {
-  getAllCustomers,
-  getSingleCustomer,
+  getAllAdmins,
+  getSingleAdmin,
   register,
   login,
-  updateCustomer,
-  deleteCustomer,
-  getCurrentCustomer,
-} from '../controller/customer'
+  updateAdmin,
+  deleteAdmin,
+  getCurrentAdmin,
+} from '../controller/admin.controller'
+import { isAdmin } from '../middleware/auth.middleware'
 
 /**
  * @swagger
  * tags:
- *   name: customers
- *   description: API for managing customers.
+ *   name: admins
+ *   description: API for managing admins.
  */
 
 /**
  * @swagger
- * /customers:
+ * /admins:
  *   get:
- *     summary: Get all customers
- *     tags: [customers]
+ *     summary: Get all admins
+ *     tags: [admins]
  *     parameters:
  *       - in: query
  *         name: name
- *         description: Filter customers by name
+ *         description: Filter admins by name
  *         schema:
  *           type: string
  *       - in: query
  *         name: limit
- *         description: Maximum number of customers to return
+ *         description: Maximum number of admins to return
  *         schema:
  *           type: integer
  *       - in: query
  *         name: offset
- *         description: Number of customers to skip from the beginning
+ *         description: Number of admins to skip from the beginning
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Successfully fetched customers.
+ *         description: Successfully fetched admins.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Customer'
+ *                 $ref: '#/components/schemas/Admin'
  *       500:
  *         description: Internal server error.
  */
-router.get('/', validateResource(GetCustomersRequestSchema), getAllCustomers)
+router.get('/', validateResource(GetAdminsRequestSchema), getAllAdmins)
 
 /**
  * @swagger
- * /customers/me:
+ * /admins/me:
  *   get:
- *     summary: Get current customer
- *     tags: [customers]
+ *     summary: Get current admin
+ *     tags: [admins]
  *     security:
  *        - token: []
  *     responses:
  *       200:
- *         description: Successfully fetched current customer.
+ *         description: Successfully fetched current admin.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Customer'
+ *                 $ref: '#/components/schemas/Admin'
  *       500:
  *         description: Internal server error.
  */
-router.get('/me', isCustomer, getCurrentCustomer)
+router.get('/me', isAdmin, getCurrentAdmin)
 
 /**
  * @swagger
- * /customers/{id}:
+ * /admins/{id}:
  *   get:
- *     summary: Get a single customer by ID
- *     tags: [customers]
+ *     summary: Get a single admin by ID
+ *     tags: [admins]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the customer to retrieve
+ *         description: ID of the admin to retrieve
  *         schema:
  *           type: string
  *         example: 1234567890
  *     responses:
  *       200:
- *         description: Successfully retrieved the customer.
+ *         description: Successfully retrieved the admin.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Customer'
+ *               $ref: '#/components/schemas/Admin'
  *       404:
- *         description: Customer with the provided ID not found.
+ *         description: Admin with the provided ID not found.
  *       500:
  *         description: Internal server error.
  */
-router.get(
-  '/:id',
-  validateResource(GetCustomerRequestSchema),
-  getSingleCustomer,
-)
+router.get('/:id', validateResource(GetAdminRequestSchema), getSingleAdmin)
 
 /**
  * @swagger
- * /customers/register:
+ * /admins/register:
  *   post:
- *     summary: Register a new customer
- *     tags: [customers]
+ *     summary: Register a new admin
+ *     tags: [admins]
  *     requestBody:
- *       description: Customer object to be registered
+ *       description: Admin object to be registered
  *       required: true
  *       content:
  *         application/json:
@@ -144,7 +140,7 @@ router.get(
  *               password: password123
  *     responses:
  *       200:
- *         description: Successfully registered the customer.
+ *         description: Successfully registered the admin.
  *         content:
  *           application/json:
  *             schema:
@@ -157,16 +153,16 @@ router.get(
  *       500:
  *         description: Internal server error.
  */
-router.post('/register', validateResource(PostCustomerCreateSchema), register)
+router.post('/register', validateResource(PostAdminCreateSchema), register)
 
 /**
  * @swagger
- * /customers/login:
+ * /admins/login:
  *   post:
- *     summary: Log in as a customer
- *     tags: [customers]
+ *     summary: Log in as a admin
+ *     tags: [admins]
  *     requestBody:
- *       description: Customer credentials for login
+ *       description: Admin credentials for login
  *       required: true
  *       content:
  *         application/json:
@@ -186,30 +182,30 @@ router.post('/register', validateResource(PostCustomerCreateSchema), register)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Customer'
+ *               $ref: '#/components/schemas/Admin'
  *       401:
  *         description: Authentication failed.
  *       500:
  *         description: Internal server error.
  */
-router.post('/login', validateResource(PostCustomerLoginSchema), login)
+router.post('/login', validateResource(PostAdminLoginSchema), login)
 
 /**
  * @swagger
- * /customers/{id}:
+ * /admins/{id}:
  *   put:
- *     summary: Update a customer by ID
- *     tags: [customers]
+ *     summary: Update a admin by ID
+ *     tags: [admins]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the customer to update
+ *         description: ID of the admin to update
  *         schema:
  *           type: string
  *         example: 1234567890
  *     requestBody:
- *       description: Customer object with updated fields
+ *       description: Admin object with updated fields
  *       required: true
  *       content:
  *         application/json:
@@ -228,7 +224,7 @@ router.post('/login', validateResource(PostCustomerLoginSchema), login)
  *               password: password123
  *     responses:
  *       200:
- *         description: Customer updated.
+ *         description: Admin updated.
  *         content:
  *           application/json:
  *             schema:
@@ -239,35 +235,31 @@ router.post('/login', validateResource(PostCustomerLoginSchema), login)
  *                 objectId:
  *                   type: string
  *               example:
- *                 msg: Customer updated
+ *                 msg: Admin updated
  *                 objectId: 1234567890
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', validateResource(PatchCustomerRequestSchema), updateCustomer)
-router.patch(
-  '/:id',
-  validateResource(PatchCustomerRequestSchema),
-  updateCustomer,
-)
+router.put('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
+router.patch('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
 
 /**
  * @swagger
- * /customers/{id}:
+ * /admins/{id}:
  *   delete:
- *     summary: Delete a customer by ID
- *     tags: [customers]
+ *     summary: Delete a admin by ID
+ *     tags: [admins]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the customer to delete
+ *         description: ID of the admin to delete
  *         schema:
  *           type: string
  *         example: 1234567890
  *     responses:
  *       200:
- *         description: Customer deleted.
+ *         description: Admin deleted.
  *         content:
  *           application/json:
  *             schema:
@@ -276,27 +268,23 @@ router.patch(
  *                 msg:
  *                   type: string
  *               example:
- *                 msg: Customer Deleted
+ *                 msg: Admin Deleted
  *       500:
  *         description: Internal server error.
  */
-router.delete(
-  '/:id',
-  validateResource(DeleteCustomerRequestSchema),
-  deleteCustomer,
-)
+router.delete('/:id', validateResource(DeleteAdminRequestSchema), deleteAdmin)
 
 export = router
 
-// Define the Customer schema here if not already defined in the models.
-// Replace `type: object` with the actual Customer schema.
+// Define the Admin schema here if not already defined in the models.
+// Replace `type: object` with the actual Admin schema.
 // This schema will be referenced in the Swagger JSDoc comments.
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Customer:
+ *     Admin:
  *       type: object
  *       properties:
  *         _id:

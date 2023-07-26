@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
-import { getAllFoods, getSingleFood, addFood, updateFood, deleteFood } from '../controller/food'
-import { validateResource } from '../middleware/validate'
+import { getAllFoods, getSingleFood, addFood, updateFood, deleteFood } from '../controller/food.controller'
+import { validateResource } from '../middleware/validate.middleware'
 
 import {
   GetFoodsRequestSchema,
@@ -9,7 +9,7 @@ import {
   PostFoodCreateSchema,
   PatchFoodRequestSchema,
   DeleteFoodRequestSchema,
-} from '../schema/food'
+} from '../schema/food.schema'
 // const { upload } = require('../middleware/file')
 
 /**

@@ -2,8 +2,8 @@ import { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 
 import config from '../helpers/config'
-import { AdminModel } from '../models/admin'
-import { CustomerModel } from '../models/customer'
+import { AdminModel } from '../models/admin.model'
+import { CustomerModel } from '../models/customer.model'
 import { responseMessage } from '../utils/errorException'
 
 export const isAuth: RequestHandler = async (req, res, next) => {

@@ -6,8 +6,8 @@ import {
   addCategory,
   updateCategory,
   deleteCategory,
-} from '../controller/category'
-import { validateResource } from '../middleware/validate'
+} from '../controller/category.controller'
+import { validateResource } from '../middleware/validate.middleware'
 
 import {
   GetCategoriesRequestSchema,
@@ -15,7 +15,7 @@ import {
   PostCategoryCreateSchema,
   PatchCategoryRequestSchema,
   DeleteCategoryRequestSchema,
-} from '../schema/category'
+} from '../schema/category.schema'
 
 /**
  * @swagger
