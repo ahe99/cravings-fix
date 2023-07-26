@@ -178,8 +178,8 @@ router.post('/register', validateResource(PostCustomerCreateSchema), register)
  *               password:
  *                 type: string
  *             example:
- *               email: example@example.com
- *               password: password123
+ *               email: test@test.com
+ *               password: test
  *     responses:
  *       200:
  *         description: Successfully logged in.
