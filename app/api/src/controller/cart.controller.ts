@@ -166,10 +166,8 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
     headers: { userId },
   } = req
 
-  console.log('checkoutMyCart')
   try {
     const currentCart = await CartModel.findOne({ customerId: userId }).exec()
-    console.log('currentCart', currentCart)
 
     if (currentCart !== undefined && currentCart !== null) {
       const { cartItemIds, customerId } = currentCart
@@ -185,11 +183,9 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
           const currentCartItem = await CartItemModel.findByIdAndDelete(
             cartItemId,
           ).exec()
-          console.log('currentCartItem', currentCartItem)
           if (currentCartItem !== undefined && currentCartItem !== null) {
             const { foodId, quantity, customerId } = currentCartItem
             const currentFood = await FoodModel.findById(foodId).exec()
-            console.log('currentFood', currentFood)
             const foodPrice = currentFood?.price ?? 0
             const itemPrice = quantity * foodPrice
             const newOrderItem = new OrderItemModel({
