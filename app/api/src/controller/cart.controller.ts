@@ -1,6 +1,12 @@
 import { RequestHandler } from 'express'
+import { Types } from 'mongoose'
+
 import { CartItemModel } from '../models/cartItem.model'
 import { CartModel } from '../models/cart.model'
+import { OrderModel } from '../models/order.model'
+import { OrderItemModel } from '../models/orderItem.model'
+import { FoodModel } from '../models/food.model'
+import { parseFloat } from '../helpers/format'
 
 const createCartItem = async ({
   foodId,
@@ -151,6 +157,69 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
     })
   } catch (error) {
     console.error('Error while deleting ParseObject', error)
+    next(error)
+  }
+}
+
+export const checkoutMyCart: RequestHandler = async (req, res, next) => {
+  const {
+    headers: { userId },
+  } = req
+
+  console.log('checkoutMyCart')
+  try {
+    const currentCart = await CartModel.findOne({ customerId: userId }).exec()
+    console.log('currentCart', currentCart)
+
+    if (currentCart !== undefined && currentCart !== null) {
+      const { cartItemIds, customerId } = currentCart
+      if (cartItemIds.length === 0) {
+        return res.status(400).send("Can't checkout with empty cart")
+      }
+
+      let orderItemIds: Types.ObjectId[] = []
+      let totalPrice = 0
+
+      await Promise.all(
+        cartItemIds.map(async (cartItemId) => {
+          const currentCartItem = await CartItemModel.findByIdAndDelete(
+            cartItemId,
+          ).exec()
+          console.log('currentCartItem', currentCartItem)
+          if (currentCartItem !== undefined && currentCartItem !== null) {
+            const { foodId, quantity, customerId } = currentCartItem
+            const currentFood = await FoodModel.findById(foodId).exec()
+            console.log('currentFood', currentFood)
+            const foodPrice = currentFood?.price ?? 0
+            const itemPrice = quantity * foodPrice
+            const newOrderItem = new OrderItemModel({
+              foodId,
+              quantity,
+              customerId,
+              price: itemPrice,
+            })
+
+            const { _id } = await newOrderItem.save()
+
+            orderItemIds = [...orderItemIds, _id]
+            totalPrice += itemPrice
+          }
+        }),
+      )
+
+      currentCart.cartItemIds = []
+      await currentCart.save()
+      const newOrder = new OrderModel({
+        customerId,
+        orderItemIds,
+        totalPrice: parseFloat(totalPrice),
+      })
+      const result = await newOrder.save()
+
+      res.json(result)
+    }
+  } catch (error) {
+    console.error('Error while checkout', error)
     next(error)
   }
 }

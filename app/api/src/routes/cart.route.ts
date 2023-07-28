@@ -12,6 +12,7 @@ import {
   getSingleCart,
   addCartItem,
   deleteCartItem,
+  checkoutMyCart,
 } from '../controller/cart.controller'
 
 import {
@@ -133,6 +134,26 @@ router.get(
   validateResource(GetCartByCustomerIdRequestSchema),
   getCartByCustomerId,
 )
+
+/**
+ * @swagger
+ * /carts/my/checkout:
+ *   post:
+ *     summary: Checkout my cart and create order.
+ *     tags: [carts]
+ *     security:
+ *        - token: []
+ *     responses:
+ *       200:
+ *         description: Successful response with the order of request caller.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetCartsResponse'
+ *       500:
+ *         description: Internal server error.
+ */
+router.post('/my/checkout', isAuth, isCustomer, hasCart, checkoutMyCart)
 
 /**
  * @swagger
