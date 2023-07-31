@@ -15,10 +15,10 @@ import categoryRoute from './routes/category.route'
 import customerRoute from './routes/customer.route'
 import adminRoute from './routes/admin.route'
 import cartRoute from './routes/cart.route'
+import orderRoute from './routes/order.route'
 // import userRoute from ./routes/user'
 // import roleRoute from ./routes/role'
 // import bannerRoute from ./routes/banner'
-// import orderRoute from ./routes/order'
 
 // const Parse = require('parse/node')
 const bodyParser = require('body-parser')
@@ -53,6 +53,7 @@ app.use('/categories', categoryRoute)
 app.use('/customers', customerRoute)
 app.use('/admins', adminRoute)
 app.use('/carts', cartRoute)
+app.use('/orders', orderRoute)
 // app.use('/users', userRoute)
 // app.use('/roles', roleRoute)
 // app.use('/banner', bannerRoute)

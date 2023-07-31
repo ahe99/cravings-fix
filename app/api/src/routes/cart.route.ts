@@ -37,16 +37,16 @@ import {
  *     summary: Get all carts.
  *     tags: [carts]
  *     parameters:
- *       - in: query
- *         name: offset
- *         schema:
- *           type: integer
- *         description: The offset for pagination.
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         description: The optional name parameter to filter carts by name.
+ *        - in: query
+ *          name: limit
+ *          schema:
+ *            type: integer
+ *          description: The maximum number of items to return.
+ *        - in: query
+ *          name: offset
+ *          schema:
+ *            type: integer
+ *          description: The offset for pagination.
  *     responses:
  *       200:
  *         description: Successful response with an array of food items.
