@@ -5,7 +5,8 @@ import cors from 'cors'
 import mongoose, { MongooseError } from 'mongoose'
 
 import config from './helpers/config'
-import initSwagger from './models/swagger.model'
+import initSwagger from './lib/swagger.lib'
+import morgan from './middleware/logger.middleware'
 
 // routes
 import homeRoute from './routes/home.route'
@@ -41,6 +42,7 @@ initSwagger(app)
 
 // middleware
 app.use(cors())
+app.use(morgan)
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
