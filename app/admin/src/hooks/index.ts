@@ -1,4 +1,5 @@
 export * from './useAPI'
+export * from './useCategories'
 export * from './useOrders'
 export * from './usePagination'
 export * from './useProducts'

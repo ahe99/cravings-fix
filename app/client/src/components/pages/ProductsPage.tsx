@@ -29,7 +29,7 @@ export const ProductsPage = ({
     return categories.query.data ?? []
   }, [categories.query.data])
 
-  const handleClickProductCard = async (productId: Product['objectId']) => {
+  const handleClickProductCard = async (productId: Product['_id']) => {
     router.push(`products/${productId}`)
   }
 

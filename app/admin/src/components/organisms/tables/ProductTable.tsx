@@ -18,11 +18,11 @@ import { Paper } from '@/components/atoms'
 import CSS from './ProducsTable.module.css'
 
 interface ProductTableProps {
-  products: Product[]
-  onClickItem?: (productId: Product['objectId']) => void
+  products: (Product & { categoryName: string })[]
+  onClickItem?: (productId: Product['_id']) => void
 }
 interface HeadCell {
-  id: keyof Product
+  id: keyof (Product & { categoryName: string })
   label: string
   disablePadding: boolean
   sortable: boolean
@@ -31,7 +31,7 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
   {
-    id: 'image',
+    id: 'images',
     sortable: false,
     numeric: false,
     disablePadding: false,
@@ -45,7 +45,7 @@ const headCells: HeadCell[] = [
     label: 'Name',
   },
   {
-    id: 'category_name',
+    id: 'categoryName',
     sortable: true,
     numeric: false,
     disablePadding: false,
@@ -59,7 +59,7 @@ const headCells: HeadCell[] = [
     label: 'Price',
   },
   {
-    id: 'stock_quantity',
+    id: 'stockQuantity',
     sortable: true,
     numeric: true,
     disablePadding: true,
@@ -86,7 +86,9 @@ export const ProductTable = ({
   onClickItem = () => {},
 }: ProductTableProps) => {
   const { updatePagination, currnetPage, rowsPerPage } = usePagination(10)
-  const { orderBy, order, sortFn, updateSort } = useSort<Product>('createdAt')
+  const { orderBy, order, sortFn, updateSort } = useSort<
+    Product & { categoryName: string }
+  >('createdAt')
 
   const sortedProducts = sortFn(products)
   const paginatedProducts = sortedProducts.filter(
@@ -133,37 +135,37 @@ export const ProductTable = ({
         <TableBody>
           {paginatedProducts.map(
             ({
-              objectId,
+              _id,
               name,
               price,
-              stock_quantity,
-              category_name,
+              stockQuantity,
+              categoryName,
               createdAt,
               updatedAt,
-              image,
+              images,
             }) => (
               <TableRow
-                key={objectId}
+                key={_id}
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': { opacity: 0.4 },
                 }}
                 hover={true}
-                onClick={() => onClickItem(objectId)}
+                onClick={() => onClickItem(_id)}
               >
                 <TableCell component="th" scope="row">
                   <img
                     className={CSS.product_image}
-                    src={image.src}
+                    src={images[0] ? images[0].url : ''}
                     alt={name}
                   />
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {name}
                 </TableCell>
-                <TableCell>{category_name}</TableCell>
+                <TableCell>{categoryName}</TableCell>
                 <TableCell align="right">{`$${price}`}</TableCell>
-                <TableCell align="right">{stock_quantity}</TableCell>
+                <TableCell align="right">{stockQuantity}</TableCell>
                 <TableCell align="right">
                   {dayjs(createdAt).format('YYYY-MM-DD')}
                 </TableCell>

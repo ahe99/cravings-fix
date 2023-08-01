@@ -41,7 +41,7 @@ export const ProductFilter = ({
           />
           {categoryOptions.map((category) => (
             <Checkbox
-              key={category.objectId}
+              key={category._id}
               label={category.name}
               isChecked={selectedOptions.includes(category)}
               onClick={() => onSelectCategory(category)}

@@ -11,15 +11,18 @@ import { useRecentlyViewedProducts, useCartProducts } from '@/hooks'
 import { Divider } from '@/components/atoms'
 import { QuantitySelector, ProductProfileCard } from '@/components/molecules'
 import { ProductList } from '@/components/organisms'
+import { Category } from '@/utils/Category'
 
 interface ProductPageProps {
   prefetchProduct: Product
   prefetchRecentlyProducts: Product[]
+  prefetchCategories: Category[]
 }
 
 export const ProductPage = ({
   prefetchProduct,
   prefetchRecentlyProducts,
+  prefetchCategories,
 }: ProductPageProps) => {
   const [quantity, setQuantity] = useState(1)
 
@@ -44,16 +47,25 @@ export const ProductPage = ({
   //   router.push(`products/${productId}`)
   // }
 
+  const category = prefetchCategories.find(
+    ({ _id }) => prefetchProduct.categoryId === _id,
+  )
+
+  const productWithCategoryName = {
+    ...prefetchProduct,
+    categoryName: category?.name ?? '',
+  }
+
   return (
     <main className="page-container gap-4">
-      <ProductProfileCard product={prefetchProduct} />
+      <ProductProfileCard product={productWithCategoryName} />
 
       <div className="flex w-2/3 flex-row flex-wrap items-end gap-2 self-end">
         <div className="flex-1">
           <QuantitySelector
             value={quantity}
             minValue={1}
-            maxValue={prefetchProduct.stock_quantity}
+            maxValue={prefetchProduct.stockQuantity}
             onChange={(newValue) => setQuantity(newValue)}
           />
         </div>

@@ -6,31 +6,39 @@ import { Banner } from '@/utils/BannerData'
 
 import { BannerImage } from '@/components/atoms'
 import { Carousel, ProductsBoard } from '@/components/templates'
-import { useProducts, useBanners } from '@/hooks'
+import { useProducts, useBanners, useCategories } from '@/hooks'
+import { Category } from '@/utils/Category'
 
 interface OverviewPageProps {
   prefetchProducts?: Product[]
   prefetchBanners?: Banner[]
+  prefetchCategories?: Category[]
 }
 
 export const OverviewPage = ({
   prefetchProducts = [],
   prefetchBanners = [],
+  prefetchCategories = [],
 }: OverviewPageProps) => {
   const router = useRouter()
 
   const products = useProducts(prefetchProducts)
+  const categories = useCategories(prefetchCategories)
   const banners = useBanners(prefetchBanners)
 
   const productsData = useMemo(() => {
     return products.query.data ?? []
   }, [products.query.data])
 
+  const categoriesData = useMemo(() => {
+    return categories.query.data ?? []
+  }, [categories.query.data])
+
   const bannersData = useMemo(() => {
     return banners.query.data ?? []
   }, [banners.query.data])
 
-  const handleClickProductCard = async (productId: Product['objectId']) => {
+  const handleClickProductCard = async (productId: Product['_id']) => {
     router.push(`products/${productId}`)
   }
 
@@ -41,17 +49,18 @@ export const OverviewPage = ({
         autoPlay
         allowPan
       >
-        {bannersData.map(({ image }, index) => (
+        {bannersData.map(({ imageId, url }) => (
           <BannerImage
-            src={image.src}
-            alt={image.src}
-            key={index}
+            src={url}
+            alt={url}
+            key={imageId}
             className="h-full w-full"
           />
         ))}
       </Carousel>
       <ProductsBoard
         products={productsData}
+        categories={categoriesData}
         onClickItem={handleClickProductCard}
       />
     </main>

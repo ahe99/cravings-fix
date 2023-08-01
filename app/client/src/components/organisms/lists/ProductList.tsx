@@ -4,7 +4,7 @@ import { Product } from '@/utils/ProductData'
 
 interface ProductListProps {
   products: Product[]
-  onClickItem?: (productId: Product['objectId']) => void
+  onClickItem?: (productId: Product['_id']) => void
 }
 
 export const ProductList = ({
@@ -15,7 +15,7 @@ export const ProductList = ({
     <div className="grid grid-flow-row grid-cols-2 gap-4 sm:grid-cols-3 ">
       {products.map((product) => (
         <ProductCard
-          key={product.objectId}
+          key={product._id}
           product={product}
           onClick={onClickItem}
         />

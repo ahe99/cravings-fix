@@ -22,7 +22,7 @@ interface ProductsBoardProps {
   products?: Product[]
   categories?: Category[]
   productsPerPage?: number
-  onClickItem?: (productId: Product['objectId']) => void
+  onClickItem?: (productId: Product['_id']) => void
 }
 
 export const ProductsBoard = ({
@@ -93,10 +93,9 @@ export const ProductsBoard = ({
 
   const filteredProducts = products.filter(
     (product) =>
-      filter.category.findIndex(
-        ({ objectId }) => product.category_id === objectId,
-      ) !== -1,
+      filter.category.findIndex(({ _id }) => product.categoryId === _id) !== -1,
   )
+
   const searchedProducts = filteredProducts.filter((product) => {
     if (filter.text) {
       return product.name.toUpperCase().includes(filter.text.toUpperCase())
@@ -122,6 +121,7 @@ export const ProductsBoard = ({
       index >= productsPerPage * (currentPage - 1) &&
       index < productsPerPage * currentPage,
   )
+
   return (
     <div className="flex w-full flex-col items-center">
       <div className="flex w-full flex-col gap-2">

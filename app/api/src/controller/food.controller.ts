@@ -102,7 +102,7 @@ export const getSingleFood: RequestHandler = async (req, res, next) => {
 
       const foodsWithImage = {
         ...restObject,
-        images: getImagesFromImageIds(imageIds),
+        images: await getImagesFromImageIds(imageIds),
       }
       res.json(foodsWithImage)
     } else {

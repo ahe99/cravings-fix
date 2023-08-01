@@ -6,25 +6,21 @@ import { Product } from '@/utils/ProductData'
 
 interface ProductCardProps {
   product: Product
-  onClick?: (productId: Product['objectId']) => void
+  onClick?: (productId: Product['_id']) => void
 }
 
 export const ProductCard = ({
-  product: {
-    objectId,
-    name = '',
-    price,
-    image: { src },
-  },
+  product: { _id, name = '', price, images = [] },
   onClick = () => {},
 }: ProductCardProps) => {
+  const firstImage = images[0] ? images[0].url : ''
   return (
     <motion.div
       className="relative flex flex-col gap-2 hover:cursor-pointer hover:opacity-40"
       whileTap={{ scale: 0.9 }}
-      onClick={() => onClick(objectId)}
+      onClick={() => onClick(_id)}
     >
-      <ProductImage src={src} alt={name} />
+      <ProductImage src={firstImage} alt={name} />
 
       <div className="flex flex-col">
         <div className="overflow-hidden text-ellipsis whitespace-nowrap font-bold">

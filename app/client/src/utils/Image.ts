@@ -1,3 +1,4 @@
 export type ImageType = {
-  src: string
+  imageId: string
+  url: string
 }

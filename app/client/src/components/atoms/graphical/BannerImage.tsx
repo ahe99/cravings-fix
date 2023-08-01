@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-interface BannerImage {
+interface BannerImageProps {
   src: string
   className?: string
   alt: string
@@ -9,7 +9,7 @@ export const BannerImage = ({
   src = '',
   alt = '',
   className = '',
-}: BannerImage) => {
+}: BannerImageProps) => {
   return (
     <div
       className={`relative cursor-pointer overflow-hidden rounded-md bg-brown-50 ${className}`}

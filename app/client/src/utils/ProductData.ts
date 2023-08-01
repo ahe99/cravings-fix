@@ -1,22 +1,22 @@
 import { ImageType } from './Image'
 
 export type Product = {
-  objectId: string
+  _id: string
   name: string
   description: string
   price: number
-  stock_quantity: number
-  category_id: string
-  category_name: string
+  stockQuantity: number
+  categoryId: string
   createdAt: string
   updatedAt: string
-  image: ImageType
+  images: ImageType[]
 }
+
 export type CartProduct = Product & {
   quantity: number
 }
 export type Order = {
-  objectId: string
+  _id: string
   products: CartProduct[]
   createdAt: string
   updatedAt: string

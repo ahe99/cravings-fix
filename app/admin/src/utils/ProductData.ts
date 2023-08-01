@@ -1,27 +1,33 @@
 export type ImageType = {
-  src: string
+  imageId: string
+  url: string
 }
 
 export type Product = {
-  objectId: string
+  _id: string
   name: string
   description: string
   price: number
-  stock_quantity: number
-  category_id: string
-  category_name: string
+  stockQuantity: number
+  categoryId: string
   createdAt: string
   updatedAt: string
-  image: ImageType
+  images: ImageType[]
 }
 export type CartProduct = Product & {
   quantity: number
 }
 export type Order = {
-  objectId: string
+  _id: string
   items: CartProduct[]
   createdAt: string
   updatedAt: string
   owner: string
   totalPrice: number
+}
+
+export type Category = {
+  _id: string
+  name: string
+  description: string
 }

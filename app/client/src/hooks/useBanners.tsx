@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient, QueryFunction } from '@tanstack/react-query'
+import { useQuery, QueryFunction } from '@tanstack/react-query'
 
 import { useAPI } from './useAPI'
 
@@ -9,8 +9,6 @@ import { Banner } from '@/utils/BannerData'
  * @description fill the type after the type is defined
  */
 export const useBanners = (initialData: Banner[] = []) => {
-  const queryClient = useQueryClient()
-
   const { request } = useAPI()
 
   const apiRoute = API.routes.banners

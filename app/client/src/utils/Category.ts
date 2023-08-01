@@ -1,4 +1,5 @@
 export type Category = {
-  objectId: string
+  _id: string
   name: string
+  description: string
 }
