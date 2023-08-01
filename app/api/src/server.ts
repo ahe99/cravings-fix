@@ -1,13 +1,13 @@
 // initializes
-import express, { Application, NextFunction, Request, Response } from 'express'
-import { ZodError } from 'zod'
+import express, { Application } from 'express'
 import cors from 'cors'
-import mongoose, { MongooseError } from 'mongoose'
+import mongoose from 'mongoose'
 
 import config from './helpers/config'
 import initSwagger from './lib/swagger.lib'
 import { initMinio } from './lib/minio.lib'
 import morgan from './middleware/logger.middleware'
+import exceptionParser from './middleware/exception.middleware'
 
 // routes
 import homeRoute from './routes/home.route'
@@ -17,19 +17,10 @@ import customerRoute from './routes/customer.route'
 import adminRoute from './routes/admin.route'
 import cartRoute from './routes/cart.route'
 import orderRoute from './routes/order.route'
+import bannerRoute from './routes/banner.route'
 // import userRoute from ./routes/user'
-// import roleRoute from ./routes/role'
-// import bannerRoute from ./routes/banner'
 
-// const Parse = require('parse/node')
 const bodyParser = require('body-parser')
-
-import {
-  ClientError,
-  ServerError,
-  responseMessage,
-} from './utils/errorException'
-import { MulterError } from 'multer'
 
 //mongodb
 mongoose.connect(config.mongodb.uri ?? 'mongo')
@@ -57,38 +48,10 @@ app.use('/customers', customerRoute)
 app.use('/admins', adminRoute)
 app.use('/carts', cartRoute)
 app.use('/orders', orderRoute)
+app.use('/banners', bannerRoute)
 // app.use('/users', userRoute)
-// app.use('/roles', roleRoute)
-// app.use('/banner', bannerRoute)
-// app.use('/orders', orderRoute)
 
-app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
-  // The error id is attached to `res.sentry` to be returned
-  // and optionally displayed to the user for support.
-  if (err instanceof ClientError || err instanceof ServerError) {
-    return res
-      .status(err.statusCode)
-      .json({ name: err.name, message: err.message })
-  }
-  if (err instanceof ZodError) {
-    return res.status(400).json({ error: err.issues })
-  }
-  if (err instanceof MongooseError) {
-    return res.status(400).json({ error: err.message })
-  }
-
-  if (err instanceof MulterError) {
-    return res.status(400).json({ error: err.message })
-  }
-
-  if (err instanceof Error) {
-    console.log('Error: ', err)
-  } else {
-    console.log('Error: ', err)
-  }
-  res.status(500).send(responseMessage[500])
-  next(err)
-})
+app.use(exceptionParser)
 
 app.listen(port, () => {
   console.log('cravings-fix-api is running at port: ', port)

@@ -174,8 +174,8 @@ router.post('/register', validateResource(PostAdminCreateSchema), register)
  *               password:
  *                 type: string
  *             example:
- *               email: example@example.com
- *               password: password123
+ *               email: admin@admin.com
+ *               password: admin
  *     responses:
  *       200:
  *         description: Successfully logged in.
