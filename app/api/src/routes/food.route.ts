@@ -1,16 +1,27 @@
 import express from 'express'
 const router = express.Router()
-import { getAllFoods, getSingleFood, addFood, updateFood, deleteFood } from '../controller/food.controller'
-import { validateResource } from '../middleware/validate.middleware'
 
+import { validateResource } from '../middleware/validate.middleware'
+import { upload } from '../middleware/file.middleware'
+import { isAdmin, isAuth } from '../middleware/auth.middleware'
+
+import {
+  getAllFoods,
+  getSingleFood,
+  addFood,
+  updateFood,
+  deleteFood,
+  updateImage,
+  removeImage,
+} from '../controller/food.controller'
 import {
   GetFoodsRequestSchema,
   GetFoodRequestSchema,
   PostFoodCreateSchema,
   PatchFoodRequestSchema,
   DeleteFoodRequestSchema,
+  DeleteFoodImageRequestSchema,
 } from '../schema/food.schema'
-// const { upload } = require('../middleware/file')
 
 /**
  * @swagger
@@ -92,7 +103,7 @@ router.get('/', validateResource(GetFoodsRequestSchema), getAllFoods)
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
- *                 price: 9.99
+ *                 price: 10
  *                 categoryId: "1234567890"
  *       404:
  *         description: Food item with the provided ID not found.
@@ -129,7 +140,7 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *               name: Sample Food
  *               description: This is a sample food item.
  *               stockQuantity: 10
- *               price: 9.99
+ *               price: 10
  *               categoryId: "1234567890"
  *     responses:
  *       200:
@@ -156,14 +167,126 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
- *                 price: 9.99
+ *                 price: 10
  *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */
 router.post('/', validateResource(PostFoodCreateSchema), addFood)
-// router.post('/image/:id', upload.single('image'), food.updateImage)
 
+/**
+ * @swagger
+ * /foods/images/{id}:
+ *   post:
+ *     summary: Update food images by ID
+ *     tags: [foods]
+ *     security:
+ *        - token: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the food item to update images
+ *         schema:
+ *           type: string
+ *         example: 1234567890
+ *     requestBody:
+ *       description: Food images to be updated
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *             example:
+ *               images: [imageFile1, imageFile2]
+ *     responses:
+ *       200:
+ *         description: Food images updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                 objectId:
+ *                   type: string
+ *                 images:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *               example:
+ *                 msg: Food updated
+ *                 objectId: 1234567890
+ *                 images: [imageId1, imageId2]
+ *       400:
+ *         description: Bad Request - No image files provided.
+ *       404:
+ *         description: Food item with the provided ID not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.post(
+  '/images/:id',
+  isAuth,
+  isAdmin,
+  upload.array('images', 10),
+  updateImage,
+)
+
+/**
+ * @swagger
+ * /foods/images/{id}/{imageId}:
+ *   delete:
+ *     summary: Remove a food image by ID from a food item
+ *     tags: [foods]
+ *     security:
+ *        - token: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the food item to remove the image from
+ *         schema:
+ *           type: string
+ *         example: 1234567890
+ *       - in: path
+ *         name: imageId
+ *         required: true
+ *         description: ID of the image to remove from the food item
+ *         schema:
+ *           type: string
+ *         example: imageId123
+ *     responses:
+ *       200:
+ *         description: Food image removed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *               example:
+ *                 msg: Food Image Deleted
+ *       404:
+ *         description: Food item with the provided ID not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.delete(
+  '/images/:id/:imageId',
+  isAuth,
+  isAdmin,
+  validateResource(DeleteFoodImageRequestSchema),
+  removeImage,
+)
 
 /**
  * @swagger
@@ -201,7 +324,7 @@ router.post('/', validateResource(PostFoodCreateSchema), addFood)
  *               name: Sample Food
  *               description: This is a sample food item.
  *               stockQuantity: 10
- *               price: 9.99
+ *               price: 10
  *               categoryId: "1234567890"
  *     responses:
  *       200:
@@ -228,14 +351,13 @@ router.post('/', validateResource(PostFoodCreateSchema), addFood)
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
- *                 price: 9.99
+ *                 price: 10
  *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */
 router.put('/:id', validateResource(PatchFoodRequestSchema), updateFood)
 router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
-
 
 /**
  * @swagger
@@ -276,15 +398,11 @@ router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
  *                 name: Sample Food
  *                 description: This is a sample food item.
  *                 stockQuantity: 10
- *                 price: 9.99
+ *                 price: 10
  *                 categoryId: "1234567890"
  *       500:
  *         description: Internal server error
  */
-router.delete(
-  '/:id',
-  validateResource(DeleteFoodRequestSchema),
-  deleteFood,
-)
+router.delete('/:id', validateResource(DeleteFoodRequestSchema), deleteFood)
 
 export = router

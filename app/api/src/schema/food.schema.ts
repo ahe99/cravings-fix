@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { FoodModel } from '../models/food.model'
 import { CategoryModel } from '../models/category.model'
 
+// import { isObjectExisting } from '../lib/minio.lib'
+
 export const GetFoodsRequestSchema = z.object({
   query: z
     .object({
@@ -91,5 +93,29 @@ export const DeleteFoodRequestSchema = z.object({
         message: 'FOOD_NOT_FOUND',
       },
     ),
+  }),
+})
+
+export const DeleteFoodImageRequestSchema = z.object({
+  params: z.object({
+    id: z.string().refine(
+      async (_id) => {
+        const count = await FoodModel.find({ _id }).count()
+        return count !== 0
+      },
+      {
+        message: 'FOOD_NOT_FOUND',
+      },
+    ),
+    imageId: z.string(),
+
+    //   .refine(
+    //   async (_id) => {
+    //     return await isObjectExisting({ bucket: 'food-images', object: _id })
+    //   },
+    //   {
+    //     message: 'IMAGE_NOT_FOUND',
+    //   },
+    // ),
   }),
 })

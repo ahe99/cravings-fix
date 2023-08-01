@@ -6,6 +6,7 @@ import mongoose, { MongooseError } from 'mongoose'
 
 import config from './helpers/config'
 import initSwagger from './lib/swagger.lib'
+import { initMinio } from './lib/minio.lib'
 import morgan from './middleware/logger.middleware'
 
 // routes
@@ -28,6 +29,7 @@ import {
   ServerError,
   responseMessage,
 } from './utils/errorException'
+import { MulterError } from 'multer'
 
 //mongodb
 mongoose.connect(config.mongodb.uri ?? 'mongo')
@@ -39,6 +41,7 @@ const app: Application = express()
 const port = config.app.port || 3600
 
 initSwagger(app)
+initMinio()
 
 // middleware
 app.use(cors())
@@ -73,6 +76,11 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof MongooseError) {
     return res.status(400).json({ error: err.message })
   }
+
+  if (err instanceof MulterError) {
+    return res.status(400).json({ error: err.message })
+  }
+
   if (err instanceof Error) {
     console.log('Error: ', err)
   } else {

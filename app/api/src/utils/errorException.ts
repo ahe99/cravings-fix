@@ -37,38 +37,19 @@ class ServerError extends ErrorWithStatus {
 
 class ServiceError extends ServerError {}
 class MiddlewareError extends ServiceError {}
-class RoleError extends ServiceError {}
-class GroupError extends ServiceError {}
 class UserError extends ServiceError {}
 class DatabaseError extends ServiceError {}
-class RedisError extends ServiceError {}
-class MailError extends ServiceError {}
 class AuthError extends ServiceError {}
 class FileValidationError extends ServiceError {}
-class WorkOrderError extends ServiceError {}
-class KanbanError extends ServiceError {}
-class ProductStationError extends ServiceError {}
-class WorkOrderStationError extends ServiceError {}
-class KanbanRecordError extends ServiceError {}
 
 export {
   responseMessage,
   ErrorWithStatus,
   ClientError,
   ServerError,
-  ServiceError,
   MiddlewareError,
-  RoleError,
-  GroupError,
   UserError,
   DatabaseError,
-  RedisError,
-  MailError,
   AuthError,
   FileValidationError,
-  WorkOrderError,
-  KanbanError,
-  ProductStationError,
-  WorkOrderStationError,
-  KanbanRecordError,
 }

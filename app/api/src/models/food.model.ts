@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const FoodSchema = new Schema(
+export const FoodSchema = new Schema(
   {
     name: {
       type: String,
@@ -24,9 +24,14 @@ const FoodSchema = new Schema(
       ref: 'CategoryModel',
       required: false,
     },
+    imageIds: {
+      type: Array(String),
+      default: [],
+    },
   },
   {
     timestamps: true,
   },
 )
+
 export const FoodModel = model('FoodModel', FoodSchema)
