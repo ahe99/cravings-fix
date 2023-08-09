@@ -102,7 +102,6 @@ export const getSingleCart: RequestHandler = async (req, res, next) => {
 //       objectId: updatedCart?.id,
 //     })
 //   } catch (error) {
-//     console.error('Error while updating Cart', error)
 //     next(error)
 //   }
 // }
@@ -156,7 +155,6 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
       data: response,
     })
   } catch (error) {
-    console.error('Error while deleting ParseObject', error)
     next(error)
   }
 }
@@ -215,7 +213,6 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
       res.json(result)
     }
   } catch (error) {
-    console.error('Error while checkout', error)
     next(error)
   }
 }

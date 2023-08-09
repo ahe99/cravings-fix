@@ -126,7 +126,6 @@ export const updateFood: RequestHandler = async (req, res, next) => {
       objectId: updatedFood?.id,
     })
   } catch (error) {
-    console.error('Error while updating Food', error)
     next(error)
   }
 }
@@ -141,7 +140,6 @@ export const deleteFood: RequestHandler = async (req, res, next) => {
       data: response,
     })
   } catch (error) {
-    console.error('Error while deleting ParseObject', error)
     next(error)
   }
 }
@@ -179,7 +177,6 @@ export const updateImage: RequestHandler = async (req, res, next) => {
           images: currentFood.imageIds,
         })
       } catch (error) {
-        console.error('Error while creating Image: ', error)
         next(error)
       }
     } else {

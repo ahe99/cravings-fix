@@ -64,7 +64,6 @@ export const updateCategory: RequestHandler = async (req, res, next) => {
       objectId: updatedCategory?.id,
     })
   } catch (error) {
-    console.error('Error while updating Category', error)
     next(error)
   }
 }
@@ -78,7 +77,6 @@ export const deleteCategory: RequestHandler = async (req, res, next) => {
       data: response,
     })
   } catch (error) {
-    console.error('Error while deleting ParseObject', error)
     next(error)
   }
 }

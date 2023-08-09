@@ -199,7 +199,6 @@ export const deleteOrderItem: RequestHandler = async (req, res, next) => {
       data: response,
     })
   } catch (error) {
-    console.error('Error while deleting ParseObject', error)
     next(error)
   }
 }

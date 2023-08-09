@@ -135,7 +135,7 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *               price:
  *                 type: number
  *               categoryId:
- *                   type: string
+ *                 type: string
  *             example:
  *               name: Sample Food
  *               description: This is a sample food item.

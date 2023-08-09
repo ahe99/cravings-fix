@@ -55,7 +55,6 @@ export const getAllBanners: RequestHandler = async (req, res, next) => {
 //       objectId: updatedBanner?.id,
 //     })
 //   } catch (error) {
-//     console.error('Error while updating Banner', error)
 //     next(error)
 //   }
 // }
@@ -99,7 +98,6 @@ export const addBanners: RequestHandler = async (req, res, next) => {
         msg: 'Banner added',
       })
     } catch (error) {
-      console.error('Error while creating Image: ', error)
       next(error)
     }
   } else {
