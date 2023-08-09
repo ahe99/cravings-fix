@@ -3,42 +3,43 @@ import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 
 import config from '../helpers/config'
-import { AdminModel } from '../models/admin.model'
+import { UserModel } from '../models/user.model'
 
-export const getAllAdmins: RequestHandler = async (req, res, next) => {
+export const getAllUsers: RequestHandler = async (req, res, next) => {
   const {
     query: { name, limit = '50', offset = '0' },
   } = req
 
   try {
-    let adminQuery = AdminModel.find().skip(Number(offset))
+    let userQuery = UserModel.find().skip(Number(offset))
 
     if (typeof name === 'string') {
-      adminQuery = adminQuery.find({ name })
+      userQuery = userQuery.find({ name })
     }
     if (limit !== '-1') {
-      adminQuery = adminQuery.limit(Number(limit))
+      userQuery = userQuery.limit(Number(limit))
     }
-    const result = await adminQuery.exec()
+    const result = await userQuery.exec()
 
-    res.json(result.map(AdminModel.toApiAdminSchema))
+    res.json(result.map(UserModel.toApiUserSchema))
   } catch (e) {
     next(e)
   }
 }
 
 export const register: RequestHandler = async (req, res, next) => {
-  const newAdmin = new AdminModel()
-  const { username, email, password } = req.body
+  const newUser = new UserModel()
+  const { username, email, password, role } = req.body
 
-  newAdmin.username = username
-  newAdmin.email = email
+  newUser.username = username
+  newUser.email = email
+  newUser.role = role
 
   try {
     const hash = await argon2.hash(password)
-    newAdmin.password = hash
+    newUser.password = hash
 
-    await newAdmin.save()
+    await newUser.save()
 
     res.status(200).json({ msg: 'Register Success' })
   } catch (e) {
@@ -48,7 +49,7 @@ export const register: RequestHandler = async (req, res, next) => {
 
 export const login: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body
-  const user = await AdminModel.findOne({
+  const user = await UserModel.findOne({
     email,
   }).exec()
   if (user === undefined || user === null) {
@@ -61,7 +62,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     if (validation) {
       const token = jwt.sign(
-        AdminModel.toApiAdminSchema(user),
+        UserModel.toApiUserSchema(user),
         config.jwt.secret,
         { expiresIn: config.jwt.expiry },
       )
@@ -78,60 +79,58 @@ export const login: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getSingleAdmin: RequestHandler = async (req, res, next) => {
+export const getSingleUser: RequestHandler = async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const result = await AdminModel.findById(id)
+    const result = await UserModel.findById(id)
 
-    res.json(AdminModel.toApiAdminSchema(result))
+    res.json(UserModel.toApiUserSchema(result))
   } catch (e) {
     next(e)
   }
 }
 
-export const getCurrentAdmin: RequestHandler = async (req, res, next) => {
+export const getCurrentUser: RequestHandler = async (req, res, next) => {
   const {
     headers: { userId },
   } = req
 
   try {
-    const result = await AdminModel.findById(userId)
+    const result = await UserModel.findById(userId)
 
-    res.json(AdminModel.toApiAdminSchema(result))
+    res.json(UserModel.toApiUserSchema(result))
   } catch (e) {
     next(e)
   }
 }
 
-export const updateAdmin: RequestHandler = async (req, res, next) => {
+export const updateUser: RequestHandler = async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const updatedAdmin = await AdminModel.findByIdAndUpdate(id, {
+    const updatedUser = await UserModel.findByIdAndUpdate(id, {
       ...req.body,
     })
 
     res.json({
-      msg: 'Admin updated',
-      objectId: updatedAdmin?.id,
+      msg: 'User updated',
+      objectId: updatedUser?.id,
     })
   } catch (error) {
-    console.error('Error while updating Admin', error)
     next(error)
   }
 }
 
-export const deleteAdmin: RequestHandler = async (req, res, next) => {
+export const deleteUser: RequestHandler = async (req, res, next) => {
   const { id } = req.params
   try {
-    const response = await AdminModel.findByIdAndDelete(id)
+    const response = await UserModel.findByIdAndDelete(id)
     res.json({
-      msg: 'Admin Deleted',
-      data: AdminModel.toApiAdminSchema(response),
+      msg: 'User Deleted',
+      data: UserModel.toApiUserSchema(response),
     })
   } catch (error) {
-    console.error('Error while deleting ParseObject', error)
     next(error)
   }
 }

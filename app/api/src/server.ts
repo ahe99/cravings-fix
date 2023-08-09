@@ -13,12 +13,10 @@ import exceptionParser from './middleware/exception.middleware'
 import homeRoute from './routes/home.route'
 import foodRoute from './routes/food.route'
 import categoryRoute from './routes/category.route'
-import customerRoute from './routes/customer.route'
-import adminRoute from './routes/admin.route'
 import cartRoute from './routes/cart.route'
 import orderRoute from './routes/order.route'
 import bannerRoute from './routes/banner.route'
-// import userRoute from ./routes/user'
+import userRoute from './routes/user.route'
 
 const bodyParser = require('body-parser')
 
@@ -44,12 +42,10 @@ app.use(bodyParser.json())
 app.use('/', homeRoute)
 app.use('/foods', foodRoute)
 app.use('/categories', categoryRoute)
-app.use('/customers', customerRoute)
-app.use('/admins', adminRoute)
 app.use('/carts', cartRoute)
 app.use('/orders', orderRoute)
 app.use('/banners', bannerRoute)
-// app.use('/users', userRoute)
+app.use('/users', userRoute)
 
 app.use(exceptionParser)
 

@@ -3,7 +3,7 @@ const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { hasCart } from '../middleware/cart.middleware'
-import { isAuth, isCustomer } from '../middleware/auth.middleware'
+import { isAuth } from '../middleware/auth.middleware'
 
 import {
   getAllCarts,
@@ -77,7 +77,7 @@ router.get('/', validateResource(GetCartsRequestSchema), getAllCarts)
  *       500:
  *         description: Internal server error.
  */
-router.get('/my', isAuth, isCustomer, hasCart, getMyCart)
+router.get('/my', isAuth, hasCart, getMyCart)
 
 /**
  * @swagger
@@ -153,7 +153,7 @@ router.get(
  *       500:
  *         description: Internal server error.
  */
-router.post('/my/checkout', isAuth, isCustomer, hasCart, checkoutMyCart)
+router.post('/my/checkout', isAuth, hasCart, checkoutMyCart)
 
 /**
  * @swagger
@@ -198,7 +198,6 @@ router.post('/my/checkout', isAuth, isCustomer, hasCart, checkoutMyCart)
 router.post(
   '/my/:foodId',
   isAuth,
-  isCustomer,
   hasCart,
   validateResource(PostCartCreateItemRequestSchema),
   addCartItem,
@@ -247,7 +246,6 @@ router.post(
 router.delete(
   '/my/:cartItemId',
   isAuth,
-  isCustomer,
   hasCart,
   validateResource(DeleteCartItemRequestSchema),
   deleteCartItem,

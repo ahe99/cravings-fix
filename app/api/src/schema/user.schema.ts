@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-import { AdminModel } from '../models/admin.model'
+import { ROLES, UserModel } from '../models/user.model'
 
-export const GetAdminsRequestSchema = z.object({
+export const GetUsersRequestSchema = z.object({
   query: z
     .object({
       name: z.string().max(20),
@@ -12,21 +12,21 @@ export const GetAdminsRequestSchema = z.object({
     .partial(),
 })
 
-export const GetAdminRequestSchema = z.object({
+export const GetUserRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count()
+        const count = await UserModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'USER_NOT_FOUND',
       },
     ),
   }),
 })
 
-export const PostAdminCreateSchema = z.object({
+export const PostUserCreateSchema = z.object({
   body: z.object({
     username: z.string().min(1).max(20),
     email: z
@@ -34,10 +34,20 @@ export const PostAdminCreateSchema = z.object({
       .min(1)
       .regex(/\S+@\S+\.\S+/),
     password: z.string().min(4),
+    role: z.string().refine(
+      (role) => {
+        const hasRole =
+          Object.keys(ROLES).findIndex((_role) => role === _role) !== -1
+        return hasRole
+      },
+      {
+        message: 'ROLE_NOT_FOUND',
+      },
+    ),
   }),
 })
 
-export const PostAdminLoginSchema = z.object({
+export const PostUserLoginSchema = z.object({
   body: z.object({
     email: z
       .string()
@@ -47,16 +57,15 @@ export const PostAdminLoginSchema = z.object({
   }),
 })
 
-
-export const PatchAdminRequestSchema = z.object({
+export const PatchUserRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count().exec()
+        const count = await UserModel.find({ _id }).count().exec()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'USER_NOT_FOUND',
       },
     ),
   }),
@@ -64,21 +73,31 @@ export const PatchAdminRequestSchema = z.object({
     .object({
       username: z.string().min(1).max(20),
       password: z.string().min(4),
+      roleId: z.string().refine(
+        (role) => {
+          const hasRole =
+            Object.keys(ROLES).findIndex((_role) => role === _role) !== -1
+          return hasRole
+        },
+        {
+          message: 'ROLE_NOT_FOUND',
+        },
+      ),
     })
     .partial()
     .refine((body) => !(Object.keys(body).length === 0), {
       message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
     }),
 })
-export const DeleteAdminRequestSchema = z.object({
+export const DeleteUserRequestSchema = z.object({
   params: z.object({
     id: z.string().refine(
       async (_id) => {
-        const count = await AdminModel.find({ _id }).count()
+        const count = await UserModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'ADMIN_NOT_FOUND',
+        message: 'USER_NOT_FOUND',
       },
     ),
   }),

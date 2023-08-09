@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose'
 
-const AdminSchema = new Schema(
+export enum ROLES {
+  CUSTOMER = 'CUSTOMER',
+  ADMIN = 'ADMIN',
+}
+
+const UserSchema = new Schema(
   {
     email: {
       type: String,
@@ -15,15 +20,21 @@ const AdminSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: Object.keys(ROLES),
+      default: ROLES.CUSTOMER,
+    },
   },
   {
     statics: {
-      toApiAdminSchema: (data) => {
-        const { username, email, _id } = data
+      toApiUserSchema: (data) => {
+        const { username, email, _id, role } = data
         return {
           _id,
           username,
           email,
+          role,
         }
       },
     },
@@ -31,4 +42,4 @@ const AdminSchema = new Schema(
   },
 )
 
-export const AdminModel = model('AdminModel', AdminSchema)
+export const UserModel = model('UserModel', UserSchema)

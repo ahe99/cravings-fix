@@ -3,125 +3,125 @@ const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import {
-  GetAdminsRequestSchema,
-  GetAdminRequestSchema,
-  PostAdminCreateSchema,
-  PostAdminLoginSchema,
-  PatchAdminRequestSchema,
-  DeleteAdminRequestSchema,
-} from '../schema/admin.schema'
+  GetUsersRequestSchema,
+  GetUserRequestSchema,
+  PostUserCreateSchema,
+  PostUserLoginSchema,
+  PatchUserRequestSchema,
+  DeleteUserRequestSchema,
+} from '../schema/user.schema'
 import {
-  getAllAdmins,
-  getSingleAdmin,
+  getAllUsers,
+  getSingleUser,
   register,
   login,
-  updateAdmin,
-  deleteAdmin,
-  getCurrentAdmin,
-} from '../controller/admin.controller'
-import { isAdmin } from '../middleware/auth.middleware'
+  updateUser,
+  deleteUser,
+  getCurrentUser,
+} from '../controller/user.controller'
+import { isAuth } from '../middleware/auth.middleware'
 
 /**
  * @swagger
  * tags:
- *   name: admins
- *   description: API for managing admins.
+ *   name: users
+ *   description: API for managing users.
  */
 
 /**
  * @swagger
- * /admins:
+ * /users:
  *   get:
- *     summary: Get all admins
- *     tags: [admins]
+ *     summary: Get all users
+ *     tags: [users]
  *     parameters:
  *       - in: query
  *         name: name
- *         description: Filter admins by name
+ *         description: Filter users by name
  *         schema:
  *           type: string
  *       - in: query
  *         name: limit
- *         description: Maximum number of admins to return
+ *         description: Maximum number of users to return
  *         schema:
  *           type: integer
  *       - in: query
  *         name: offset
- *         description: Number of admins to skip from the beginning
+ *         description: Number of users to skip from the beginning
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Successfully fetched admins.
+ *         description: Successfully fetched users.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Admin'
+ *                 $ref: '#/components/schemas/User'
  *       500:
  *         description: Internal server error.
  */
-router.get('/', validateResource(GetAdminsRequestSchema), getAllAdmins)
+router.get('/', validateResource(GetUsersRequestSchema), getAllUsers)
 
 /**
  * @swagger
- * /admins/me:
+ * /users/me:
  *   get:
- *     summary: Get current admin
- *     tags: [admins]
+ *     summary: Get current user
+ *     tags: [users]
  *     security:
  *        - token: []
  *     responses:
  *       200:
- *         description: Successfully fetched current admin.
+ *         description: Successfully fetched current user.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Admin'
+ *                 $ref: '#/components/schemas/User'
  *       500:
  *         description: Internal server error.
  */
-router.get('/me', isAdmin, getCurrentAdmin)
+router.get('/me', isAuth, getCurrentUser)
 
 /**
  * @swagger
- * /admins/{id}:
+ * /users/{id}:
  *   get:
- *     summary: Get a single admin by ID
- *     tags: [admins]
+ *     summary: Get a single user by ID
+ *     tags: [users]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the admin to retrieve
+ *         description: ID of the user to retrieve
  *         schema:
  *           type: string
  *         example: 1234567890
  *     responses:
  *       200:
- *         description: Successfully retrieved the admin.
+ *         description: Successfully retrieved the user.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Admin'
+ *               $ref: '#/components/schemas/User'
  *       404:
- *         description: Admin with the provided ID not found.
+ *         description: User with the provided ID not found.
  *       500:
  *         description: Internal server error.
  */
-router.get('/:id', validateResource(GetAdminRequestSchema), getSingleAdmin)
+router.get('/:id', validateResource(GetUserRequestSchema), getSingleUser)
 
 /**
  * @swagger
- * /admins/register:
+ * /users/register:
  *   post:
- *     summary: Register a new admin
- *     tags: [admins]
+ *     summary: Register a new user
+ *     tags: [users]
  *     requestBody:
- *       description: Admin object to be registered
+ *       description: User object to be registered
  *       required: true
  *       content:
  *         application/json:
@@ -134,13 +134,16 @@ router.get('/:id', validateResource(GetAdminRequestSchema), getSingleAdmin)
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                 type: string
  *             example:
  *               username: example
  *               email: example@example.com
  *               password: password123
+ *               role: CUSTOMER
  *     responses:
  *       200:
- *         description: Successfully registered the admin.
+ *         description: Successfully registered the user.
  *         content:
  *           application/json:
  *             schema:
@@ -153,16 +156,16 @@ router.get('/:id', validateResource(GetAdminRequestSchema), getSingleAdmin)
  *       500:
  *         description: Internal server error.
  */
-router.post('/register', validateResource(PostAdminCreateSchema), register)
+router.post('/register', validateResource(PostUserCreateSchema), register)
 
 /**
  * @swagger
- * /admins/login:
+ * /users/login:
  *   post:
- *     summary: Log in as a admin
- *     tags: [admins]
+ *     summary: Log in as a user
+ *     tags: [users]
  *     requestBody:
- *       description: Admin credentials for login
+ *       description: User credentials for login
  *       required: true
  *       content:
  *         application/json:
@@ -174,38 +177,38 @@ router.post('/register', validateResource(PostAdminCreateSchema), register)
  *               password:
  *                 type: string
  *             example:
- *               email: admin@admin.com
- *               password: admin
+ *               email: user@user.com
+ *               password: user
  *     responses:
  *       200:
  *         description: Successfully logged in.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Admin'
+ *               $ref: '#/components/schemas/User'
  *       401:
  *         description: Authentication failed.
  *       500:
  *         description: Internal server error.
  */
-router.post('/login', validateResource(PostAdminLoginSchema), login)
+router.post('/login', validateResource(PostUserLoginSchema), login)
 
 /**
  * @swagger
- * /admins/{id}:
+ * /users/{id}:
  *   put:
- *     summary: Update a admin by ID
- *     tags: [admins]
+ *     summary: Update a user by ID
+ *     tags: [users]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the admin to update
+ *         description: ID of the user to update
  *         schema:
  *           type: string
  *         example: 1234567890
  *     requestBody:
- *       description: Admin object with updated fields
+ *       description: User object with updated fields
  *       required: true
  *       content:
  *         application/json:
@@ -218,13 +221,15 @@ router.post('/login', validateResource(PostAdminLoginSchema), login)
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                 type: string
  *             example:
  *               username: example
  *               email: example@example.com
  *               password: password123
  *     responses:
  *       200:
- *         description: Admin updated.
+ *         description: User updated.
  *         content:
  *           application/json:
  *             schema:
@@ -235,31 +240,31 @@ router.post('/login', validateResource(PostAdminLoginSchema), login)
  *                 objectId:
  *                   type: string
  *               example:
- *                 msg: Admin updated
+ *                 msg: User updated
  *                 objectId: 1234567890
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
-router.patch('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
+router.put('/:id', validateResource(PatchUserRequestSchema), updateUser)
+router.patch('/:id', validateResource(PatchUserRequestSchema), updateUser)
 
 /**
  * @swagger
- * /admins/{id}:
+ * /users/{id}:
  *   delete:
- *     summary: Delete a admin by ID
- *     tags: [admins]
+ *     summary: Delete a user by ID
+ *     tags: [users]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the admin to delete
+ *         description: ID of the user to delete
  *         schema:
  *           type: string
  *         example: 1234567890
  *     responses:
  *       200:
- *         description: Admin deleted.
+ *         description: User deleted.
  *         content:
  *           application/json:
  *             schema:
@@ -268,23 +273,23 @@ router.patch('/:id', validateResource(PatchAdminRequestSchema), updateAdmin)
  *                 msg:
  *                   type: string
  *               example:
- *                 msg: Admin Deleted
+ *                 msg: User Deleted
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', validateResource(DeleteAdminRequestSchema), deleteAdmin)
+router.delete('/:id', validateResource(DeleteUserRequestSchema), deleteUser)
 
 export = router
 
-// Define the Admin schema here if not already defined in the models.
-// Replace `type: object` with the actual Admin schema.
+// Define the User schema here if not already defined in the models.
+// Replace `type: object` with the actual User schema.
 // This schema will be referenced in the Swagger JSDoc comments.
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Admin:
+ *     User:
  *       type: object
  *       properties:
  *         _id:

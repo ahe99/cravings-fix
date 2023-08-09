@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
-import { isAuth, isCustomer } from '../middleware/auth.middleware'
+import { isAuth } from '../middleware/auth.middleware'
 
 import {
   getAllOrders,
@@ -92,7 +92,6 @@ router.get('/', validateResource(GetOrdersRequestSchema), getAllOrders)
 router.get(
   '/my',
   isAuth,
-  isCustomer,
   validateResource(GetMyOrdersRequestSchema),
   getMyOrders,
 )
