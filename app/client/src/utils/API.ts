@@ -23,12 +23,13 @@ export const API = {
 
   routes: {
     user: {
-      data: (param: string | number) => `/user/${param ?? ''}`,
-      update: (param: string | number) => `/user/${param ?? ''}`,
-      delete: (param: string | number) => `/user/${param ?? ''}`,
+      data: (param: string | number) => `/users/${param ?? ''}`,
+      update: (param: string | number) => `/users/${param ?? ''}`,
+      delete: (param: string | number) => `/users/${param ?? ''}`,
       list: '/users',
-      login: '/login',
-      register: '/users',
+      login: '/users/login',
+      register: '/users/register',
+      current: '/users/me',
     },
     products: {
       list: '/foods',

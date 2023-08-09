@@ -16,7 +16,7 @@ const UserLoginFormSchema = z.object({
 
 type UserLoginFormDataType = z.infer<typeof UserLoginFormSchema>
 interface UserLoginFormProps {
-  onSubmit: (formData: {}) => void
+  onSubmit: (formData: UserLoginFormDataType) => void
 }
 
 export const UserLoginForm = ({ onSubmit }: UserLoginFormProps) => {

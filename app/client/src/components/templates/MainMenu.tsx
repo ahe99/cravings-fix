@@ -14,8 +14,10 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { MdMenu } from 'react-icons/md'
+import { useRouter } from 'next/navigation'
 
 import { Logo } from '@/components/atoms'
+import { useAuth } from '@/hooks'
 
 const ROUTES = [
   {
@@ -32,8 +34,21 @@ const ROUTES = [
 
 const MenuPortrait = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const router = useRouter()
+  const { isLoggedIn, logout } = useAuth()
 
   const btnRef = useRef<any>(null)
+
+  const handleLogin = async () => {
+    router.push('/login')
+    onClose()
+  }
+
+  const handleLogout = async () => {
+    router.push('/')
+    logout()
+    onClose()
+  }
 
   return (
     <Box className="flex h-full flex-row items-center gap-2 landscape:hidden">
@@ -79,9 +94,21 @@ const MenuPortrait = () => {
           </DrawerBody>
 
           <DrawerFooter>
-            <Button className="w-full font-bold text-brown-800 duration-300 hover:bg-brown-200">
-              Login
-            </Button>
+            {isLoggedIn ? (
+              <Button
+                className="w-full font-bold text-brown-800 duration-300 hover:bg-brown-200"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                className="w-full font-bold text-brown-800 duration-300 hover:bg-brown-200"
+                onClick={handleLogin}
+              >
+                Login
+              </Button>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

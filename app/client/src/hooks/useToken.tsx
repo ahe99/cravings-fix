@@ -2,10 +2,12 @@ import { createTrackedSelector } from 'react-tracked'
 import { create } from 'zustand'
 import { devtools, persist, createJSONStorage } from 'zustand/middleware'
 
+export type Token = string
+
 interface TokenState {
   token: string
   clear: () => void
-  updateToken: (token: string) => void
+  update: (token: string) => void
   cancelTokenStorage: () => void
 }
 
@@ -17,7 +19,7 @@ const tokenStore = create<TokenState>()(
         clear: () => {
           set({ token: '' })
         },
-        updateToken: (token) => {
+        update: (token) => {
           set({ token })
         },
         // used when not to persist auth sesstion
