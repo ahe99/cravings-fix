@@ -2,11 +2,11 @@ import { motion } from 'framer-motion'
 
 import { OrderItem } from '@/components/molecules'
 
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 
 interface OrderListProps {
   orders: Order[]
-  onClickItem?: (productId: Order['objectId']) => void
+  onClickItem?: (productId: Order['_id']) => void
 }
 export const OrderList = ({
   orders,
@@ -24,7 +24,7 @@ export const OrderList = ({
       className="flex flex-col gap-4"
     >
       {orders.map((order) => (
-        <OrderItem key={order.objectId} order={order} onClick={onClickItem} />
+        <OrderItem key={order._id} order={order} onClick={onClickItem} />
       ))}
     </motion.div>
   )

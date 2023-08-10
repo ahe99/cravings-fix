@@ -5,17 +5,17 @@ import { Button } from '@chakra-ui/react'
 import { MdArrowRight } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 
-import { CartProduct } from '@/utils/ProductData'
+import { CartProduct } from '@/utils/Cart'
 import { useCartProducts, useAuth } from '@/hooks'
 
 import { CartProductList } from '@/components/organisms'
 
-import { LoadingPage } from './LoadingPage'
+interface CartProductPageProps {}
 
 export const CartProductPage = () => {
   const cartProducts = useCartProducts()
   const router = useRouter()
-  const { userQuery, isLoggedIn } = useAuth({ fallbackTo: '/login' })
+  const { isLoggedIn } = useAuth()
 
   const cartProductsData = useMemo(
     () => cartProducts.query.data ?? [],
@@ -62,34 +62,29 @@ export const CartProductPage = () => {
   const totalPrice = cartProductsData
     .map(({ price }) => price)
     .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
-
-  if (!isLoggedIn || !userQuery.data) {
-    return <LoadingPage />
-  } else {
-    return (
-      <main className="page-container">
-        <h1 className="mb-8 text-3xl">Shopping Cart</h1>
-        <CartProductList
-          cartProducts={cartProductsData}
-          onDeleteCartProduct={handleDeleteCartProduct}
-          onUpdateCartProductQuantity={handleUpdateCartProductQuantity}
-          onClickitem={handleClickCartProductItem}
-        />
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-row justify-between text-lg font-bold">
-            <div>Total</div>
-            <div>{`$${totalPrice}`}</div>
-          </div>
-          <Button
-            variant="outline"
-            className="w-max items-center self-end border-2 border-brown-800 text-brown-800"
-            onClick={checkout}
-          >
-            Checkout
-            <MdArrowRight className="text-xl" />
-          </Button>
+  return (
+    <main className="page-container">
+      <h1 className="mb-8 text-3xl">Shopping Cart</h1>
+      <CartProductList
+        cartProducts={cartProductsData}
+        onDeleteCartProduct={handleDeleteCartProduct}
+        onUpdateCartProductQuantity={handleUpdateCartProductQuantity}
+        onClickitem={handleClickCartProductItem}
+      />
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row justify-between text-lg font-bold">
+          <div>Total</div>
+          <div>{`$${totalPrice}`}</div>
         </div>
-      </main>
-    )
-  }
+        <Button
+          variant="outline"
+          className="w-max items-center self-end border-2 border-brown-800 text-brown-800"
+          onClick={checkout}
+        >
+          Checkout
+          <MdArrowRight className="text-xl" />
+        </Button>
+      </div>
+    </main>
+  )
 }

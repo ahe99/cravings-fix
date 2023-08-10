@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useProducts, useCategories } from '@/hooks'
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 
 import { ProductsBoard } from '@/components/templates'
 import { Category } from '@/utils/Category'

@@ -1,6 +1,6 @@
 import { ProductImage } from '@/components/atoms'
 
-import { CartProduct } from '@/utils/ProductData'
+import { CartProduct } from '@/utils/Cart'
 
 import { QuantitySelector } from '../interactive/QuantitySelector'
 
@@ -16,13 +16,16 @@ interface CartProductItemProps {
 export const CartProductItem = ({
   cartProduct: {
     _id,
-    name,
-    categoryName,
-    description,
+    food: {
+      _id: productId,
+      name,
+      description,
+      stockQuantity,
+      images,
+      category,
+    },
     price,
-    stockQuantity,
     quantity,
-    images,
   },
   onChangeQuantity = () => {},
   onClick = () => {},
@@ -37,10 +40,10 @@ export const CartProductItem = ({
         <div className="col-span-2 flex flex-col justify-between">
           <div
             className="flex flex-col hover:cursor-pointer hover:opacity-40"
-            onClick={() => onClick(_id)}
+            onClick={() => onClick(productId)}
           >
             <div className="text-xl font-bold">{name}</div>
-            <div className="italic text-gray-400">{categoryName}</div>
+            <div className="italic text-gray-400">{category.name}</div>
             <div className="line-clamp-2">{description}</div>
           </div>
           <div className="flex flex-col">

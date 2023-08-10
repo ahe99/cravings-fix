@@ -1,15 +1,15 @@
 import { ProductImage } from '@/components/atoms'
 
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 
 interface ProductProfileCardProps {
-  product: Product & { categoryName: string }
+  product: Product
   quantity?: number
   className?: string
 }
 
 export const ProductProfileCard = ({
-  product: { _id, name, categoryName, description, price, images },
+  product: { name, category, description, price, images },
   className = '',
 }: ProductProfileCardProps) => {
   const firstImage = images[0] ? images[0].url : ''
@@ -25,7 +25,7 @@ export const ProductProfileCard = ({
       <div className="col-span-3 flex flex-col">
         <div className="flex flex-col">
           <div className="text-xl font-bold">{name}</div>
-          <div className="italic text-gray-400">{categoryName}</div>
+          <div className="italic text-gray-400">{category.name}</div>
           <div className="">{description}</div>
         </div>
         <div>{`$${price}`}</div>

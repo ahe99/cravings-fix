@@ -8,11 +8,12 @@ import {
   Box,
   InputRightElement,
 } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 
 interface InputProps extends InputBaseProps {
   label?: string
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
+  leftIcon?: ReactNode
+  rightIcon?: ReactNode
   error?: string
   disabled?: boolean
   required?: boolean

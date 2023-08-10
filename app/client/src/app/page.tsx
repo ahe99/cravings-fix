@@ -1,6 +1,6 @@
 import { API, SERVER } from '@/utils/API'
-import { Product } from '@/utils/ProductData'
-import { Banner } from '@/utils/BannerData'
+import { Product } from '@/utils/Product'
+import { Banner } from '@/utils/Banner'
 import { Category } from '@/utils/Category'
 
 import { OverviewPage } from '@/components/pages'

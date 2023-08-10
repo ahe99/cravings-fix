@@ -1,5 +1,6 @@
-export type Category = {
-  _id: string
+import { ExtendedMongoData } from './MongoData'
+
+export type Category = ExtendedMongoData<{
   name: string
   description: string
-}
+}>

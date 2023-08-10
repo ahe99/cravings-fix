@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Product } from '@/utils/ProductData'
-import { Banner } from '@/utils/BannerData'
+import { Product } from '@/utils/Product'
+import { Banner } from '@/utils/Banner'
 
 import { BannerImage } from '@/components/atoms'
 import { Carousel, ProductsBoard } from '@/components/templates'

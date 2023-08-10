@@ -8,7 +8,7 @@ import {
   SortBaseType,
 } from '@/components/organisms'
 
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 import { Category } from '@/utils/Category'
 
 type ProductFilterType = {
@@ -93,7 +93,8 @@ export const ProductsBoard = ({
 
   const filteredProducts = products.filter(
     (product) =>
-      filter.category.findIndex(({ _id }) => product.categoryId === _id) !== -1,
+      filter.category.findIndex(({ _id }) => product.category._id === _id) !==
+      -1,
   )
 
   const searchedProducts = filteredProducts.filter((product) => {

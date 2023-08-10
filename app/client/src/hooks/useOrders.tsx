@@ -9,7 +9,7 @@ import {
 import { useAPI } from './useAPI'
 
 import { API } from '@/utils/API'
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 
 /**
  * @description fill the type after the type is defined
@@ -45,7 +45,7 @@ export const useOrders = (initialData: Order[] = []) => {
     return data
   }
 
-  const createOrderMutation = useMutation({
+  const createOrderQuery = useMutation({
     mutationKey: ['create order'],
     mutationFn: createOrder,
     onSuccess: () => {
@@ -58,6 +58,6 @@ export const useOrders = (initialData: Order[] = []) => {
 
   return {
     query: ordersDataQuery,
-    create: createOrderMutation,
+    create: createOrderQuery,
   }
 }

@@ -1,30 +1,30 @@
 import dayjs from 'dayjs'
 
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 import { Divider } from '@/components/atoms'
 
 interface OrderItemProps {
   order: Order
-  onClick: (orderId: Order['objectId']) => void
+  onClick: (orderId: Order['_id']) => void
 }
 
 export const OrderItem = ({
-  order: { objectId, createdAt, products, totalPrice },
+  order: { _id, createdAt, orderItems, totalPrice },
   onClick = () => {},
 }: OrderItemProps) => {
   return (
     <div
       className="flex flex-col gap-2 rounded-md border-4 border-dashed border-brown-800 bg-white p-4 hover:cursor-pointer hover:opacity-40"
-      onClick={() => onClick(objectId)}
+      onClick={() => onClick(_id)}
     >
       <div className="flex flex-row justify-between font-bold">
-        <div>{`Id: ${objectId}`}</div>
+        <div>{`Id: ${_id}`}</div>
         <div>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
       </div>
       <Divider />
       <div>
-        {products.map(({ objectId, price, quantity, name }) => (
-          <div className="flex flex-row justify-between" key={objectId}>
+        {orderItems.map(({ _id, price, quantity, food: { name } }) => (
+          <div className="flex flex-row justify-between" key={_id}>
             <div>{`${name} x${quantity}`}</div>
             <div>{`$${price}`}</div>
           </div>

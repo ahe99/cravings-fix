@@ -1,7 +1,7 @@
 import { OrdersPage } from '@/components/pages'
 
 import { API, SERVER } from '@/utils/API'
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 
 const getOrders = () => SERVER.request<Order[]>(API.routes.orders.list)
 

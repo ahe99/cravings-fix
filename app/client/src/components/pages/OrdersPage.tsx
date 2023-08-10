@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { OrderList } from '@/components/organisms'
 
 import { useOrders } from '@/hooks'
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 
 interface OrdersPageProps {
   prefetchOrders?: Order[]
@@ -16,7 +16,7 @@ export const OrdersPage = ({ prefetchOrders = [] }: OrdersPageProps) => {
 
   const ordersData = useMemo(() => orders.query.data ?? [], [orders.query.data])
 
-  const handleClickOrderItem = (orderId: Order['objectId']) => {
+  const handleClickOrderItem = (orderId: Order['_id']) => {
     router.push(`orders/${orderId}`)
   }
 

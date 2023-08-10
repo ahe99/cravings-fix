@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { ProductPage } from '@/components/pages'
 
 import { API, SERVER } from '@/utils/API'
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 import { Category } from '@/utils/Category'
 
 // const MAX_DISPLAY_QUANTITY = 6

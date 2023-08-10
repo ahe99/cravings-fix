@@ -7,14 +7,15 @@ import {
 } from '@tanstack/react-query'
 
 import { API } from '@/utils/API'
-import { CartProduct, Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
+import { Cart, CartProduct } from '@/utils/Cart'
 
 import { useAuth } from './useAuth'
 import { useAPI } from './useAPI'
 
 // const MAX_DISPLAY_QUANTITY = 6
 
-export const useCartProducts = (initialData: CartProduct[] = []) => {
+export const useCartProducts = () => {
   const queryClient = useQueryClient()
 
   const { isLoggedIn } = useAuth()
@@ -23,21 +24,16 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
   const apiRoute = API.routes.cart
 
   const getMyCartProductsData: QueryFunction<CartProduct[]> = async () => {
-    const { data } = await request<CartProduct[], never, never>(
-      'get',
-      apiRoute.current,
-    )
-    // const reversedData = data.reverse()
-    // const filteredData = reversedData.filter(
-    //   (_, index) => index < MAX_DISPLAY_QUANTITY,
-    // )
+    const { data } = await request<Cart, never, never>('get', apiRoute.current)
 
-    return data
+    return data.cartItems.map((cartItem) => ({
+      ...cartItem,
+      price: cartItem.quantity * cartItem.food.price,
+    }))
   }
   const cartProductsDataQuery = useQuery({
     queryKey: ['cart'],
     queryFn: getMyCartProductsData,
-    initialData: [],
     enabled: isLoggedIn,
   })
 
@@ -45,24 +41,18 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
     unknown,
     {
       productId: Product['_id']
-      quantity: number
+      quantity: CartProduct['quantity']
     }
-  > = async ({
-    productId,
-    quantity,
-  }: {
-    productId: Product['_id']
-    quantity: number
-  }) => {
-    const { data } = await request<unknown, { quantity: number }, never>(
-      'post',
-      apiRoute.item.create(productId),
-      {
-        data: {
-          quantity,
-        },
+  > = async ({ productId, quantity }) => {
+    const { data } = await request<
+      unknown,
+      { quantity: CartProduct['quantity'] },
+      never
+    >('post', apiRoute.item.create(productId), {
+      data: {
+        quantity,
       },
-    )
+    })
 
     return data
   }
@@ -84,22 +74,16 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
       cartItemId: CartProduct['_id']
       quantity: CartProduct['quantity']
     }
-  > = async ({
-    cartItemId,
-    quantity,
-  }: {
-    cartItemId: CartProduct['_id']
-    quantity: CartProduct['quantity']
-  }) => {
-    const { data } = await request<unknown, { quantity: number }, never>(
-      'put',
-      apiRoute.item.update(cartItemId),
-      {
-        data: {
-          quantity,
-        },
+  > = async ({ cartItemId, quantity }) => {
+    const { data } = await request<
+      unknown,
+      { quantity: CartProduct['quantity'] },
+      never
+    >('put', apiRoute.item.update(cartItemId), {
+      data: {
+        quantity,
       },
-    )
+    })
 
     return data
   }
@@ -153,7 +137,7 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
   const isExistingInCart = (productId: Product['_id']) => {
     return (
       cartProductsDataQuery.data.findIndex(
-        ({ foodId }) => foodId === productId,
+        ({ food }) => food._id === productId,
       ) !== -1
     )
   }

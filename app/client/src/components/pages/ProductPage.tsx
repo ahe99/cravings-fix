@@ -5,7 +5,7 @@ import { MdShoppingCart } from 'react-icons/md'
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 import { useRecentlyViewedProducts, useCartProducts } from '@/hooks'
 
 import { Divider } from '@/components/atoms'
@@ -41,7 +41,7 @@ export const ProductPage = ({
     try {
       if (cart.isExistingInCart(prefetchProduct._id)) {
         const currentCartItem = cart.query.data.find(
-          ({ foodId }) => foodId === prefetchProduct._id,
+          ({ food }) => food._id === prefetchProduct._id,
         )
         if (currentCartItem) {
           await cart.update.mutateAsync({
@@ -64,18 +64,9 @@ export const ProductPage = ({
   //   router.push(`products/${productId}`)
   // }
 
-  const category = prefetchCategories.find(
-    ({ _id }) => prefetchProduct.categoryId === _id,
-  )
-
-  const productWithCategoryName = {
-    ...prefetchProduct,
-    categoryName: category?.name ?? '',
-  }
-
   return (
     <main className="page-container gap-4">
-      <ProductProfileCard product={productWithCategoryName} />
+      <ProductProfileCard product={prefetchProduct} />
 
       <div className="flex w-2/3 flex-row flex-wrap items-end gap-2 self-end">
         <div className="flex-1">

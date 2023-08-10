@@ -9,11 +9,7 @@ import {
 import { useAPI } from './useAPI'
 
 import { API } from '@/utils/API'
-import { Product } from '@/utils/ProductData'
-
-/**
- * @description fill the type after the type is defined
- */
+import { Product } from '@/utils/Product'
 
 export const useProducts = (prefetchProducts: Product[]) => {
   const queryClient = useQueryClient()

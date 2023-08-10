@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 
 import { ProductImage } from '@/components/atoms'
 
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 
 interface ProductCardProps {
   product: Product
