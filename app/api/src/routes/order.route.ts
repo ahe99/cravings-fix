@@ -7,7 +7,7 @@ import { isAuth } from '../middleware/auth.middleware'
 import {
   getAllOrders,
   getMyOrders,
-  getOrdersByCustomerId,
+  getOrdersByUserId,
   getSingleOrder,
   deleteOrder,
   updateOrderPrice,
@@ -19,7 +19,7 @@ import {
   GetOrderRequestSchema,
   GetMyOrdersRequestSchema,
   GetOrdersRequestSchema,
-  GetOrdersByCustomerIdRequestSchema,
+  GetOrdersByUserIdRequestSchema,
   PatchOrderPriceRequestSchema,
   DeleteOrderRequestSchema,
 } from '../schema/order.schema'
@@ -124,13 +124,13 @@ router.get('/:id', validateResource(GetOrderRequestSchema), getSingleOrder)
 
 /**
  * @swagger
- * /orders/customer/{customerId}:
+ * /orders/user/{userId}:
  *   get:
- *     summary: Get orders by customer ID.
+ *     summary: Get orders by user ID.
  *     tags: [orders]
  *     parameters:
  *       - in: path
- *         name: customerId
+ *         name: userId
  *         required: true
  *         description: ID of the food item to retrieve
  *         schema:
@@ -157,9 +157,9 @@ router.get('/:id', validateResource(GetOrderRequestSchema), getSingleOrder)
  *         description: Internal server error.
  */
 router.get(
-  '/customer/:customerId',
-  validateResource(GetOrdersByCustomerIdRequestSchema),
-  getOrdersByCustomerId,
+  '/user/:userId',
+  validateResource(GetOrdersByUserIdRequestSchema),
+  getOrdersByUserId,
 )
 
 /**

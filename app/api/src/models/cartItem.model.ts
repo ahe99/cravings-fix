@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose'
 
 const CartItemSchema = new Schema(
   {
-    customerId: {
+    userId: {
       type: Schema.Types.ObjectId,
-      ref: 'CustomerModel',
+      ref: 'UserModel',
     },
     foodId: {
       type: Schema.Types.ObjectId,

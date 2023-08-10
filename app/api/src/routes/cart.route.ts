@@ -8,7 +8,7 @@ import { isAuth } from '../middleware/auth.middleware'
 import {
   getAllCarts,
   getMyCart,
-  getCartByCustomerId,
+  getCartByUserId,
   getSingleCart,
   addCartItem,
   deleteCartItem,
@@ -18,7 +18,7 @@ import {
 import {
   GetCartRequestSchema,
   GetCartsRequestSchema,
-  GetCartByCustomerIdRequestSchema,
+  GetCartByUserIdRequestSchema,
   PostCartCreateItemRequestSchema,
   DeleteCartItemRequestSchema,
 } from '../schema/cart.schema'
@@ -107,13 +107,13 @@ router.get('/:id', validateResource(GetCartRequestSchema), getSingleCart)
 
 /**
  * @swagger
- * /carts/customer/{customerId}:
+ * /carts/user/{userId}:
  *   get:
- *     summary: Get a single cart by customer ID.
+ *     summary: Get a single cart by user ID.
  *     tags: [carts]
  *     parameters:
  *       - in: path
- *         name: customerId
+ *         name: userId
  *         required: true
  *         description: ID of the food item to retrieve
  *         schema:
@@ -130,9 +130,9 @@ router.get('/:id', validateResource(GetCartRequestSchema), getSingleCart)
  *         description: Internal server error.
  */
 router.get(
-  '/customer/:customerId',
-  validateResource(GetCartByCustomerIdRequestSchema),
-  getCartByCustomerId,
+  '/user/:userId',
+  validateResource(GetCartByUserIdRequestSchema),
+  getCartByUserId,
 )
 
 /**
@@ -235,7 +235,7 @@ router.post(
  *                 msg: Cart Deleted
  *                 data:
  *                   _id: 1234567890
- *                   customerId: 9876543210
+ *                   userId: 9876543210
  *                   foodId: 4567890123
  *                   quantity: 2
  *       401:

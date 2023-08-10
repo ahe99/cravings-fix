@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { CartModel } from '../models/cart.model'
 import { CartItemModel } from '../models/cartItem.model'
 import { FoodModel } from '../models/food.model'
-import { CustomerModel } from '../models/customer.model'
+import { UserModel } from '../models/user.model'
 
 export const GetCartsRequestSchema = z.object({
   query: z
@@ -28,15 +28,15 @@ export const GetCartRequestSchema = z.object({
   }),
 })
 
-export const GetCartByCustomerIdRequestSchema = z.object({
+export const GetCartByUserIdRequestSchema = z.object({
   params: z.object({
-    customerId: z.string().refine(
+    userId: z.string().refine(
       async (_id) => {
-        const count = await CustomerModel.find({ _id }).count()
+        const count = await UserModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'CUSTOMER_NOT_FOUND',
+        message: 'USER_NOT_FOUND',
       },
     ),
   }),

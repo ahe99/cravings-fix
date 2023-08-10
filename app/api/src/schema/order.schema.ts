@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { OrderModel } from '../models/order.model'
 import { OrderItemModel } from '../models/orderItem.model'
 import { FoodModel } from '../models/food.model'
-import { CustomerModel } from '../models/customer.model'
+import { UserModel } from '../models/user.model'
 
 export const GetOrdersRequestSchema = z.object({
   query: z
@@ -23,15 +23,15 @@ export const GetMyOrdersRequestSchema = z.object({
     .partial(),
 })
 
-export const GetOrdersByCustomerIdRequestSchema = z.object({
+export const GetOrdersByUserIdRequestSchema = z.object({
   params: z.object({
-    customerId: z.string().refine(
+    userId: z.string().refine(
       async (_id) => {
-        const count = await CustomerModel.find({ _id }).count()
+        const count = await UserModel.find({ _id }).count()
         return count !== 0
       },
       {
-        message: 'CUSTOMER_NOT_FOUND',
+        message: 'USER_NOT_FOUND',
       },
     ),
   }),

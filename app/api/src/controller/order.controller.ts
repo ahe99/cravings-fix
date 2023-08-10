@@ -4,17 +4,17 @@ import { OrderModel } from '../models/order.model'
 
 const createOrderItem = async ({
   foodId,
-  customerId,
+  userId,
   quantity,
 }: {
   foodId: string
-  customerId: string
+  userId: string
   quantity: string
 }) => {
   const newOrderItem = new OrderItemModel({
     foodId,
     quantity,
-    customerId,
+    userId,
   })
   const result = await newOrderItem.save()
 
@@ -48,7 +48,7 @@ export const getMyOrders: RequestHandler = async (req, res, next) => {
 
   try {
     let orderQuery = OrderModel.find({
-      customerId: userId,
+      userId: userId,
     }).skip(Number(offset))
 
     if (limit !== '-1') {
@@ -62,15 +62,15 @@ export const getMyOrders: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getOrdersByCustomerId: RequestHandler = async (req, res, next) => {
+export const getOrdersByuserId: RequestHandler = async (req, res, next) => {
   const {
-    params: { customerId },
+    params: { userId },
     query: { limit = '50', offset = '0' },
   } = req
 
   try {
     let orderQuery = OrderModel.find({
-      customerId,
+      userId,
     }).skip(Number(offset))
 
     if (limit !== '-1') {
@@ -84,14 +84,14 @@ export const getOrdersByCustomerId: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getOrderByCustomerId: RequestHandler = async (req, res, next) => {
+export const getOrderByUserId: RequestHandler = async (req, res, next) => {
   const {
-    params: { customerId },
+    params: { userId },
   } = req
 
   try {
     const result = await OrderModel.findOne({
-      customerId,
+      userId,
     }).exec()
 
     res.json(result)
@@ -106,7 +106,7 @@ export const getMyOrder: RequestHandler = async (req, res, next) => {
   } = req
   try {
     const result = await OrderModel.findOne({
-      customerId: userId,
+      userId: userId,
     }).exec()
 
     res.json(result)
@@ -157,7 +157,7 @@ export const addOrderItem: RequestHandler = async (req, res, next) => {
     body: { quantity },
   } = req
   const newOrderItem = await createOrderItem({
-    customerId: userId,
+    userId: userId,
     foodId,
     quantity,
   })
@@ -165,7 +165,7 @@ export const addOrderItem: RequestHandler = async (req, res, next) => {
 
   try {
     const currentOrder = await OrderModel.findOne({
-      customerId: userId,
+      userId: userId,
     }).exec()
     if (currentOrder !== undefined && currentOrder !== null) {
       currentOrder.orderItemIds = [...currentOrder.orderItemIds, _id]
@@ -187,7 +187,7 @@ export const deleteOrderItem: RequestHandler = async (req, res, next) => {
 
   try {
     const response = await OrderItemModel.findByIdAndDelete(orderItemId)
-    const currentOrder = await OrderModel.findOne({ customerId: userId }).exec()
+    const currentOrder = await OrderModel.findOne({ userId: userId }).exec()
     if (currentOrder !== undefined && currentOrder !== null) {
       currentOrder.orderItemIds = currentOrder.orderItemIds.filter(
         (_id) => String(_id) !== orderItemId,

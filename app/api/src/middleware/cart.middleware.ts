@@ -5,7 +5,7 @@ import { responseMessage } from '../utils/errorException'
 
 const createCart = async (userId: string) => {
   const newCart = new CartModel({
-    customerId: userId,
+    userId,
     cartItemIds: [],
   })
   const result = await newCart.save()
@@ -16,7 +16,7 @@ export const hasCart: RequestHandler = async (req, res, next) => {
   const { userId = '' } = req.headers
   try {
     const count = await CartModel.find({
-      customerId: userId,
+      userId,
     }).count()
 
     const hasNoCart = count === 0

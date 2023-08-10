@@ -10,17 +10,17 @@ import { parseFloat } from '../helpers/format'
 
 const createCartItem = async ({
   foodId,
-  customerId,
+  userId,
   quantity,
 }: {
   foodId: string
-  customerId: string
+  userId: string
   quantity: string
 }) => {
   const newCartItem = new CartItemModel({
     foodId,
     quantity,
-    customerId,
+    userId,
   })
   const result = await newCartItem.save()
 
@@ -46,14 +46,14 @@ export const getAllCarts: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getCartByCustomerId: RequestHandler = async (req, res, next) => {
+export const getCartByUserId: RequestHandler = async (req, res, next) => {
   const {
-    params: { customerId },
+    params: { userId },
   } = req
 
   try {
     const result = await CartModel.findOne({
-      customerId,
+      userId,
     }).exec()
 
     res.json(result)
@@ -68,7 +68,7 @@ export const getMyCart: RequestHandler = async (req, res, next) => {
   } = req
   try {
     const result = await CartModel.findOne({
-      customerId: userId,
+      userId: userId,
     }).exec()
 
     res.json(result)
@@ -113,7 +113,7 @@ export const addCartItem: RequestHandler = async (req, res, next) => {
     body: { quantity },
   } = req
   const newCartItem = await createCartItem({
-    customerId: userId,
+    userId: userId,
     foodId,
     quantity,
   })
@@ -121,7 +121,7 @@ export const addCartItem: RequestHandler = async (req, res, next) => {
 
   try {
     const currentCart = await CartModel.findOne({
-      customerId: userId,
+      userId: userId,
     }).exec()
     if (currentCart !== undefined && currentCart !== null) {
       currentCart.cartItemIds = [...currentCart.cartItemIds, _id]
@@ -143,7 +143,7 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
 
   try {
     const response = await CartItemModel.findByIdAndDelete(cartItemId)
-    const currentCart = await CartModel.findOne({ customerId: userId }).exec()
+    const currentCart = await CartModel.findOne({ userId: userId }).exec()
     if (currentCart !== undefined && currentCart !== null) {
       currentCart.cartItemIds = currentCart.cartItemIds.filter(
         (_id) => String(_id) !== cartItemId,
@@ -165,10 +165,10 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
   } = req
 
   try {
-    const currentCart = await CartModel.findOne({ customerId: userId }).exec()
+    const currentCart = await CartModel.findOne({ userId: userId }).exec()
 
     if (currentCart !== undefined && currentCart !== null) {
-      const { cartItemIds, customerId } = currentCart
+      const { cartItemIds, userId } = currentCart
       if (cartItemIds.length === 0) {
         return res.status(400).send("Can't checkout with empty cart")
       }
@@ -182,14 +182,14 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
             cartItemId,
           ).exec()
           if (currentCartItem !== undefined && currentCartItem !== null) {
-            const { foodId, quantity, customerId } = currentCartItem
+            const { foodId, quantity, userId } = currentCartItem
             const currentFood = await FoodModel.findById(foodId).exec()
             const foodPrice = currentFood?.price ?? 0
             const itemPrice = quantity * foodPrice
             const newOrderItem = new OrderItemModel({
               foodId,
               quantity,
-              customerId,
+              userId,
               price: itemPrice,
             })
 
@@ -204,7 +204,7 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
       currentCart.cartItemIds = []
       await currentCart.save()
       const newOrder = new OrderModel({
-        customerId,
+        userId,
         orderItemIds,
         totalPrice: parseFloat(totalPrice),
       })
