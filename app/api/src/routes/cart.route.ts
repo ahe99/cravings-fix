@@ -12,6 +12,7 @@ import {
   getSingleCart,
   addCartItem,
   deleteCartItem,
+  updateCartItem,
   checkoutMyCart,
 } from '../controller/cart.controller'
 
@@ -20,6 +21,7 @@ import {
   GetCartsRequestSchema,
   GetCartByUserIdRequestSchema,
   PostCartCreateItemRequestSchema,
+  UpdateCartItemRequestSchema,
   DeleteCartItemRequestSchema,
 } from '../schema/cart.schema'
 
@@ -201,6 +203,65 @@ router.post(
   hasCart,
   validateResource(PostCartCreateItemRequestSchema),
   addCartItem,
+)
+
+/**
+ * @swagger
+ * /carts/my/{cartItemId}:
+ *   put:
+ *     summary: Update a cart item by ID
+ *     tags: [carts]
+ *     parameters:
+ *       - in: path
+ *         name: cartItemId
+ *         required: true
+ *         description: ID of the cart item to delete
+ *         schema:
+ *           type: string
+ *         example: 1234567890
+ *     requestBody:
+ *       description: Cart item details to be updated
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quantity:
+ *                 type: integer
+ *             example:
+ *               quantity: 2
+ *     security:
+ *       - token: []
+ *     responses:
+ *       200:
+ *         description: Cart item deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                 data:
+ *                   $ref: '#/components/schemas/CartItem'
+ *               example:
+ *                 msg: Cart Updated
+ *                 data:
+ *                   _id: 1234567890
+ *                   userId: 9876543210
+ *                   foodId: 4567890123
+ *                   quantity: 2
+ *       401:
+ *         description: Unauthorized - User ID not provided in headers.
+ *       500:
+ *         description: Internal server error.
+ */
+router.put(
+  '/my/:cartItemId',
+  isAuth,
+  validateResource(UpdateCartItemRequestSchema),
+  updateCartItem ,
 )
 
 /**

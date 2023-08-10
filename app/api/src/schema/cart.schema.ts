@@ -91,6 +91,24 @@ export const PostCartCreateItemRequestSchema = z.object({
 //       message: 'CANNOT_UPDATE_WITH_EMPTY_OBJECT',
 //     }),
 // })
+
+export const UpdateCartItemRequestSchema = z.object({
+  params: z.object({
+    cartItemId: z.string().refine(
+      async (_id) => {
+        const count = await CartItemModel.find({ _id }).count()
+        return count !== 0
+      },
+      {
+        message: 'CART_ITEM_NOT_FOUND',
+      },
+    ),
+  }),
+  body: z.object({
+    quantity: z.number().min(0),
+  }),
+})
+
 export const DeleteCartItemRequestSchema = z.object({
   params: z.object({
     cartItemId: z.string().refine(

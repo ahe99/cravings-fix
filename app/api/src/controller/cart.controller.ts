@@ -159,6 +159,26 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
   }
 }
 
+export const updateCartItem: RequestHandler = async (req, res, next) => {
+  const {
+    params: { cartItemId },
+    body: { quantity },
+  } = req
+
+  try {
+    const updatedCartItem = await CartItemModel.findByIdAndUpdate(cartItemId, {
+      quantity,
+    })
+
+    res.json({
+      msg: 'Cart Deleted',
+      data: updatedCartItem,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const checkoutMyCart: RequestHandler = async (req, res, next) => {
   const {
     headers: { userId },
