@@ -1,3 +1,5 @@
+import { RequestInit } from 'next/dist/server/web/spec-extension/request'
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 /**
@@ -52,10 +54,13 @@ export const API = {
       delete: (param: string | number) => `/recently/${param}`,
     },
     cart: {
-      list: '/cart',
-      create: '/cart',
-      update: (param: string | number) => `/cart/${param}`,
-      delete: (param: string | number) => `/cart/${param}`,
+      current: '/carts/my',
+      item: {
+        create: (foodId: string | number) => `/carts/my/${foodId}`,
+        delete: (cartItemId: string | number) => `/carts/my/${cartItemId}`,
+        update: (cartItemId: string | number) => `/carts/my/${cartItemId}`,
+      },
+      checkout: '/carts/my/checkout',
     },
     orders: {
       list: '/orders',

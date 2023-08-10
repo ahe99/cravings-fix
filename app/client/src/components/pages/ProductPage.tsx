@@ -26,8 +26,6 @@ export const ProductPage = ({
 }: ProductPageProps) => {
   const [quantity, setQuantity] = useState(1)
 
-  const router = useRouter()
-
   const cart = useCartProducts()
   // const recentlyViewedProducts = useRecentlyViewedProducts(
   //   prefetchRecentlyProducts,
@@ -40,7 +38,26 @@ export const ProductPage = ({
   // }, [prefetchProduct.id])
 
   const handleAddToCart = async () => {
-    await cart.create.mutateAsync({ ...prefetchProduct, quantity })
+    try {
+      if (cart.isExistingInCart(prefetchProduct._id)) {
+        const currentCartItem = cart.query.data.find(
+          ({ foodId }) => foodId === prefetchProduct._id,
+        )
+        if (currentCartItem) {
+          await cart.update.mutateAsync({
+            cartItemId: currentCartItem?._id,
+            quantity: currentCartItem.quantity + quantity,
+          })
+        }
+      } else {
+        await cart.create.mutateAsync({
+          productId: prefetchProduct._id,
+          quantity,
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   // const handleClickProductCard = async (productId: Product['objectId']) => {

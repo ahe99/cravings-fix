@@ -45,7 +45,7 @@ export const useAuth = ({
   useEffect(() => {
     if (isLoggedIn && redirectTo) {
       router.push(redirectTo)
-    } else if (fallbackTo) {
+    } else if (!isLoggedIn && fallbackTo) {
       router.push(fallbackTo)
     }
   }, [isLoggedIn, redirectTo, fallbackTo])
@@ -122,7 +122,7 @@ export const useAuth = ({
     login,
     logout,
     register,
-    user: userQuery.data,
+    userQuery,
     isLoggedIn,
   }
 }

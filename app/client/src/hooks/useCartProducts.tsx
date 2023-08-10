@@ -7,59 +7,67 @@ import {
 } from '@tanstack/react-query'
 
 import { API } from '@/utils/API'
-import { CartProduct } from '@/utils/ProductData'
+import { CartProduct, Product } from '@/utils/ProductData'
 
+import { useAuth } from './useAuth'
 import { useAPI } from './useAPI'
 
-const MAX_DISPLAY_QUANTITY = 6
+// const MAX_DISPLAY_QUANTITY = 6
 
 export const useCartProducts = (initialData: CartProduct[] = []) => {
   const queryClient = useQueryClient()
 
+  const { isLoggedIn } = useAuth()
   const { request } = useAPI()
 
   const apiRoute = API.routes.cart
 
-  const getCartProductsData: QueryFunction<CartProduct[]> = async () => {
+  const getMyCartProductsData: QueryFunction<CartProduct[]> = async () => {
     const { data } = await request<CartProduct[], never, never>(
       'get',
-      apiRoute.list,
+      apiRoute.current,
     )
-    const reversedData = data.reverse()
-    const filteredData = reversedData.filter(
-      (_, index) => index < MAX_DISPLAY_QUANTITY,
-    )
+    // const reversedData = data.reverse()
+    // const filteredData = reversedData.filter(
+    //   (_, index) => index < MAX_DISPLAY_QUANTITY,
+    // )
 
-    return filteredData
+    return data
   }
   const cartProductsDataQuery = useQuery({
     queryKey: ['cart'],
-    queryFn: getCartProductsData,
-    initialData,
+    queryFn: getMyCartProductsData,
+    initialData: [],
+    enabled: isLoggedIn,
   })
 
-  const createCartProduct: MutationFunction<unknown, CartProduct> = async (
-    newCartProduct: CartProduct,
-  ) => {
-    // to improve
-    if (
-      cartProductsDataQuery.data.findIndex(
-        ({ objectId }) => objectId === newCartProduct.objectId,
-      ) !== -1
-    ) {
-      await updateCartProduct(newCartProduct)
-    } else {
-      const { data } = await request<unknown, CartProduct, never>(
-        'post',
-        apiRoute.create,
-        { data: newCartProduct },
-      )
-
-      return data
+  const createCartProduct: MutationFunction<
+    unknown,
+    {
+      productId: Product['_id']
+      quantity: number
     }
+  > = async ({
+    productId,
+    quantity,
+  }: {
+    productId: Product['_id']
+    quantity: number
+  }) => {
+    const { data } = await request<unknown, { quantity: number }, never>(
+      'post',
+      apiRoute.item.create(productId),
+      {
+        data: {
+          quantity,
+        },
+      },
+    )
+
+    return data
   }
 
-  const createCartProductMutation = useMutation({
+  const createCartProductQuery = useMutation({
     mutationKey: ['create product in cart'],
     mutationFn: createCartProduct,
     onSuccess: () => {
@@ -70,21 +78,35 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
     },
   })
 
-  const updateCartProduct: MutationFunction<unknown, CartProduct> = async (
-    selectedCartProduct: CartProduct,
-  ) => {
-    const { data } = await request<unknown, CartProduct, never>(
+  const updateCartQuantityProduct: MutationFunction<
+    unknown,
+    {
+      cartItemId: CartProduct['_id']
+      quantity: CartProduct['quantity']
+    }
+  > = async ({
+    cartItemId,
+    quantity,
+  }: {
+    cartItemId: CartProduct['_id']
+    quantity: CartProduct['quantity']
+  }) => {
+    const { data } = await request<unknown, { quantity: number }, never>(
       'put',
-      apiRoute.update(selectedCartProduct.objectId),
-      { data: selectedCartProduct },
+      apiRoute.item.update(cartItemId),
+      {
+        data: {
+          quantity,
+        },
+      },
     )
 
     return data
   }
 
-  const updateCartProductMutation = useMutation({
+  const updateCartQuantityProductQuery = useMutation({
     mutationKey: ['update product in cart'],
-    mutationFn: updateCartProduct,
+    mutationFn: updateCartQuantityProduct,
     onSuccess: () => {
       queryClient.invalidateQueries(['cart'])
     },
@@ -95,16 +117,16 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
 
   const deleteCartProduct: MutationFunction<
     unknown,
-    CartProduct['objectId']
-  > = async (selectedProductId: CartProduct['objectId']) => {
+    CartProduct['_id']
+  > = async (selectedProductId: CartProduct['_id']) => {
     const { data } = await request<unknown, never, never>(
       'delete',
-      apiRoute.delete(selectedProductId),
+      apiRoute.item.delete(selectedProductId),
     )
     return data
   }
 
-  const deleteCartProductMutation = useMutation({
+  const deleteCartProductQuery = useMutation({
     mutationKey: ['delete product in cart'],
     mutationFn: deleteCartProduct,
     onSuccess: () => {
@@ -112,10 +134,36 @@ export const useCartProducts = (initialData: CartProduct[] = []) => {
     },
   })
 
+  const checkoutCart = async () => {
+    const { data } = await request('post', apiRoute.checkout)
+    return data
+  }
+
+  const checkoutCartProductQuery = useMutation({
+    mutationKey: ['checkout product in cart'],
+    mutationFn: checkoutCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart'])
+    },
+    onError: (error) => {
+      console.log('checkout product in cart', error)
+    },
+  })
+
+  const isExistingInCart = (productId: Product['_id']) => {
+    return (
+      cartProductsDataQuery.data.findIndex(
+        ({ foodId }) => foodId === productId,
+      ) !== -1
+    )
+  }
+
   return {
     query: cartProductsDataQuery,
-    create: createCartProductMutation,
-    update: updateCartProductMutation,
-    delete: deleteCartProductMutation,
+    create: createCartProductQuery,
+    update: updateCartQuantityProductQuery,
+    delete: deleteCartProductQuery,
+    checkout: checkoutCartProductQuery,
+    isExistingInCart,
   }
 }

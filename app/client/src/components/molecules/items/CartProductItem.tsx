@@ -7,39 +7,40 @@ import { QuantitySelector } from '../interactive/QuantitySelector'
 interface CartProductItemProps {
   cartProduct: CartProduct
   onChangeQuantity?: (
-    cartProductId: CartProduct['objectId'],
+    cartProductId: CartProduct['_id'],
     newQuantity: number,
   ) => void
-  onClick?: (cartProductId: CartProduct['objectId']) => void
+  onClick?: (cartProductId: CartProduct['_id']) => void
 }
 
-//todo: find a better naming
 export const CartProductItem = ({
   cartProduct: {
-    objectId,
+    _id,
     name,
-    category_name,
+    categoryName,
     description,
     price,
-    stock_quantity,
+    stockQuantity,
     quantity,
-    image: { src },
+    images,
   },
   onChangeQuantity = () => {},
   onClick = () => {},
 }: CartProductItemProps) => {
+  const previewImage = (images && images[0]?.url) ?? ''
+
   return (
     <div className="flex flex-col">
       <div className="grid grid-flow-row grid-cols-3 gap-4 rounded-md">
-        <ProductImage className="col-span-1" src={src} alt={name} />
+        <ProductImage className="col-span-1" src={previewImage} alt={name} />
 
         <div className="col-span-2 flex flex-col justify-between">
           <div
             className="flex flex-col hover:cursor-pointer hover:opacity-40"
-            onClick={() => onClick(objectId)}
+            onClick={() => onClick(_id)}
           >
             <div className="text-xl font-bold">{name}</div>
-            <div className="italic text-gray-400">{category_name}</div>
+            <div className="italic text-gray-400">{categoryName}</div>
             <div className="line-clamp-2">{description}</div>
           </div>
           <div className="flex flex-col">
@@ -47,10 +48,8 @@ export const CartProductItem = ({
             <QuantitySelector
               value={quantity}
               minValue={0}
-              maxValue={stock_quantity}
-              onChange={(newQuantity) =>
-                onChangeQuantity(objectId, newQuantity)
-              }
+              maxValue={stockQuantity}
+              onChange={(newQuantity) => onChangeQuantity(_id, newQuantity)}
             />
           </div>
         </div>

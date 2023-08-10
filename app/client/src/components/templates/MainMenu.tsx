@@ -117,7 +117,7 @@ const MenuPortrait = () => {
 }
 const MenuLandscape = () => {
   return (
-    <ul className="flex h-full w-full flex-row items-center gap-2 portrait:hidden">
+    <ul className="flex h-full flex-row items-center gap-2 portrait:hidden">
       <li>
         <Link className="cursor-pointer" href={'/'}>
           <Logo />

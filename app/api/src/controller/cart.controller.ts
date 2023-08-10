@@ -7,6 +7,28 @@ import { OrderModel } from '../models/order.model'
 import { OrderItemModel } from '../models/orderItem.model'
 import { FoodModel } from '../models/food.model'
 import { parseFloat } from '../helpers/format'
+import { bucketObject, getObjectUrl } from '../lib/minio.lib'
+
+const FOOD_IMAGE_BUCKET_NAME = bucketObject.foods
+
+const getImagesFromImageIds = async (imageIds: string[]) => {
+  if (Array.isArray(imageIds)) {
+    const images = await Promise.all(
+      imageIds.map(async (imageId) => {
+        return {
+          imageId,
+          url: await getObjectUrl({
+            bucket: FOOD_IMAGE_BUCKET_NAME,
+            object: imageId,
+          }),
+        }
+      }),
+    )
+    return images
+  } else {
+    return []
+  }
+}
 
 const createCartItem = async ({
   foodId,
@@ -25,6 +47,18 @@ const createCartItem = async ({
   const result = await newCartItem.save()
 
   return result
+}
+
+const getCartItem = async (cartItemId: Types.ObjectId) => {
+  const cartItem = await CartItemModel.findById(cartItemId).lean()
+  const foodItem = await FoodModel.findById(cartItem?.foodId).lean()
+  const images = await getImagesFromImageIds(foodItem?.imageIds ?? [])
+
+  return {
+    ...foodItem,
+    ...cartItem,
+    images: images,
+  }
 }
 
 export const getAllCarts: RequestHandler = async (req, res, next) => {
@@ -69,9 +103,15 @@ export const getMyCart: RequestHandler = async (req, res, next) => {
   try {
     const result = await CartModel.findOne({
       userId: userId,
-    }).exec()
+    })
+      .lean()
+      .exec()
 
-    res.json(result)
+    const cartItems = await Promise.all(
+      result?.cartItemIds.map(getCartItem) ?? [],
+    )
+
+    res.json(cartItems)
   } catch (e) {
     next(e)
   }

@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 
 import { CartProduct } from '@/utils/ProductData'
+import debounce from '@/helpers/debounce'
 
 import { Divider } from '@/components/atoms'
 import { CartProductItem } from '@/components/molecules'
@@ -8,11 +9,11 @@ import { CartProductItem } from '@/components/molecules'
 interface CartProductListProps {
   cartProducts?: CartProduct[]
   onUpdateCartProductQuantity?: (
-    selectedProductId: CartProduct['objectId'],
+    selectedProductId: CartProduct['_id'],
     newQuantity: number,
   ) => void
-  onDeleteCartProduct?: (selectedProductId: CartProduct['objectId']) => void
-  onClickitem?: (cartProductId: CartProduct['objectId']) => void
+  onDeleteCartProduct?: (selectedProductId: CartProduct['_id']) => void
+  onClickitem?: (cartProductId: CartProduct['_id']) => void
 }
 
 export const CartProductList = ({
@@ -22,27 +23,25 @@ export const CartProductList = ({
   onClickitem = () => {},
 }: CartProductListProps) => {
   const handleChangeCartProductQuantity = (
-    selectedProductId: CartProduct['objectId'],
+    selectedProductId: CartProduct['_id'],
     newQuantity: number,
   ) => {
     if (newQuantity === 0) {
       handleRemoveCartProduct(selectedProductId)
     } else {
-      onUpdateCartProductQuantity(selectedProductId, newQuantity)
+      debounce(onUpdateCartProductQuantity)(selectedProductId, newQuantity)
     }
   }
 
-  const handleRemoveCartProduct = (
-    selectedProductId: CartProduct['objectId'],
-  ) => {
-    //to add: confirm modal
+  const handleRemoveCartProduct = (selectedProductId: CartProduct['_id']) => {
+    // to add: confirm modal
     onDeleteCartProduct(selectedProductId)
   }
 
   return (
     <div className="flex flex-col">
       {cartProducts.map((cartProduct) => (
-        <Fragment key={cartProduct.objectId}>
+        <Fragment key={cartProduct._id}>
           <CartProductItem
             cartProduct={cartProduct}
             onChangeQuantity={handleChangeCartProductQuantity}

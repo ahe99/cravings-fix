@@ -10,6 +10,7 @@ export type Product = {
   createdAt: string
   updatedAt: string
   images: ImageType[]
+  foodId: string
 }
 
 export type CartProduct = Product & {
