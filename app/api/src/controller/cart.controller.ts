@@ -7,58 +7,24 @@ import { OrderModel } from '../models/order.model'
 import { OrderItemModel } from '../models/orderItem.model'
 import { FoodModel } from '../models/food.model'
 import { parseFloat } from '../helpers/format'
-import { bucketObject, getObjectUrl } from '../lib/minio.lib'
-
-const FOOD_IMAGE_BUCKET_NAME = bucketObject.foods
-
-const getImagesFromImageIds = async (imageIds: string[]) => {
-  if (Array.isArray(imageIds)) {
-    const images = await Promise.all(
-      imageIds.map(async (imageId) => {
-        return {
-          imageId,
-          url: await getObjectUrl({
-            bucket: FOOD_IMAGE_BUCKET_NAME,
-            object: imageId,
-          }),
-        }
-      }),
-    )
-    return images
-  } else {
-    return []
-  }
-}
 
 const createCartItem = async ({
-  foodId,
-  userId,
+  food,
+  user,
   quantity,
 }: {
-  foodId: string
-  userId: string
+  food: string
+  user: string
   quantity: string
 }) => {
   const newCartItem = new CartItemModel({
-    foodId,
+    food,
     quantity,
-    userId,
+    user,
   })
   const result = await newCartItem.save()
 
   return result
-}
-
-const getCartItem = async (cartItemId: Types.ObjectId) => {
-  const cartItem = await CartItemModel.findById(cartItemId).lean()
-  const foodItem = await FoodModel.findById(cartItem?.foodId).lean()
-  const images = await getImagesFromImageIds(foodItem?.imageIds ?? [])
-
-  return {
-    ...foodItem,
-    ...cartItem,
-    images: images,
-  }
 }
 
 export const getAllCarts: RequestHandler = async (req, res, next) => {
@@ -67,7 +33,7 @@ export const getAllCarts: RequestHandler = async (req, res, next) => {
   } = req
 
   try {
-    let cartQuery = CartModel.find().skip(Number(offset))
+    let cartQuery = CartModel.find().lean().skip(Number(offset))
 
     if (limit !== '-1') {
       cartQuery = cartQuery.limit(Number(limit))
@@ -87,8 +53,10 @@ export const getCartByUserId: RequestHandler = async (req, res, next) => {
 
   try {
     const result = await CartModel.findOne({
-      userId,
-    }).exec()
+      user: userId,
+    })
+      .lean()
+      .exec()
 
     res.json(result)
   } catch (e) {
@@ -102,16 +70,12 @@ export const getMyCart: RequestHandler = async (req, res, next) => {
   } = req
   try {
     const result = await CartModel.findOne({
-      userId: userId,
+      user: userId,
     })
       .lean()
       .exec()
 
-    const cartItems = await Promise.all(
-      result?.cartItemIds.map(getCartItem) ?? [],
-    )
-
-    res.json(cartItems)
+    res.json(result)
   } catch (e) {
     next(e)
   }
@@ -121,30 +85,13 @@ export const getSingleCart: RequestHandler = async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const result = await CartModel.findById(id)
+    const result = await CartModel.findById(id).lean()
 
     res.json(result)
   } catch (e) {
     next(e)
   }
 }
-
-// export const updateCart: RequestHandler = async (req, res, next) => {
-//   const id = req.params.id
-
-//   try {
-//     const updatedCart = await CartModel.findByIdAndUpdate(id, {
-//       ...req.body,
-//     })
-
-//     res.json({
-//       msg: 'Cart updated',
-//       objectId: updatedCart?.id,
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
 
 export const addCartItem: RequestHandler = async (req, res, next) => {
   const {
@@ -153,18 +100,18 @@ export const addCartItem: RequestHandler = async (req, res, next) => {
     body: { quantity },
   } = req
   const newCartItem = await createCartItem({
-    userId: userId,
-    foodId,
+    user: userId,
+    food: foodId,
     quantity,
   })
   const { _id } = newCartItem
 
   try {
     const currentCart = await CartModel.findOne({
-      userId: userId,
+      user: userId,
     }).exec()
     if (currentCart !== undefined && currentCart !== null) {
-      currentCart.cartItemIds = [...currentCart.cartItemIds, _id]
+      currentCart.cartItems = [...currentCart.cartItems, _id]
 
       const result = await currentCart.save()
 
@@ -183,9 +130,10 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
 
   try {
     const response = await CartItemModel.findByIdAndDelete(cartItemId)
+
     const currentCart = await CartModel.findOne({ userId: userId }).exec()
     if (currentCart !== undefined && currentCart !== null) {
-      currentCart.cartItemIds = currentCart.cartItemIds.filter(
+      currentCart.cartItems = currentCart.cartItems.filter(
         (_id) => String(_id) !== cartItemId,
       )
       await currentCart.save()
@@ -225,11 +173,11 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
   } = req
 
   try {
-    const currentCart = await CartModel.findOne({ userId: userId }).exec()
+    const currentCart = await CartModel.findOne({ user: userId }).exec()
 
     if (currentCart !== undefined && currentCart !== null) {
-      const { cartItemIds, userId } = currentCart
-      if (cartItemIds.length === 0) {
+      const { cartItems, user } = currentCart
+      if (cartItems.length === 0) {
         return res.status(400).send("Can't checkout with empty cart")
       }
 
@@ -237,19 +185,19 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
       let totalPrice = 0
 
       await Promise.all(
-        cartItemIds.map(async (cartItemId) => {
+        cartItems.map(async (cartItemId) => {
           const currentCartItem = await CartItemModel.findByIdAndDelete(
             cartItemId,
           ).exec()
           if (currentCartItem !== undefined && currentCartItem !== null) {
-            const { foodId, quantity, userId } = currentCartItem
-            const currentFood = await FoodModel.findById(foodId).exec()
+            const { food, quantity, user } = currentCartItem
+            const currentFood = await FoodModel.findById(food).exec()
             const foodPrice = currentFood?.price ?? 0
             const itemPrice = quantity * foodPrice
             const newOrderItem = new OrderItemModel({
-              foodId,
+              food,
               quantity,
-              userId,
+              user,
               price: itemPrice,
             })
 
@@ -261,10 +209,10 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
         }),
       )
 
-      currentCart.cartItemIds = []
+      currentCart.cartItems = []
       await currentCart.save()
       const newOrder = new OrderModel({
-        userId,
+        user,
         orderItemIds,
         totalPrice: parseFloat(totalPrice),
       })

@@ -11,8 +11,6 @@ import {
   getSingleOrder,
   deleteOrder,
   updateOrderPrice,
-  addOrderItem,
-  deleteOrderItem,
 } from '../controller/order.controller'
 
 import {
@@ -172,7 +170,7 @@ router.get(
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the order to retrieve
+ *         description: ID of the order to be updated
  *         schema:
  *           type: string
  *         example: 64ba3d8a4fa4f1341e5d10af
@@ -187,7 +185,7 @@ router.get(
  *               totalPrice:
  *                 type: number
  *             example:
- *               price: 10
+ *               totalPrice: 10
  *     responses:
  *       200:
  *         description: Successfully updated the order.

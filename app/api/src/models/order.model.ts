@@ -1,12 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, CallbackWithoutResultAndOptionalError } from 'mongoose'
 
 const OrderSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'UserModel',
     },
-    orderItemIds: [
+    orderItems: [
       {
         type: Schema.Types.ObjectId,
         ref: 'OrderItemModel',
@@ -19,6 +19,15 @@ const OrderSchema = new Schema(
   },
   {
     timestamps: true,
+  },
+)
+
+OrderSchema.pre(
+  ['find', 'findOne'],
+  function (next: CallbackWithoutResultAndOptionalError) {
+    this.populate('orderItems')
+    this.populate('user', '-password')
+    next()
   },
 )
 export const OrderModel = model('OrderModel', OrderSchema)

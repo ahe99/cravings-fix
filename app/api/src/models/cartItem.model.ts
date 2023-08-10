@@ -1,12 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, CallbackWithoutResultAndOptionalError } from 'mongoose'
 
 const CartItemSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'UserModel',
     },
-    foodId: {
+    food: {
       type: Schema.Types.ObjectId,
       ref: 'FoodModel',
       required: true,
@@ -18,6 +18,14 @@ const CartItemSchema = new Schema(
   },
   {
     timestamps: true,
+  },
+)
+
+CartItemSchema.pre(
+  ['find', 'findOne'],
+  function (next: CallbackWithoutResultAndOptionalError) {
+    this.populate('food')
+    next()
   },
 )
 export const CartItemModel = model('CartItemModel', CartItemSchema)

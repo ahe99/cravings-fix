@@ -1,12 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, CallbackWithoutResultAndOptionalError } from 'mongoose'
 
 const CartSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'UserModel',
     },
-    cartItemIds: [
+    cartItems: [
       {
         type: Schema.Types.ObjectId,
         ref: 'CartItemModel',
@@ -15,6 +15,15 @@ const CartSchema = new Schema(
   },
   {
     timestamps: true,
+  },
+)
+
+CartSchema.pre(
+  ['find', 'findOne'],
+  function (next: CallbackWithoutResultAndOptionalError) {
+    this.populate('cartItems')
+    this.populate('user', '-password')
+    next()
   },
 )
 export const CartModel = model('CartModel', CartSchema)

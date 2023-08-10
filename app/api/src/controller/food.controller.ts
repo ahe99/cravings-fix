@@ -2,44 +2,20 @@ import { RequestHandler } from 'express'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  bucketObject,
-  getObjectUrl,
-  removeObject,
-  putObject,
-} from '../lib/minio.lib'
+import { bucketObject, removeObject, putObject } from '../lib/minio.lib'
 import { FoodModel } from '../models/food.model'
 import { responseMessage } from '../utils/errorException'
 
 const FOOD_IMAGE_BUCKET_NAME = bucketObject.foods
 
-const getImagesFromImageIds = async (imageIds: string[]) => {
-  if (Array.isArray(imageIds)) {
-    const images = await Promise.all(
-      imageIds.map(async (imageId) => {
-        return {
-          imageId,
-          url: await getObjectUrl({
-            bucket: FOOD_IMAGE_BUCKET_NAME,
-            object: imageId,
-          }),
-        }
-      }),
-    )
-    return images
-  } else {
-    return []
-  }
-}
-
-const removeImageByFilename = async (fileName?: string) => {
-  if (typeof fileName === 'string' && fileName !== '') {
-    await removeObject({
-      bucket: FOOD_IMAGE_BUCKET_NAME,
-      object: fileName,
-    })
-  }
-}
+// const removeImageByFilename = async (fileName?: string) => {
+//   if (typeof fileName === 'string' && fileName !== '') {
+//     await removeObject({
+//       bucket: FOOD_IMAGE_BUCKET_NAME,
+//       object: fileName,
+//     })
+//   }
+// }
 
 export const getAllFoods: RequestHandler = async (req, res, next) => {
   const {
@@ -57,14 +33,7 @@ export const getAllFoods: RequestHandler = async (req, res, next) => {
     }
     const result = await foodQuery.exec()
 
-    const foodsWithImage = await Promise.all(
-      result.map(async ({ imageIds, ...restObject }) => ({
-        ...restObject,
-        images: await getImagesFromImageIds(imageIds),
-      })),
-    )
-
-    res.json(foodsWithImage)
+    res.json(result)
   } catch (e) {
     next(e)
   }
@@ -80,7 +49,7 @@ export const addFood: RequestHandler = async (req, res, next) => {
   newFood.price = price
 
   if (categoryId) {
-    newFood.categoryId = categoryId
+    newFood.category = categoryId
   }
 
   try {
@@ -97,17 +66,7 @@ export const getSingleFood: RequestHandler = async (req, res, next) => {
 
   try {
     const result = await FoodModel.findById(id).lean()
-    if (result !== null) {
-      const { imageIds, ...restObject } = result
-
-      const foodsWithImage = {
-        ...restObject,
-        images: await getImagesFromImageIds(imageIds),
-      }
-      res.json(foodsWithImage)
-    } else {
-      res.json(result)
-    }
+    res.json(result)
   } catch (e) {
     next(e)
   }

@@ -1,20 +1,21 @@
 import { RequestHandler } from 'express'
+
 import { OrderItemModel } from '../models/orderItem.model'
 import { OrderModel } from '../models/order.model'
 
 const createOrderItem = async ({
-  foodId,
-  userId,
+  food,
+  user,
   quantity,
 }: {
-  foodId: string
-  userId: string
+  food: string
+  user: string
   quantity: string
 }) => {
   const newOrderItem = new OrderItemModel({
-    foodId,
+    food,
     quantity,
-    userId,
+    user,
   })
   const result = await newOrderItem.save()
 
@@ -27,7 +28,7 @@ export const getAllOrders: RequestHandler = async (req, res, next) => {
   } = req
 
   try {
-    let orderQuery = OrderModel.find().skip(Number(offset))
+    let orderQuery = OrderModel.find().lean().skip(Number(offset))
 
     if (limit !== '-1') {
       orderQuery = orderQuery.limit(Number(limit))
@@ -48,8 +49,10 @@ export const getMyOrders: RequestHandler = async (req, res, next) => {
 
   try {
     let orderQuery = OrderModel.find({
-      userId: userId,
-    }).skip(Number(offset))
+      user: userId,
+    })
+      .lean()
+      .skip(Number(offset))
 
     if (limit !== '-1') {
       orderQuery = orderQuery.limit(Number(limit))
@@ -70,8 +73,10 @@ export const getOrdersByUserId: RequestHandler = async (req, res, next) => {
 
   try {
     let orderQuery = OrderModel.find({
-      userId,
-    }).skip(Number(offset))
+      user: userId,
+    })
+      .lean()
+      .skip(Number(offset))
 
     if (limit !== '-1') {
       orderQuery = orderQuery.limit(Number(limit))
@@ -84,42 +89,11 @@ export const getOrdersByUserId: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getOrderByUserId: RequestHandler = async (req, res, next) => {
-  const {
-    params: { userId },
-  } = req
-
-  try {
-    const result = await OrderModel.findOne({
-      userId,
-    }).exec()
-
-    res.json(result)
-  } catch (e) {
-    next(e)
-  }
-}
-
-export const getMyOrder: RequestHandler = async (req, res, next) => {
-  const {
-    headers: { userId },
-  } = req
-  try {
-    const result = await OrderModel.findOne({
-      userId: userId,
-    }).exec()
-
-    res.json(result)
-  } catch (e) {
-    next(e)
-  }
-}
-
 export const getSingleOrder: RequestHandler = async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const result = await OrderModel.findById(id)
+    const result = await OrderModel.findById(id).lean()
 
     res.json(result)
   } catch (e) {
@@ -157,18 +131,18 @@ export const addOrderItem: RequestHandler = async (req, res, next) => {
     body: { quantity },
   } = req
   const newOrderItem = await createOrderItem({
-    userId: userId,
-    foodId,
+    user: userId,
+    food: foodId,
     quantity,
   })
   const { _id } = newOrderItem
 
   try {
     const currentOrder = await OrderModel.findOne({
-      userId: userId,
+      user: userId,
     }).exec()
     if (currentOrder !== undefined && currentOrder !== null) {
-      currentOrder.orderItemIds = [...currentOrder.orderItemIds, _id]
+      currentOrder.orderItems = [...currentOrder.orderItems, _id]
 
       const result = await currentOrder.save()
 
@@ -189,7 +163,7 @@ export const deleteOrderItem: RequestHandler = async (req, res, next) => {
     const response = await OrderItemModel.findByIdAndDelete(orderItemId)
     const currentOrder = await OrderModel.findOne({ userId: userId }).exec()
     if (currentOrder !== undefined && currentOrder !== null) {
-      currentOrder.orderItemIds = currentOrder.orderItemIds.filter(
+      currentOrder.orderItems = currentOrder.orderItems.filter(
         (_id) => String(_id) !== orderItemId,
       )
       await currentOrder.save()
