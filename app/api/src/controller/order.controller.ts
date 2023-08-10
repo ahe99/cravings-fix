@@ -62,7 +62,7 @@ export const getMyOrders: RequestHandler = async (req, res, next) => {
   }
 }
 
-export const getOrdersByuserId: RequestHandler = async (req, res, next) => {
+export const getOrdersByUserId: RequestHandler = async (req, res, next) => {
   const {
     params: { userId },
     query: { limit = '50', offset = '0' },
