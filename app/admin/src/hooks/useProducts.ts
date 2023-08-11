@@ -6,10 +6,10 @@ import {
   QueryFunction,
 } from '@tanstack/react-query'
 
-import { useAPI } from './useAPI'
-
 import { API } from '@/utils/API'
 import { Product } from '@/utils/Product'
+
+import { useAPI } from './useAPI'
 
 export const useProducts = () => {
   const queryClient = useQueryClient()

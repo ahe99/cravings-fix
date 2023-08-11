@@ -4,7 +4,7 @@ export const API = {
   baseURL: API_BASE_URL,
 
   routes: {
-    user: {
+    users: {
       data: (param: string | number) => `/users/${param ?? ''}`,
       update: (param: string | number) => `/users/${param ?? ''}`,
       delete: (param: string | number) => `/users/${param ?? ''}`,

@@ -34,8 +34,7 @@ const MAIN_ROUTES = [
   { name: 'Products', id: 'products', url: '/products' },
   { name: 'Orders', id: 'orders', url: '/orders' },
   { name: 'Banners', id: 'banners', url: '/banners' },
-  { name: 'Admins', id: 'admins', url: '/admins' },
-  { name: 'Customers', id: 'customers', url: '/customers' },
+  { name: 'Users', id: 'users', url: '/users' },
 ]
 
 const ContentAside = () => {
