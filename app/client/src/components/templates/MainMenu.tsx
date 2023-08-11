@@ -21,14 +21,19 @@ import { useAuth } from '@/hooks'
 
 const ROUTES = [
   {
-    id: 'home',
-    name: 'Home',
-    route: '/',
+    id: 'news',
+    name: 'NEWS',
+    route: '/news',
   },
   {
     id: 'products',
-    name: 'Products',
+    name: 'PRODUCTS',
     route: '/products',
+  },
+  {
+    id: 'aboutUs',
+    name: 'ABOUT US',
+    route: '/about',
   },
 ]
 
@@ -51,7 +56,7 @@ const MenuPortrait = () => {
   }
 
   return (
-    <Box className="flex h-full flex-row items-center gap-2 landscape:hidden">
+    <Box className="h-full flex-row items-center gap-2 lg:hidden flex">
       <IconButton
         aria-label="menu"
         ref={btnRef}
@@ -96,17 +101,17 @@ const MenuPortrait = () => {
           <DrawerFooter>
             {isLoggedIn ? (
               <Button
-                className="w-full font-bold text-brown-800 duration-300 hover:bg-brown-200"
+                className="w-full font-normal text-xl text-brown-800 duration-300 hover:bg-brown-200"
                 onClick={handleLogout}
               >
-                Logout
+                LOGOUT
               </Button>
             ) : (
               <Button
-                className="w-full font-bold text-brown-800 duration-300 hover:bg-brown-200"
+                className="w-full text-xl font-normal text-brown-800 duration-300 hover:bg-brown-200"
                 onClick={handleLogin}
               >
-                Login
+                LOGIN
               </Button>
             )}
           </DrawerFooter>
@@ -117,7 +122,7 @@ const MenuPortrait = () => {
 }
 const MenuLandscape = () => {
   return (
-    <ul className="flex h-full flex-row items-center gap-2 portrait:hidden">
+    <ul className="h-full flex-row flex-shrink-0 items-center gap-2 lg:flex hidden">
       <li>
         <Link className="cursor-pointer" href={'/'}>
           <Logo />
@@ -149,7 +154,7 @@ const NavItem = ({
   return (
     <li>
       <Link
-        className={`${className} inline-block h-full w-full font-bold text-brown-800 duration-300 hover:cursor-pointer hover:bg-brown-100`}
+        className={`${className} inline-block h-full w-full text-brown-800 duration-300 hover:cursor-pointer hover:bg-brown-100`}
         href={route}
         onClick={onClick}
       >
