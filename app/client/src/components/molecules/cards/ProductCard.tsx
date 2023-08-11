@@ -20,7 +20,7 @@ export const ProductCard = ({
       whileTap={{ scale: 0.9 }}
       onClick={() => onClick(_id)}
     >
-      <ProductImage src={firstImage} alt={name} />
+      <ProductImage src={firstImage} alt={name} expanded={true} />
 
       <div className="flex flex-col">
         <div className="overflow-hidden text-ellipsis whitespace-nowrap font-bold">

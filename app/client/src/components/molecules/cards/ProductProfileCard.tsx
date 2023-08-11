@@ -14,19 +14,13 @@ export const ProductProfileCard = ({
 }: ProductProfileCardProps) => {
   const firstImage = images[0] ? images[0].url : ''
   return (
-    <div
-      className={`${className} grid grid-flow-row grid-cols-5 gap-4 sm:grid-cols-4`}
-    >
-      <ProductImage
-        className="col-span-2 sm:col-span-1"
-        src={firstImage}
-        alt={name}
-      />
+    <div className={`${className} flex flex-row gap-4`}>
+      <ProductImage className="flex-shrink-0" src={firstImage} alt={name} />
       <div className="col-span-3 flex flex-col">
         <div className="flex flex-col">
-          <div className="text-xl font-bold">{name}</div>
+          <div className="text-xl font-bold line-clamp-2">{name}</div>
           <div className="italic text-gray-400">{category.name}</div>
-          <div className="">{description}</div>
+          <div className="line-clamp-2">{description}</div>
         </div>
         <div>{`$${price}`}</div>
       </div>

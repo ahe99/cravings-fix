@@ -6,18 +6,24 @@ interface ProductImageProps {
   src: string
   className?: string
   alt: string
+  expanded?: boolean
 }
 
 export const ProductImage = ({
   src = '',
   alt = '',
   className = '',
+  expanded = false,
 }: ProductImageProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const hasImage = src !== ''
   return (
-    <div className={`relative aspect-square rounded-md ${className}`}>
+    <div
+      className={`relative rounded-md ${className} ${
+        expanded ? 'aspect-square' : 'product-img'
+      }`}
+    >
       {hasImage ? (
         <Fragment>
           <Skeleton

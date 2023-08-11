@@ -34,10 +34,10 @@ export const CartProductItem = ({
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-flow-row grid-cols-3 gap-4 rounded-md">
-        <ProductImage className="col-span-1" src={previewImage} alt={name} />
+      <div className="flex flex-row gap-4">
+        <ProductImage src={previewImage} alt={name} />
 
-        <div className="col-span-2 flex flex-col justify-between">
+        <div className="flex flex-col justify-between">
           <div
             className="flex flex-col hover:cursor-pointer hover:opacity-40"
             onClick={() => onClick(productId)}
@@ -58,10 +58,5 @@ export const CartProductItem = ({
         </div>
       </div>
     </div>
-  )
-}
-const MockImage = () => {
-  return (
-    <div className="col-span-1 aspect-square w-full rounded-md bg-brown-600" />
   )
 }

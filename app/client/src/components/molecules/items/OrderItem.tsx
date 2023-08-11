@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { Heading, Box } from '@chakra-ui/react'
 
 import { Order } from '@/utils/Order'
 import { Divider } from '@/components/atoms'
@@ -13,28 +14,39 @@ export const OrderItem = ({
   onClick = () => {},
 }: OrderItemProps) => {
   return (
-    <div
-      className="flex flex-col gap-2 rounded-md border-4 border-dashed border-brown-800 bg-white p-4 hover:cursor-pointer hover:opacity-40"
+    <Box
+      className="border-brown-600 bg-primary-200 hover:cursor-pointer hover:opacity-40"
+      rounded="md"
+      p={4}
+      borderWidth={4}
+      display="flex"
+      flexFlow="column"
+      gap={4}
       onClick={() => onClick(_id)}
     >
-      <div className="flex flex-row justify-between font-bold">
-        <div>{`Id: ${_id}`}</div>
-        <div>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-      </div>
+      <Box display="flex" flexFlow="row" flexWrap='wrap' justifyContent="space-between">
+        <Heading size="sm">
+          {dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}
+        </Heading>
+        <Heading size="sm">{`Id: ${_id}`}</Heading>
+      </Box>
       <Divider />
-      <div>
-        {orderItems.map(({ _id, price, quantity, food: { name } }) => (
-          <div className="flex flex-row justify-between" key={_id}>
-            <div>{`${name} x${quantity}`}</div>
-            <div>{`$${price}`}</div>
-          </div>
-        ))}
+
+      <div className="flex flex-row justify-between text-md font-bold ">
+        <div>Product Name</div>
+        <div>Price</div>
       </div>
+      {orderItems.map(({ _id, price, quantity, food: { name } }) => (
+        <div className="flex flex-row justify-between" key={_id}>
+          <div>{`${name} x${quantity}`}</div>
+          <div>{`$${price}`}</div>
+        </div>
+      ))}
       <Divider />
       <div className="flex flex-row justify-between font-bold">
         <div>Total</div>
         <div>{`$${totalPrice}`}</div>
       </div>
-    </div>
+    </Box>
   )
 }

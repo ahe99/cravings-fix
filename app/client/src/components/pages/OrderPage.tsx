@@ -1,4 +1,7 @@
 import dayjs from 'dayjs'
+import { Box, IconButton, Heading } from '@chakra-ui/react'
+import { MdArrowBack } from 'react-icons/md'
+import { useRouter } from 'next/navigation'
 
 import { Divider } from '@/components/atoms'
 import { ProductProfileCard } from '@/components/molecules'
@@ -11,15 +14,42 @@ interface OrderPageProps {
 export const OrderPage = ({
   prefetchOrder: { _id, createdAt, totalPrice, orderItems = [] },
 }: OrderPageProps) => {
+  const router = useRouter()
   return (
     <main className="page-container">
-      <h1 className="mb-8 text-3xl">Order Detail</h1>
+      <Box display="flex" flexFlow="row" gap={4}>
+        <IconButton
+          color="brown.800"
+          colorScheme="brown"
+          bg=""
+          _hover={{ bg: 'brown.100' }}
+          aria-label="Profile"
+          icon={<MdArrowBack className="text-4xl" />}
+          onClick={() => router.back()}
+        />
+        <h1 className="mb-8 text-3xl">Order Detail</h1>
+      </Box>
 
-      <div className="flex flex-col gap-4 rounded-md border-4 border-dashed border-brown-800 p-4">
-        <div className="flex flex-row justify-between text-xl font-bold">
-          <div>{`Id: ${_id}`}</div>
-          <div>{dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>
-        </div>
+      <Box
+        className="border-brown-600 bg-primary-200"
+        rounded="md"
+        p={4}
+        borderWidth={4}
+        display="flex"
+        flexFlow="column"
+        gap={4}
+      >
+        <Box
+          display="flex"
+          flexFlow="row"
+          flexWrap="wrap"
+          justifyContent="space-between"
+        >
+          <Heading size="sm">
+            {dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}
+          </Heading>
+          <Heading size="sm">{`Id: ${_id}`}</Heading>
+        </Box>
         <Divider />
         {orderItems.map((orderItem) => (
           <div key={orderItem._id} className="flex flex-row">
@@ -35,7 +65,7 @@ export const OrderPage = ({
             <div>{`$${totalPrice}`}</div>
           </div>
         </div>
-      </div>
+      </Box>
     </main>
   )
 }

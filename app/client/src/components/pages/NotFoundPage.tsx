@@ -13,7 +13,7 @@ export const NotFoundPage = () => {
 
   return (
     <main className="page-container">
-      <Box className="relative aspect-square w-3/5">
+      <Box className="relative aspect-square w-3/5 mx-auto">
         <Image
           alt="404"
           src="/404.jpg"
