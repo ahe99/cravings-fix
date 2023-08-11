@@ -30,10 +30,12 @@ const ContentBody = ({ children }: PropsWithChildren) => {
 
 const MAIN_ROUTES = [
   { name: 'Dashboard', id: 'dashboard', url: '/dashboard' },
-  { name: 'Customers', id: 'customers', url: '/customers' },
-  { name: 'Orders', id: 'orders', url: '/orders' },
+  { name: 'Categories', id: 'categories', url: '/categories' },
   { name: 'Products', id: 'products', url: '/products' },
+  { name: 'Orders', id: 'orders', url: '/orders' },
+  { name: 'Banners', id: 'banners', url: '/banners' },
   { name: 'Admins', id: 'admins', url: '/admins' },
+  { name: 'Customers', id: 'customers', url: '/customers' },
 ]
 
 const ContentAside = () => {

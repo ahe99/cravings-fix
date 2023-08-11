@@ -9,11 +9,7 @@ import {
 import { useAPI } from './useAPI'
 
 import { API } from '@/utils/API'
-import { Category } from '@/utils/ProductData'
-
-/**
- * @description fill the type after the type is defined
- */
+import { Category } from '@/utils/Category'
 
 export const useCategories = () => {
   const queryClient = useQueryClient()

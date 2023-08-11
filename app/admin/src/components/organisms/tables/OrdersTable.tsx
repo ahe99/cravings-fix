@@ -17,7 +17,7 @@ import { Paper } from '@/components/atoms'
 
 import CSS from './ProducsTable.module.css'
 
-interface OrderTableProps {
+interface OrdersTableProps {
   orders: Order[]
   onClickItem?: (productId: Order['_id']) => void
 }
@@ -60,10 +60,10 @@ const headCells: HeadCell[] = [
   },
 ]
 
-export const OrderTable = ({
+export const OrdersTable = ({
   orders,
   onClickItem = () => {},
-}: OrderTableProps) => {
+}: OrdersTableProps) => {
   const { updatePagination, currnetPage, rowsPerPage } = usePagination(10)
   const { orderBy, order, sortFn, updateSort } = useSort<Order>('createdAt')
 

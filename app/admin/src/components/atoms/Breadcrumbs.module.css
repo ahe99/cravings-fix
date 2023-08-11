@@ -3,6 +3,7 @@
 
   .breadcrumb_link_disabled {
     text-decoration: none;
+    text-transform: capitalize;
     color: black;
     font-weight: var(--nav-link-font-weight);
     font-size: var(--nav-link-font-size);
@@ -10,6 +11,7 @@
 
   .breadcrumb_link {
     text-decoration: none;
+    text-transform: capitalize;
     color: gray;
     font-weight: var(--nav-link-font-weight);
     font-size: var(--nav-link-font-size);

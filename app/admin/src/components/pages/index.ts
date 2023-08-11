@@ -1,2 +1,5 @@
+export * from './BannersPage'
+export * from './CategoriesPage'
+export * from './ProductsPage'
 export * from './OrdersPage'
 export * from './ProductsPage'

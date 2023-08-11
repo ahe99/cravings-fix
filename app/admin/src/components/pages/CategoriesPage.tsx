@@ -2,19 +2,19 @@ import { useMemo } from 'react'
 import { Button } from '@mui/material'
 import { MdAdd } from 'react-icons/md'
 
-import { useOrders } from '@/hooks'
-import { OrdersTable } from '@/components/organisms'
+import { useCategories } from '@/hooks'
+import { CategoriesTable } from '@/components/organisms'
 import { Breadcrumbs } from '@/components/atoms'
 
-import CSS from './OrdersPage.module.css'
+import CSS from './CategoriesPage.module.css'
 
-export const OrdersPage = () => {
-  const orders = useOrders()
+export const CategoriesPage = () => {
+  const categories = useCategories()
 
-  const ordersData = useMemo(() => orders.query.data ?? [], [orders.query.data])
+  const categoriesData = useMemo(() => categories.query.data ?? [], [categories.query.data])
 
   return (
-    <div className={CSS.orders_page}>
+    <div className={CSS.categories_page}>
       <div className={CSS.header}>
         <Breadcrumbs />
         <Button
@@ -26,7 +26,7 @@ export const OrdersPage = () => {
         </Button>
       </div>
 
-      <OrdersTable orders={ordersData} />
+      <CategoriesTable categories={categoriesData} />
     </div>
   )
 }
