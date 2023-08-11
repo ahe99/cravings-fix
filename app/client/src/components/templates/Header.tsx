@@ -31,9 +31,6 @@ export const Header = () => {
             _hover={{ bg: 'brown.100' }}
             aria-label="Profile"
             icon={<MdPerson className="text-4xl" />}
-            onClick={() => {
-              console.log('click')
-            }}
           />
           <MenuList>
             <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
@@ -107,7 +104,6 @@ export const Header = () => {
           </Box>
         </Box>
       </header>
-      <div className="h-16 w-full" />
     </Fragment>
   )
 }
