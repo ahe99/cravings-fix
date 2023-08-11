@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   MutationFunction,
   useMutation,
@@ -38,9 +38,16 @@ export const useAuth = ({
   const { client } = useAPI()
   const router = useRouter()
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   const apiRoute = API.routes.user
 
-  const isLoggedIn = Boolean(tokenStore.token)
+  /**
+   * @description useEffect to prevent from hydration error
+   */
+  useEffect(() => {
+    setIsLoggedIn(Boolean(tokenStore.token))
+  }, [tokenStore.token])
 
   useEffect(() => {
     if (isLoggedIn && redirectTo) {

@@ -3,7 +3,7 @@ import { useQuery, QueryFunction } from '@tanstack/react-query'
 import { useAPI } from './useAPI'
 
 import { API } from '@/utils/API'
-import { Banner } from '@/utils/BannerData'
+import { Banner } from '@/utils/Banner'
 
 /**
  * @description fill the type after the type is defined

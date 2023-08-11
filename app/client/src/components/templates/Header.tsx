@@ -1,5 +1,6 @@
 'use client'
-import React, { Fragment } from 'react'
+
+import React, { Fragment, useMemo } from 'react'
 import {
   Box,
   Menu,
@@ -16,44 +17,47 @@ import { useAuth } from '@/hooks'
 import { MainMenu } from './MainMenu'
 
 export const Header = () => {
-  const { logout, isLoggedIn, user } = useAuth()
+  const { logout, isLoggedIn, userQuery } = useAuth()
 
-  const ProfileMenu = {
-    Auth: () => (
-      <MenuList>
-        <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
-          <Link className="h-full w-full" href="/my-profile">
-            Profile
-          </Link>
-        </MenuItem>
-        <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
-          <Link className="h-full w-full" href="/orders">
-            History Orders
-          </Link>
-        </MenuItem>
-        <MenuItem
-          className="h-full w-full font-bold text-red-400 hover:bg-red-100"
-          onClick={logout}
-        >
-          Logout
-        </MenuItem>
-      </MenuList>
-    ),
-    Default: () => (
-      <MenuList>
-        <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
-          <Link href="/login" className="h-full w-full">
-            Login
-          </Link>
-        </MenuItem>
-        <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
-          <Link href="/register" className="h-full w-full">
-            Register
-          </Link>
-        </MenuItem>
-      </MenuList>
-    ),
-  }
+  const ProfileMenu = useMemo(() => {
+    if (isLoggedIn) {
+      return (
+        <MenuList>
+          <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
+            <Link className="h-full w-full" href="/my-profile">
+              Profile
+            </Link>
+          </MenuItem>
+          <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
+            <Link className="h-full w-full" href="/orders">
+              History Orders
+            </Link>
+          </MenuItem>
+          <MenuItem
+            className="h-full w-full font-bold text-red-400 hover:bg-red-100"
+            onClick={logout}
+          >
+            Logout
+          </MenuItem>
+        </MenuList>
+      )
+    } else {
+      return (
+        <MenuList>
+          <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
+            <Link href="/login" className="h-full w-full">
+              Login
+            </Link>
+          </MenuItem>
+          <MenuItem className="font-bold text-brown-800 hover:bg-brown-100">
+            <Link href="/register" className="h-full w-full">
+              Register
+            </Link>
+          </MenuItem>
+        </MenuList>
+      )
+    }
+  }, [isLoggedIn])
 
   return (
     <Fragment>
@@ -62,16 +66,10 @@ export const Header = () => {
           <MainMenu.Portrait />
 
           <MainMenu.Lanscape />
-          <Box className="grid grid-cols-3 gap-4">
+          <Box className={`flex flex-row items-center gap-4`}>
             {isLoggedIn && (
-              <Box
-                h="full"
-                display="flex"
-                alignItems="center"
-                color="brown.800"
-                fontSize="xl"
-              >
-                <Box>Hi! {user?.username ?? ''}</Box>
+              <Box h="full" color="brown.800" fontSize="xl">
+                {` ${userQuery.data?.username ?? ''}, welcome!`}
               </Box>
             )}
             <IconButton
@@ -81,7 +79,7 @@ export const Header = () => {
               bg=""
               _hover={{ bg: 'brown.100' }}
               icon={
-                <Link href="cart">
+                <Link href="/cart">
                   <MdShoppingCart className="text-4xl" />
                 </Link>
               }
@@ -96,12 +94,12 @@ export const Header = () => {
                 aria-label="Profile"
                 icon={<MdPerson className="text-4xl" />}
               />
-              {isLoggedIn ? <ProfileMenu.Auth /> : <ProfileMenu.Default />}
+              {ProfileMenu}
             </Menu>
           </Box>
         </Box>
       </header>
-      <div className="h-20 w-full" />
+      <div className="h-16 w-full" />
     </Fragment>
   )
 }
