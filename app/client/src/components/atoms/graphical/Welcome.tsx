@@ -2,14 +2,14 @@ import Image from 'next/image'
 import { Box } from '@chakra-ui/react'
 
 // eslint-disable-next-line import/no-absolute-path
-import logo from '/public/logo.png'
+import welcome from '/public/welcome.webp'
 
-export const Logo = () => {
+export const Welcome = () => {
   return (
-    <Box className="relative h-16 w-40 flex-shrink-0">
+    <Box className="relative w-1/2 aspect-video">
       <Image
         alt="logo"
-        src={logo}
+        src={welcome}
         sizes="100% 100%"
         fill
         className="object-contain"

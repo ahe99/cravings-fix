@@ -1,4 +1,5 @@
 export * from './forms/UserLoginForm'
+export * from './forms/UserRegisterForm'
 
 export * from './interactive/Pagination'
 export * from './interactive/ProductFilter'

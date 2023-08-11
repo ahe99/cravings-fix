@@ -21,7 +21,7 @@ export interface APIRequestUserLogin {
 }
 
 export interface APIRequestUserRegister {
-  name: string
+  username: string
   email: string
   password: string
 }

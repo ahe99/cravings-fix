@@ -32,9 +32,12 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+body {
+  height: 100vh;
+}
 
 .page-container {
-  @apply respondive-width mx-auto flex flex-col p-4 sm:p-8;
+  @apply respondive-width mx-auto flex flex-col p-4 sm:p-8 mt-16;
 }
 .header-container {
   @apply fixed z-50 flex h-16 w-screen items-center justify-center bg-primary-300;

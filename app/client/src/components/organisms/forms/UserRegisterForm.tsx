@@ -1,31 +1,29 @@
 import { Fragment } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import { MdEmail, MdLock } from 'react-icons/md'
+import { MdEmail, MdLock, MdPerson } from 'react-icons/md'
 import { Button } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DevTool } from '@hookform/devtools'
 import { z } from 'zod'
 
-import { Checkbox, Input } from '@/components/atoms'
+import { Input } from '@/components/atoms'
 
-const UserLoginFormSchema = z.object({
+const UserRegisterFormSchema = z.object({
+  username: z.string().min(1, { message: 'Username is required' }),
   email: z.string().email().min(1, { message: 'Email is required' }),
   password: z.string().min(1, { message: 'Password is required' }),
-  rememberMe: z.boolean(),
 })
 
-type UserLoginFormDataType = z.infer<typeof UserLoginFormSchema>
-interface UserLoginFormProps {
-  onSubmit: (formData: UserLoginFormDataType) => void
+type UserRegisterFormDataType = z.infer<typeof UserRegisterFormSchema>
+interface UserRegisterFormProps {
+  onSubmit: (formData: UserRegisterFormDataType) => void
 }
 
-export const UserLoginForm = ({ onSubmit }: UserLoginFormProps) => {
-  const { formState, control, handleSubmit } = useForm<UserLoginFormDataType>({
-    resolver: zodResolver(UserLoginFormSchema),
-    defaultValues: {
-      rememberMe: false,
-    },
-  })
+export const UserRegisterForm = ({ onSubmit }: UserRegisterFormProps) => {
+  const { formState, control, handleSubmit } =
+    useForm<UserRegisterFormDataType>({
+      resolver: zodResolver(UserRegisterFormSchema),
+    })
 
   return (
     <Fragment>
@@ -33,7 +31,7 @@ export const UserLoginForm = ({ onSubmit }: UserLoginFormProps) => {
       <form
         onSubmit={handleSubmit(
           (credential) => {
-            onSubmit(processFormData(credential))
+            onSubmit(credential)
           },
           (error) => {
             console.log(error)
@@ -41,6 +39,27 @@ export const UserLoginForm = ({ onSubmit }: UserLoginFormProps) => {
         )}
         className="flex flex-col gap-2"
       >
+        <Controller
+          control={control}
+          name="username"
+          render={({
+            field: { onChange, value, name },
+            fieldState: { error },
+          }) => (
+            <Input
+              type="text"
+              placeholder="username"
+              disabled={formState.isSubmitting}
+              label="User Name"
+              leftIcon={<MdPerson />}
+              onChange={(e) => onChange(e.target.value)}
+              value={value}
+              name={name}
+              required
+              error={error?.message}
+            />
+          )}
+        />
         <Controller
           control={control}
           name="email"
@@ -83,39 +102,15 @@ export const UserLoginForm = ({ onSubmit }: UserLoginFormProps) => {
             />
           )}
         />
-
-        <Controller
-          control={control}
-          name="rememberMe"
-          render={({
-            field: { onChange, value, name },
-            fieldState: { error },
-          }) => (
-            <Checkbox
-              isChecked={value}
-              onClick={() => onChange(!value)}
-              label={'Remember Me'}
-            />
-          )}
-        />
         <Button
           disabled={formState.isSubmitting}
           className="hover:text-border-brown-800 bg-brown-800 text-base text-primary-200"
           type="submit"
           isLoading={formState.isSubmitting}
         >
-          LOGIN
+          REGISTER
         </Button>
       </form>
     </Fragment>
   )
-}
-
-export const processFormData = (formData: UserLoginFormDataType) => {
-  const { email, password, rememberMe } = formData
-  return {
-    email,
-    password,
-    rememberMe,
-  }
 }

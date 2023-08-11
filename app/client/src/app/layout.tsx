@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Metadata } from 'next'
 
-import { Header, Footer, Provider } from '@/components/templates'
+import { Header, Provider } from '@/components/templates'
 
 import './globals.css'
 
@@ -23,7 +23,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
 
           {children}
-          <Footer />
         </Provider>
       </body>
     </html>
