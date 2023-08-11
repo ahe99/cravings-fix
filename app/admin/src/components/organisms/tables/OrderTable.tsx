@@ -10,7 +10,7 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import { visuallyHidden } from '@mui/utils'
 import Box from '@mui/material/Box'
 
-import { Order } from '@/utils/ProductData'
+import { Order } from '@/utils/Order'
 import { usePagination, useSort } from '@/hooks'
 
 import { Paper } from '@/components/atoms'
@@ -19,7 +19,7 @@ import CSS from './ProducsTable.module.css'
 
 interface OrderTableProps {
   orders: Order[]
-  onClickItem?: (productId: Order['objectId']) => void
+  onClickItem?: (productId: Order['_id']) => void
 }
 interface HeadCell {
   id: keyof Order
@@ -31,18 +31,18 @@ interface HeadCell {
 
 const headCells: HeadCell[] = [
   {
-    id: 'owner',
+    id: 'user',
     sortable: true,
     numeric: false,
     disablePadding: false,
-    label: 'Name',
+    label: 'User',
   },
   {
     id: 'totalPrice',
     sortable: true,
     numeric: true,
     disablePadding: false,
-    label: 'Price',
+    label: 'Total Price',
   },
   {
     id: 'createdAt',
@@ -111,18 +111,18 @@ export const OrderTable = ({
         </TableHead>
         <TableBody>
           {paginatedOrders.map(
-            ({ objectId, owner, totalPrice, createdAt, updatedAt }) => (
+            ({ _id, user, totalPrice, createdAt, updatedAt }) => (
               <TableRow
-                key={objectId}
+                key={_id}
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': { opacity: 0.4 },
                 }}
                 hover={true}
-                onClick={() => onClickItem(objectId)}
+                onClick={() => onClickItem(_id)}
               >
                 <TableCell component="th" scope="row">
-                  {owner}
+                  {user.username}
                 </TableCell>
 
                 <TableCell align="right">{`$${totalPrice}`}</TableCell>

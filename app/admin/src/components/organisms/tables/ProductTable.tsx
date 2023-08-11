@@ -10,42 +10,47 @@ import TableSortLabel from '@mui/material/TableSortLabel'
 import { visuallyHidden } from '@mui/utils'
 import Box from '@mui/material/Box'
 
-import { Product } from '@/utils/ProductData'
+import { Product } from '@/utils/Product'
 import { usePagination, useSort } from '@/hooks'
 
 import { Paper } from '@/components/atoms'
 
 import CSS from './ProducsTable.module.css'
+import { useState } from 'react'
+import { Button, IconButton } from '@mui/material'
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 
 interface ProductTableProps {
-  products: (Product & { categoryName: string })[]
+  products: Product[]
   onClickItem?: (productId: Product['_id']) => void
 }
 interface HeadCell {
-  id: keyof (Product & { categoryName: string })
+  id: keyof Product
   label: string
   disablePadding: boolean
   sortable: boolean
   numeric: boolean
+  hideable?: boolean
 }
 
 const headCells: HeadCell[] = [
+  {
+    id: 'name',
+    sortable: true,
+    numeric: false,
+    disablePadding: false,
+    label: 'Product Name',
+  },
   {
     id: 'images',
     sortable: false,
     numeric: false,
     disablePadding: false,
     label: 'Preview',
+    hideable: true,
   },
   {
-    id: 'name',
-    sortable: true,
-    numeric: false,
-    disablePadding: false,
-    label: 'Name',
-  },
-  {
-    id: 'categoryName',
+    id: 'category',
     sortable: true,
     numeric: false,
     disablePadding: false,
@@ -80,15 +85,68 @@ const headCells: HeadCell[] = [
     label: 'Last update',
   },
 ]
+const createRows = ({
+  _id,
+  name,
+  price,
+  stockQuantity,
+  category,
+  createdAt,
+  updatedAt,
+  images,
+}: Product) => ({
+  _id,
+  name,
+  price,
+  stockQuantity,
+  categoryName: category.name,
+  createdAt,
+  updatedAt,
+  image: images && images[0] ? images[0].url : '',
+})
+type Row = ReturnType<typeof createRows>
 
 export const ProductTable = ({
   products,
   onClickItem = () => {},
 }: ProductTableProps) => {
   const { updatePagination, currnetPage, rowsPerPage } = usePagination(10)
-  const { orderBy, order, sortFn, updateSort } = useSort<
-    Product & { categoryName: string }
-  >('createdAt')
+  const { orderBy, order, sortFn, updateSort } = useSort<Product>('createdAt')
+  const [visibleImages, setVisibleImages] = useState<{
+    [K in Product['_id']]: boolean
+  }>({})
+  const [isImagesAllVisible, setIsImagesAllVisible] = useState(false)
+
+  const imageAction = {
+    show: (_id: Product['_id']) =>
+      setVisibleImages((prev) => ({
+        ...prev,
+        [_id]: true,
+      })),
+    hide: (_id: Product['_id']) =>
+      setVisibleImages((prev) => ({
+        ...prev,
+        [_id]: false,
+      })),
+    showAll: () => {
+      paginatedProducts.forEach(({ _id }) => {
+        setVisibleImages((prev) => ({
+          ...prev,
+          [_id]: true,
+        }))
+        setIsImagesAllVisible(true)
+      })
+    },
+    hideAll: () => {
+      paginatedProducts.forEach(({ _id }) => {
+        setVisibleImages((prev) => ({
+          ...prev,
+          [_id]: false,
+        }))
+      })
+      setIsImagesAllVisible(false)
+    },
+  }
 
   const sortedProducts = sortFn(products)
   const paginatedProducts = sortedProducts.filter(
@@ -97,25 +155,27 @@ export const ProductTable = ({
       index < rowsPerPage * (currnetPage + 1),
   )
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={CSS.table_container}>
       <Table sx={{ minWidth: 650 }} aria-label="produdcts-table">
         <TableHead>
           <TableRow>
             {headCells.map(
-              ({ label, id, numeric, disablePadding, sortable }) => (
+              ({ label, id, numeric, disablePadding, sortable, hideable }) => (
                 <TableCell
                   key={id}
                   align={numeric ? 'right' : 'left'}
                   padding={disablePadding ? 'none' : 'normal'}
                   sortDirection={orderBy === id ? order : false}
                 >
+                  {!sortable && (
+                    <span className={CSS.table_head_text}>{label}</span>
+                  )}
                   {sortable ? (
                     <TableSortLabel
                       active={orderBy === id}
                       direction={orderBy === id ? order : 'asc'}
                       onClick={() => updateSort(id)}
                     >
-                      <span className={CSS.table_head_text}>{label}</span>
                       {orderBy === id ? (
                         <Box component="span" sx={visuallyHidden}>
                           {order === 'desc'
@@ -123,9 +183,23 @@ export const ProductTable = ({
                             : 'sorted ascending'}
                         </Box>
                       ) : null}
+                      <span className={CSS.table_head_text}>{label}</span>
                     </TableSortLabel>
+                  ) : hideable && isImagesAllVisible ? (
+                    <span>
+                      <span className={CSS.table_head_text}>{label}</span>
+
+                      <IconButton onClick={imageAction.hideAll}>
+                        <MdVisibility />
+                      </IconButton>
+                    </span>
                   ) : (
-                    <span className={CSS.table_head_text}>{label}</span>
+                    <span>
+                      <span className={CSS.table_head_text}>{label}</span>
+                      <IconButton onClick={imageAction.showAll}>
+                        <MdVisibilityOff />
+                      </IconButton>
+                    </span>
                   )}
                 </TableCell>
               ),
@@ -139,7 +213,7 @@ export const ProductTable = ({
               name,
               price,
               stockQuantity,
-              categoryName,
+              category,
               createdAt,
               updatedAt,
               images,
@@ -149,21 +223,30 @@ export const ProductTable = ({
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': { opacity: 0.4 },
+                  'height': '6rem',
                 }}
                 hover={true}
                 onClick={() => onClickItem(_id)}
               >
                 <TableCell component="th" scope="row">
-                  <img
-                    className={CSS.product_image}
-                    src={images[0] ? images[0].url : ''}
-                    alt={name}
-                  />
-                </TableCell>
-                <TableCell component="th" scope="row">
                   {name}
                 </TableCell>
-                <TableCell>{categoryName}</TableCell>
+                <TableCell>
+                  {visibleImages[_id] ? (
+                    <img
+                      className={CSS.product_image}
+                      src={images[0] ? images[0].url : ''}
+                      alt={name}
+                      onClick={() => imageAction.hide(_id)}
+                    />
+                  ) : (
+                    <Button onClick={() => imageAction.show(_id)}>
+                      See Image
+                    </Button>
+                  )}
+                </TableCell>
+
+                <TableCell>{category.name}</TableCell>
                 <TableCell align="right">{`$${price}`}</TableCell>
                 <TableCell align="right">{stockQuantity}</TableCell>
                 <TableCell align="right">
