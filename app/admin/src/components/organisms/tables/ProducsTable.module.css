@@ -1,10 +1,15 @@
 .table_container {
   overflow: auto;
 }
+.product_name_cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
 .product_image {
-  width: 6rem;
-  border-radius: 0.2rem;
+  width: 4rem;
+  border-radius: 0.5rem;
 }
 .table_head_text {
   font-weight: 800;
