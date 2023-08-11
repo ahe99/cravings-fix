@@ -8,7 +8,7 @@ const getPageTitleByPath = (currentPath = '') => {
   const mapping = {
     dashboard: 'Dashboard',
     customers: 'Customers',
-    orders: 'Oders',
+    orders: 'Orders',
     products: 'Products',
     admins: 'Admins',
   }
