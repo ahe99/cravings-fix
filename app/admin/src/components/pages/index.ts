@@ -1,5 +1,6 @@
 export * from './BannersPage'
 export * from './CategoriesPage'
+export * from './NewsPage'
 export * from './ProductsPage'
 export * from './OrdersPage'
 export * from './ProductsPage'
