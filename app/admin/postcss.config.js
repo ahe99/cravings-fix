@@ -1,5 +1,3 @@
-// module.exports = require('@cravings-fix/configs/tailwind/postcss.config')
-import config from '@cravings-fix/configs/tailwind/postcss.config'
 import postcssPresetEnv from 'postcss-preset-env'
 
 export default {
@@ -10,6 +8,5 @@ export default {
         'nesting-rules': true,
       },
     }),
-    ...config.plugins,
   },
 }
