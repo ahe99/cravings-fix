@@ -2,12 +2,12 @@
   "name": "e-commerce",
   "private": true,
   "scripts": {
-    "dev": "pnpm -r run dev",
+    "dev": "pnpm -r --filter './app/**' run dev",
     "start": "pnpm -r start",
     "build": "pnpm --filter=!api build",
     "dev:client": "pnpm run -C app/client dev",
     "dev:api": "pnpm run -C app/api dev",
-    "dev:admin": "pnpm run -C app/api dev"
+    "dev:admin": "pnpm run -C app/admin dev"
   },
   "dependencies": {},
   "devDependencies": {

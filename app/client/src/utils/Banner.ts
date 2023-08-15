@@ -1,3 +1,4 @@
 import { ImageType } from './Image'
+import { ExtendedMongoData } from './MongoData'
 
-export type Banner = ImageType
+export type Banner = ExtendedMongoData<ImageType>
