@@ -1,6 +1,4 @@
 .breadcrumbs {
-  margin-bottom: 1rem;
-
   .breadcrumb_link_disabled {
     text-decoration: none;
     text-transform: capitalize;
@@ -19,5 +17,13 @@
     &:hover {
       opacity: 0.4;
     }
+  }
+
+  .breadcrumb_separator {
+    text-decoration: none;
+    text-transform: capitalize;
+    color: gray;
+    font-weight: var(--nav-link-font-weight);
+    font-size: var(--nav-link-font-size);
   }
 }

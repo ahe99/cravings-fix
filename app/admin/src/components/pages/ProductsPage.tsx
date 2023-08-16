@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { Button } from '@mui/material'
-import { MdAdd } from 'react-icons/md'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 import { useProducts } from '@/hooks'
-import { ProductTable } from '@/components/organisms'
+import { ProductsTable } from '@/components/organisms'
 import { Breadcrumbs } from '@/components/atoms'
 
 import CSS from './ProductsPage.module.css'
@@ -21,15 +21,15 @@ export const ProductsPage = () => {
       <div className={CSS.header}>
         <Breadcrumbs />
         <Button
-          variant="contained"
+          type="primary"
           className={CSS.add_button}
-          endIcon={<MdAdd />}
+          icon={<PlusOutlined />}
         >
-          New
+          NEW
         </Button>
       </div>
 
-      <ProductTable products={productsData} />
+      <ProductsTable products={productsData} />
     </div>
   )
 }

@@ -1,0 +1,18 @@
+.main_menu {
+  background-color: lightgray;
+  font-size: 1.2rem;
+
+  & li {
+    height: 4rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+
+    span[role='img'] {
+      height: 100% !important;
+    }
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+}

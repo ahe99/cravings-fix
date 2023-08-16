@@ -1,45 +1,51 @@
 import { useLocation, Link } from 'react-router-dom'
 
-import BreadcrumbsBase from '@mui/material/Breadcrumbs'
+import { Breadcrumb as BreadcrumbsBase } from 'antd'
 
 import CSS from './Breadcrumbs.module.css'
 
-const getPageTitleByPath = (currentPath = '') => {
-  const mapping = {
-    dashboard: 'Dashboard',
-    customers: 'Customers',
-    orders: 'Orders',
-    products: 'Products',
-    admins: 'Admins',
-  }
-
-  const pageTitle = mapping[currentPath as keyof typeof mapping]
-
-  return typeof pageTitle === 'string' ? pageTitle : currentPath
+const breadcrumbNameMap: Record<string, string> = {
+  '/dashboard': 'Dashboard',
+  '/categories': 'Categories',
+  '/products': 'Products',
+  '/orders': 'Orders',
+  '/banners': 'Banners',
+  '/users': 'Users',
+  '/news': 'News',
 }
 
 export const Breadcrumbs = () => {
   const { pathname } = useLocation()
-  const routes = pathname.split('/')
-  const filterRoutes = routes.filter((_, index) => index !== 0)
+
+  const pathSnippets = pathname.split('/').filter((i) => i)
+
+  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
+    return {
+      key: url,
+      title: (
+        <Link className={CSS.breadcrumb_link} to={url}>
+          {breadcrumbNameMap[url]}
+        </Link>
+      ),
+    }
+  })
+  const breadcrumbItems = [
+    {
+      title: (
+        <Link className={CSS.breadcrumb_link} to="/">
+          Home
+        </Link>
+      ),
+      key: 'home',
+    },
+  ].concat(extraBreadcrumbItems)
 
   return (
-    <BreadcrumbsBase className={CSS.breadcrumbs}>
-      <Link className={CSS.breadcrumb_link} to="/">
-        Home
-      </Link>
-
-      {filterRoutes.map((route, index) =>
-        index === filterRoutes.length - 1 ? (
-          <span key={route} className={CSS.breadcrumb_link_disabled}>
-            {getPageTitleByPath(route)}
-          </span>
-        ) : (
-          <Link className={CSS.breadcrumb_link} to={route} key={route}>
-            {getPageTitleByPath(route)}
-          </Link>
-        ),
-      )}
-    </BreadcrumbsBase>
+    <BreadcrumbsBase
+      className={CSS.breadcrumbs}
+      items={breadcrumbItems}
+      separator={<span className={CSS.breadcrumb_separator}>/</span>}
+    />
   )
 }

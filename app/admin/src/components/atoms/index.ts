@@ -1,2 +1,3 @@
+export * from './graphical/BaseChart'
+
 export * from './Breadcrumbs'
-export * from './Paper'

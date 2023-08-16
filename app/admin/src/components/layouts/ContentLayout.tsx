@@ -1,58 +1,66 @@
-import { PropsWithChildren } from 'react'
+import { useState, PropsWithChildren } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button, Layout } from 'antd'
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
+import { MainMenu } from '@/components/template'
 
 import CSS from './ContentLayout.module.css'
 
+const { Header, Sider, Content } = Layout
+
 export const ContentLayout = ({ children }: PropsWithChildren) => {
-  return (
-    <div className={CSS.content_layout}>
-      <ContentHeader />
-      <ContentAside />
-      <ContentBody>{children}</ContentBody>
-    </div>
-  )
-}
-const ContentHeader = () => {
-  return (
-    <header className={CSS.header}>
-      <img src="/logo.png" />
-      <span>Admin</span>
-    </header>
-  )
-}
-
-const ContentBody = ({ children }: PropsWithChildren) => {
-  return <main className={CSS.main}>{children}</main>
-}
-
-const MAIN_ROUTES = [
-  { name: 'Dashboard', id: 'dashboard', url: '/dashboard' },
-  { name: 'Categories', id: 'categories', url: '/categories' },
-  { name: 'Products', id: 'products', url: '/products' },
-  { name: 'Orders', id: 'orders', url: '/orders' },
-  { name: 'Banners', id: 'banners', url: '/banners' },
-  { name: 'Users', id: 'users', url: '/users' },
-  { name: 'News', id: 'news', url: '/news' },
-]
-
-const ContentAside = () => {
   const navigate = useNavigate()
+
+  const [collapsed, setCollapsed] = useState(true)
+
+  const onClckNavItem = (key: string) => {
+    navigate(key)
+  }
+
+  const menuAction = {
+    show: () => {
+      setCollapsed(true)
+    },
+    close: () => {
+      setCollapsed(false)
+    },
+    toggle: () => {
+      setCollapsed((prev) => !prev)
+    },
+  }
+
   return (
-    <aside className={CSS.left_drawer}>
-      <List>
-        {MAIN_ROUTES.map(({ name, id, url }) => (
-          <ListItem
-            className={CSS.nav_item}
-            key={id}
-            onClick={() => navigate(url)}
-          >
-            {name}
-          </ListItem>
-        ))}
-      </List>
-    </aside>
+    <Layout className={CSS.content_layout}>
+      <Sider
+        className={CSS.sider}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
+        <div
+          style={{
+            height: '4rem',
+          }}
+        />
+
+        <MainMenu onClick={onClckNavItem} />
+      </Sider>
+
+      <Layout>
+        <Header className={CSS.header}>
+          <Button
+            icon={collapsed ? <MenuFoldOutlined /> : <MenuUnfoldOutlined />}
+            onClick={menuAction.toggle}
+            size='large'
+          />
+          <img className={CSS.logo} src="/logo.png" />
+          <span className={CSS.divider} />
+
+          <span className={CSS.title}>Admin</span>
+        </Header>
+        <Content className={CSS.content}>{children}</Content>
+      </Layout>
+    </Layout>
   )
 }

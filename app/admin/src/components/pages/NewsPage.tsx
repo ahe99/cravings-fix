@@ -1,8 +1,8 @@
-import { TextEditor } from '@/components/organisms/TextEditor'
-import { Button } from '@mui/material'
-import { MdAdd } from 'react-icons/md'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 import { Breadcrumbs } from '@/components/atoms'
+import { TextEditor } from '@/components/organisms/TextEditor'
 
 import CSS from './NewsPage.module.css'
 
@@ -12,11 +12,11 @@ export const NewsPage = () => {
       <div className={CSS.header}>
         <Breadcrumbs />
         <Button
-          variant="contained"
+          type="primary"
           className={CSS.add_button}
-          endIcon={<MdAdd />}
+          icon={<PlusOutlined />}
         >
-          New
+          NEW
         </Button>
       </div>
       <TextEditor />

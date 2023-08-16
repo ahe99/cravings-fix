@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { Button } from '@mui/material'
-import { MdAdd } from 'react-icons/md'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 import { useUsers } from '@/hooks'
 import { UsersTable } from '@/components/organisms'
@@ -18,11 +18,11 @@ export const UsersPage = () => {
       <div className={CSS.header}>
         <Breadcrumbs />
         <Button
-          variant="contained"
+          type="primary"
           className={CSS.add_button}
-          endIcon={<MdAdd />}
+          icon={<PlusOutlined />}
         >
-          New
+          NEW
         </Button>
       </div>
 
