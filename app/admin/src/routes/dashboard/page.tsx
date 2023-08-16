@@ -1,9 +1,7 @@
+import { DashboardPage } from '@/components/pages/DashboardPage'
+
 const DashboardRoute = () => {
-  return (
-    <div>
-      <div>dashboard</div>
-    </div>
-  )
+  return <DashboardPage />
 }
 DashboardRoute.layouts = 'content'
 DashboardRoute.displayName = 'DashboardRoute'
