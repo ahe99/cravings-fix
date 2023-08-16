@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Button } from 'antd'
+import { Button, Card } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
 import { useBanners } from '@/hooks'
@@ -28,8 +28,9 @@ export const BannersPage = () => {
           NEW
         </Button>
       </div>
-
-      <BannersTable banners={bannersData} />
+      <Card>
+        <BannersTable banners={bannersData} />
+      </Card>
     </div>
   )
 }

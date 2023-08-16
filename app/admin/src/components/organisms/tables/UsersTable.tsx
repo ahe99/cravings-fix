@@ -1,5 +1,5 @@
 import { Key } from 'react'
-import { Table, Card } from 'antd'
+import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 
@@ -63,22 +63,20 @@ export const UsersTable = ({
   }
 
   return (
-    <Card>
-      <Table
-        columns={columns}
-        dataSource={users}
-        rowSelection={{
-          type: 'checkbox',
-          ...rowSelection,
-        }}
-        onRow={(record) => {
-          return {
-            onClick: () => onClickItem(record),
-          }
-        }}
-        style={{ cursor: 'pointer' }}
-        rowKey="_id"
-      />
-    </Card>
+    <Table
+      columns={columns}
+      dataSource={users}
+      rowSelection={{
+        type: 'checkbox',
+        ...rowSelection,
+      }}
+      onRow={(record) => {
+        return {
+          onClick: () => onClickItem(record),
+        }
+      }}
+      style={{ cursor: 'pointer' }}
+      rowKey="_id"
+    />
   )
 }
