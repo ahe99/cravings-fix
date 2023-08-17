@@ -48,20 +48,25 @@ export const CartProductPage = () => {
   }
 
   const checkout = async () => {
-    try {
-      if (isLoggedIn) {
-        await cartProducts.checkout.mutateAsync()
-      } else {
-        router.push('/login')
+    if (isCartEmpty) {
+      return
+    } else {
+      try {
+        if (isLoggedIn) {
+          await cartProducts.checkout.mutateAsync()
+        } else {
+          router.push('/login')
+        }
+      } catch (e) {
+        console.log(e)
       }
-    } catch (e) {
-      console.log(e)
     }
   }
 
   const totalPrice = cartProductsData
     .map(({ price }) => price)
     .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+  const isCartEmpty = cartProductsData.length === 0
   return (
     <main className="page-container">
       <h1 className="mb-8 text-3xl">Shopping Cart</h1>
@@ -80,6 +85,7 @@ export const CartProductPage = () => {
           variant="outline"
           className="w-max items-center self-end border-2 border-brown-800 text-brown-800"
           onClick={checkout}
+          disabled={isCartEmpty}
         >
           Checkout
           <MdArrowRight className="text-xl" />

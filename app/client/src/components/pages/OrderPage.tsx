@@ -1,20 +1,29 @@
-import dayjs from 'dayjs'
+import { useMemo } from 'react'
 import { Box, IconButton, Heading } from '@chakra-ui/react'
 import { MdArrowBack } from 'react-icons/md'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
+import dayjs from 'dayjs'
 
 import { Divider } from '@/components/atoms'
 import { ProductProfileCard } from '@/components/molecules'
 
+import { useOrders } from '@/hooks'
 import { Order } from '@/utils/Order'
 interface OrderPageProps {
-  prefetchOrder: Order
+  orderId: Order['_id']
 }
 
-export const OrderPage = ({
-  prefetchOrder: { _id, createdAt, totalPrice, orderItems = [] },
-}: OrderPageProps) => {
+export const OrderPage = ({ orderId }: OrderPageProps) => {
   const router = useRouter()
+  const orders = useOrders()
+
+  const orderData: Order | undefined = useMemo(() => {
+    return orders.query.data?.find(({ _id }) => _id === orderId)
+  }, [orders.query.data])
+
+  if (orderData === undefined) {
+    notFound()
+  }
   return (
     <main className="page-container">
       <Box display="flex" flexFlow="row" gap={4}>
@@ -46,12 +55,12 @@ export const OrderPage = ({
           justifyContent="space-between"
         >
           <Heading size="sm">
-            {dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}
+            {dayjs(orderData.createdAt).format('YYYY-MM-DD HH:mm:ss')}
           </Heading>
-          <Heading size="sm">{`Id: ${_id}`}</Heading>
+          <Heading size="sm">{`Id: ${orderData._id}`}</Heading>
         </Box>
         <Divider />
-        {orderItems.map((orderItem) => (
+        {orderData.orderItems.map((orderItem) => (
           <div key={orderItem._id} className="flex flex-row">
             <ProductProfileCard className="flex-1" product={orderItem.food} />
             <div className="flex-shrink-0 self-start font-bold">{`x${orderItem.quantity}`}</div>
@@ -62,7 +71,7 @@ export const OrderPage = ({
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between text-lg font-bold">
             <div>Total</div>
-            <div>{`$${totalPrice}`}</div>
+            <div>{`$${orderData.totalPrice}`}</div>
           </div>
         </div>
       </Box>

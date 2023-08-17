@@ -6,12 +6,10 @@ import { OrderList } from '@/components/organisms'
 import { useOrders } from '@/hooks'
 import { Order } from '@/utils/Order'
 
-interface OrdersPageProps {
-  prefetchOrders?: Order[]
-}
+interface OrdersPageProps {}
 
-export const OrdersPage = ({ prefetchOrders = [] }: OrdersPageProps) => {
-  const orders = useOrders(prefetchOrders)
+export const OrdersPage = () => {
+  const orders = useOrders()
   const router = useRouter()
 
   const ordersData = useMemo(() => orders.query.data ?? [], [orders.query.data])

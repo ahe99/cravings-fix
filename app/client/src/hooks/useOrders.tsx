@@ -11,11 +11,7 @@ import { useAPI } from './useAPI'
 import { API } from '@/utils/API'
 import { Order } from '@/utils/Order'
 
-/**
- * @description fill the type after the type is defined
- */
-
-export const useOrders = (initialData: Order[] = []) => {
+export const useOrders = () => {
   const queryClient = useQueryClient()
 
   const { request } = useAPI()
@@ -30,7 +26,6 @@ export const useOrders = (initialData: Order[] = []) => {
   const ordersDataQuery = useQuery({
     queryKey: ['orders'],
     queryFn: getOrdersData,
-    initialData,
   })
 
   const createOrder: MutationFunction<unknown, Order> = async (

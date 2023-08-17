@@ -63,8 +63,8 @@ export const API = {
       checkout: '/carts/my/checkout',
     },
     orders: {
-      list: '/orders',
-      data: (param: string | number) => `/orders/${param ?? ''}`,
+      list: '/orders/my',
+      data: (param: string | number) => `/orders/my/${param ?? ''}`,
       create: '/orders',
     },
     banners: {
