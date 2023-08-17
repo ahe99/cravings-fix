@@ -8,6 +8,7 @@ import {
   deleteCategory,
 } from '../controller/category.controller'
 import { validateResource } from '../middleware/validate.middleware'
+import { isAdmin, isAuth } from '../middleware/auth.middleware'
 
 import {
   GetCategoriesRequestSchema,
@@ -64,6 +65,8 @@ router.get('/', validateResource(GetCategoriesRequestSchema), getAllCategories)
  *   get:
  *     summary: Get a single category item by ID
  *     tags: [categories]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -97,6 +100,8 @@ router.get('/', validateResource(GetCategoriesRequestSchema), getAllCategories)
  */
 router.get(
   '/:id',
+  isAuth,
+  isAdmin,
   validateResource(GetCategoryRequestSchema),
   getSingleCategory,
 )
@@ -107,6 +112,8 @@ router.get(
  *   post:
  *     summary: Add a new category item
  *     tags: [categories]
+ *     security:
+ *        - token: []
  *     requestBody:
  *       description: Category object to be added
  *       required: true
@@ -143,7 +150,13 @@ router.get(
  *       500:
  *         description: Internal server error
  */
-router.post('/', validateResource(PostCategoryCreateSchema), addCategory)
+router.post(
+  '/',
+  isAuth,
+  isAdmin,
+  validateResource(PostCategoryCreateSchema),
+  addCategory,
+)
 
 /**
  * @swagger
@@ -151,6 +164,8 @@ router.post('/', validateResource(PostCategoryCreateSchema), addCategory)
  *   put:
  *     summary: Update a category item
  *     tags: [categories]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -195,9 +210,17 @@ router.post('/', validateResource(PostCategoryCreateSchema), addCategory)
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', validateResource(PatchCategoryRequestSchema), updateCategory)
+router.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(PatchCategoryRequestSchema),
+  updateCategory,
+)
 router.patch(
   '/:id',
+  isAuth,
+  isAdmin,
   validateResource(PatchCategoryRequestSchema),
   updateCategory,
 )
@@ -208,6 +231,8 @@ router.patch(
  *   delete:
  *     summary: Delete a category item
  *     tags: [categories]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -239,6 +264,8 @@ router.patch(
  */
 router.delete(
   '/:id',
+  isAuth,
+  isAdmin,
   validateResource(DeleteCategoryRequestSchema),
   deleteCategory,
 )

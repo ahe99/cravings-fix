@@ -118,6 +118,8 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *   post:
  *     summary: Add a new food item
  *     tags: [foods]
+ *     security:
+ *        - token: []
  *     requestBody:
  *       description: Food object to be added
  *       required: true
@@ -172,7 +174,13 @@ router.get('/:id', validateResource(GetFoodRequestSchema), getSingleFood)
  *       500:
  *         description: Internal server error
  */
-router.post('/', validateResource(PostFoodCreateSchema), addFood)
+router.post(
+  '/',
+  isAuth,
+  isAdmin,
+  validateResource(PostFoodCreateSchema),
+  addFood,
+)
 
 /**
  * @swagger
@@ -294,6 +302,8 @@ router.delete(
  *   put:
  *     summary: Update a food item
  *     tags: [foods]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -356,8 +366,20 @@ router.delete(
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', validateResource(PatchFoodRequestSchema), updateFood)
-router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
+router.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(PatchFoodRequestSchema),
+  updateFood,
+)
+router.patch(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(PatchFoodRequestSchema),
+  updateFood,
+)
 
 /**
  * @swagger
@@ -365,6 +387,8 @@ router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
  *   delete:
  *     summary: Delete a food item
  *     tags: [foods]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -403,6 +427,12 @@ router.patch('/:id', validateResource(PatchFoodRequestSchema), updateFood)
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', validateResource(DeleteFoodRequestSchema), deleteFood)
+router.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(DeleteFoodRequestSchema),
+  deleteFood,
+)
 
 export = router

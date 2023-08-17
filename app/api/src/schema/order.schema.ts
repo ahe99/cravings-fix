@@ -57,6 +57,20 @@ export const GetOrderRequestSchema = z.object({
   }),
 })
 
+export const GetMyOrderRequestSchema = z.object({
+  params: z.object({
+    id: z.string().refine(
+      async (_id) => {
+        const count = await OrderModel.find({ _id }).count()
+        return count !== 0
+      },
+      {
+        message: 'ORDER_NOT_FOUND',
+      },
+    ),
+  }),
+})
+
 export const PostOrderCreateItemRequestSchema = z.object({
   params: z.object({
     foodId: z.string().refine(

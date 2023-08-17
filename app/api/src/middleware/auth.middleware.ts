@@ -32,9 +32,11 @@ export const isAdmin: RequestHandler = async (req, res, next) => {
       const user = await UserModel.findById(decoded._id)
       if (user?.role === ROLES.ADMIN) {
         next()
+      } else {
+        throw new Error(responseMessage[401])
       }
     } else {
-      return res.status(401).send(responseMessage[401])
+      throw new Error(responseMessage[401])
     }
   } catch (e) {
     return res.status(401).send(responseMessage[401])
@@ -53,9 +55,11 @@ export const isCustomer: RequestHandler = async (req, res, next) => {
 
       if (user?.role === ROLES.CUSTOMER) {
         next()
+      } else {
+        throw new Error(responseMessage[401])
       }
     } else {
-      return res.status(401).send(responseMessage[401])
+      throw new Error(responseMessage[401])
     }
   } catch (e) {
     return res.status(401).send(responseMessage[401])

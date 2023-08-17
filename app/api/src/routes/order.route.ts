@@ -2,7 +2,8 @@ import express from 'express'
 const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
-import { isAuth } from '../middleware/auth.middleware'
+import { isAuth, isAdmin } from '../middleware/auth.middleware'
+import { isMyOrder } from '../middleware/order.middleware'
 
 import {
   getAllOrders,
@@ -35,6 +36,8 @@ import {
  *   get:
  *     summary: Get all orders.
  *     tags: [orders]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: query
  *         name: limit
@@ -56,7 +59,13 @@ import {
  *       500:
  *         description: Internal server error.
  */
-router.get('/', validateResource(GetOrdersRequestSchema), getAllOrders)
+router.get(
+  '/',
+  isAuth,
+  isAdmin,
+  validateResource(GetOrdersRequestSchema),
+  getAllOrders,
+)
 
 /**
  * @swagger
@@ -96,10 +105,12 @@ router.get(
 
 /**
  * @swagger
- * /orders/{id}:
+ * /orders/my/{id}:
  *   get:
- *     summary: Get a single order by ID.
+ *     summary: Get a single order by ID of current user.
  *     tags: [orders]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -118,7 +129,47 @@ router.get(
  *       500:
  *         description: Internal server error.
  */
-router.get('/:id', validateResource(GetOrderRequestSchema), getSingleOrder)
+router.get(
+  '/my/:id',
+  isAuth,
+  isMyOrder,
+  validateResource(GetOrderRequestSchema),
+  getSingleOrder,
+)
+
+/**
+ * @swagger
+ * /orders/{id}:
+ *   get:
+ *     summary: Get a single order by ID.
+ *     tags: [orders]
+ *     security:
+ *        - token: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the order item to retrieve
+ *         schema:
+ *           type: string
+ *         example: 1234567890
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the order item.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetOrdersResponse'
+ *       500:
+ *         description: Internal server error.
+ */
+router.get(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(GetOrderRequestSchema),
+  getSingleOrder,
+)
 
 /**
  * @swagger
@@ -126,6 +177,8 @@ router.get('/:id', validateResource(GetOrderRequestSchema), getSingleOrder)
  *   get:
  *     summary: Get orders by user ID.
  *     tags: [orders]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -156,6 +209,8 @@ router.get('/:id', validateResource(GetOrderRequestSchema), getSingleOrder)
  */
 router.get(
   '/user/:userId',
+  isAuth,
+  isAdmin,
   validateResource(GetOrdersByUserIdRequestSchema),
   getOrdersByUserId,
 )
@@ -166,6 +221,8 @@ router.get(
  *   put:
  *     summary: Update a order's price
  *     tags: [orders]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -198,11 +255,15 @@ router.get(
  */
 router.put(
   '/price/:id',
+  isAuth,
+  isAdmin,
   validateResource(PatchOrderPriceRequestSchema),
   updateOrderPrice,
 )
 router.patch(
   '/price/:id',
+  isAuth,
+  isAdmin,
   validateResource(PatchOrderPriceRequestSchema),
   updateOrderPrice,
 )
@@ -213,6 +274,8 @@ router.patch(
  *   delete:
  *     summary: Delete a order item
  *     tags: [orders]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -231,6 +294,12 @@ router.patch(
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', validateResource(DeleteOrderRequestSchema), deleteOrder)
+router.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(DeleteOrderRequestSchema),
+  deleteOrder,
+)
 
 export = router

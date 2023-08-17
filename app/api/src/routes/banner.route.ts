@@ -8,7 +8,7 @@ import {
 } from '../controller/banner.controller'
 import { DeleteBannerRequestSchema } from '../schema/banner.schema'
 import { validateResource } from '../middleware/validate.middleware'
-import { isAdmin, isAuth } from '../middleware/auth.middleware'
+import { isAuth, isAdmin } from '../middleware/auth.middleware'
 import { upload } from '../middleware/file.middleware'
 
 /**
@@ -80,7 +80,7 @@ router.get('/', getAllBanners)
  *                 msg:
  *                   type: string
  *               example:
- *                 msg: Banner updated
+ *                 msg: Banner added
  *       400:
  *         description: Bad Request - No banner images provided.
  *       500:

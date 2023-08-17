@@ -2,6 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
+import { isAuth, isAdmin } from '../middleware/auth.middleware'
 import {
   GetUsersRequestSchema,
   GetUserRequestSchema,
@@ -19,7 +20,6 @@ import {
   deleteUser,
   getCurrentUser,
 } from '../controller/user.controller'
-import { isAuth } from '../middleware/auth.middleware'
 
 /**
  * @swagger
@@ -34,6 +34,8 @@ import { isAuth } from '../middleware/auth.middleware'
  *   get:
  *     summary: Get all users
  *     tags: [users]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: query
  *         name: name
@@ -62,7 +64,13 @@ import { isAuth } from '../middleware/auth.middleware'
  *       500:
  *         description: Internal server error.
  */
-router.get('/', validateResource(GetUsersRequestSchema), getAllUsers)
+router.get(
+  '/',
+  isAuth,
+  isAdmin,
+  validateResource(GetUsersRequestSchema),
+  getAllUsers,
+)
 
 /**
  * @swagger
@@ -92,6 +100,8 @@ router.get('/me', isAuth, getCurrentUser)
  *   get:
  *     summary: Get a single user by ID
  *     tags: [users]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -112,7 +122,13 @@ router.get('/me', isAuth, getCurrentUser)
  *       500:
  *         description: Internal server error.
  */
-router.get('/:id', validateResource(GetUserRequestSchema), getSingleUser)
+router.get(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(GetUserRequestSchema),
+  getSingleUser,
+)
 
 /**
  * @swagger
@@ -199,6 +215,8 @@ router.post('/login', validateResource(PostUserLoginSchema), login)
  *   put:
  *     summary: Update a user by ID
  *     tags: [users]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -245,8 +263,20 @@ router.post('/login', validateResource(PostUserLoginSchema), login)
  *       500:
  *         description: Internal server error.
  */
-router.put('/:id', validateResource(PatchUserRequestSchema), updateUser)
-router.patch('/:id', validateResource(PatchUserRequestSchema), updateUser)
+router.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(PatchUserRequestSchema),
+  updateUser,
+)
+router.patch(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(PatchUserRequestSchema),
+  updateUser,
+)
 
 /**
  * @swagger
@@ -254,6 +284,8 @@ router.patch('/:id', validateResource(PatchUserRequestSchema), updateUser)
  *   delete:
  *     summary: Delete a user by ID
  *     tags: [users]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -277,7 +309,13 @@ router.patch('/:id', validateResource(PatchUserRequestSchema), updateUser)
  *       500:
  *         description: Internal server error.
  */
-router.delete('/:id', validateResource(DeleteUserRequestSchema), deleteUser)
+router.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(DeleteUserRequestSchema),
+  deleteUser,
+)
 
 export = router
 

@@ -3,7 +3,7 @@ const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { hasCart } from '../middleware/cart.middleware'
-import { isAuth } from '../middleware/auth.middleware'
+import { isAdmin, isAuth } from '../middleware/auth.middleware'
 
 import {
   getAllCarts,
@@ -38,6 +38,8 @@ import {
  *   get:
  *     summary: Get all carts.
  *     tags: [carts]
+ *     security:
+ *        - token: []
  *     parameters:
  *        - in: query
  *          name: limit
@@ -59,7 +61,13 @@ import {
  *       500:
  *         description: Internal server error.
  */
-router.get('/', validateResource(GetCartsRequestSchema), getAllCarts)
+router.get(
+  '/',
+  isAuth,
+  isAdmin,
+  validateResource(GetCartsRequestSchema),
+  getAllCarts,
+)
 
 /**
  * @swagger
@@ -87,6 +95,8 @@ router.get('/my', isAuth, hasCart, getMyCart)
  *   get:
  *     summary: Get a single cart by ID.
  *     tags: [carts]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -105,7 +115,13 @@ router.get('/my', isAuth, hasCart, getMyCart)
  *       500:
  *         description: Internal server error.
  */
-router.get('/:id', validateResource(GetCartRequestSchema), getSingleCart)
+router.get(
+  '/:id',
+  isAuth,
+  isAdmin,
+  validateResource(GetCartRequestSchema),
+  getSingleCart,
+)
 
 /**
  * @swagger
@@ -113,6 +129,8 @@ router.get('/:id', validateResource(GetCartRequestSchema), getSingleCart)
  *   get:
  *     summary: Get a single cart by user ID.
  *     tags: [carts]
+ *     security:
+ *        - token: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -133,6 +151,8 @@ router.get('/:id', validateResource(GetCartRequestSchema), getSingleCart)
  */
 router.get(
   '/user/:userId',
+  isAuth,
+  isAdmin,
   validateResource(GetCartByUserIdRequestSchema),
   getCartByUserId,
 )
@@ -211,6 +231,8 @@ router.post(
  *   put:
  *     summary: Update a cart item by ID
  *     tags: [carts]
+ *     security:
+ *       - token: []
  *     parameters:
  *       - in: path
  *         name: cartItemId
@@ -231,8 +253,6 @@ router.post(
  *                 type: integer
  *             example:
  *               quantity: 2
- *     security:
- *       - token: []
  *     responses:
  *       200:
  *         description: Cart item deleted successfully.
@@ -260,8 +280,9 @@ router.post(
 router.put(
   '/my/:cartItemId',
   isAuth,
+  hasCart,
   validateResource(UpdateCartItemRequestSchema),
-  updateCartItem ,
+  updateCartItem,
 )
 
 /**
