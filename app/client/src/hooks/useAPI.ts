@@ -1,13 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 
 import { API } from '@/utils/API'
-// import { useToken } from './useToken'
+import { useToken } from './useToken'
 
 type RequestMethods = 'get' | 'post' | 'put' | 'delete'
 
 export const useAPI = () => {
-  // const tokenStore = useToken()
-  const tokenStore = { token: 'mock token' }
+  const tokenStore = useToken()
 
   const client = axios.create({
     baseURL: API.baseURL,
