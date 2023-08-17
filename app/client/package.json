@@ -41,7 +41,6 @@
     "zustand": "^4.4.0"
   },
   "devDependencies": {
-    "@cravings-fix/configs": "workspace:^",
     "@wayne0127/mall-api-types": "^0.0.1",
     "autoprefixer": "^10.4.13",
     "json-server": "^0.17.3",

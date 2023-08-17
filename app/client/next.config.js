@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['localhost', 'parsefiles.back4app.com', 'cdn.glitch.global'],
+    domains: ['localhost'],
   },
 }
 
