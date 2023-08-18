@@ -5,13 +5,13 @@ import { MdShoppingCart } from 'react-icons/md'
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 
-import { Product } from '@/utils/Product'
+import { Product } from '@/models/Product'
 import { useRecentlyViewedProducts, useCartProducts } from '@/hooks'
 
 import { Divider } from '@/components/atoms'
 import { QuantitySelector, ProductProfileCard } from '@/components/molecules'
 import { ProductList } from '@/components/organisms'
-import { Category } from '@/utils/Category'
+import { Category } from '@/models/Category'
 
 interface ProductPageProps {
   prefetchProduct: Product

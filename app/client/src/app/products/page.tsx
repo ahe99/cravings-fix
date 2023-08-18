@@ -1,8 +1,8 @@
 import { ProductsPage } from '@/components/pages'
 
-import { API, SERVER } from '@/utils/API'
-import { Category } from '@/utils/Category'
-import { Product } from '@/utils/Product'
+import { API, SERVER } from '@/API'
+import { Category } from '@/models/Category'
+import { Product } from '@/models/Product'
 
 const getProducts = () => SERVER.request<Product[]>(API.routes.products.list)
 const getCategories = () =>

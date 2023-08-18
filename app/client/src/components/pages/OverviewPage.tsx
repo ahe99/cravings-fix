@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Product } from '@/utils/Product'
-import { Banner } from '@/utils/Banner'
+import { Product } from '@/models/Product'
+import { Banner } from '@/models/Banner'
 
 import { BannerImage } from '@/components/atoms'
 import { Carousel, ProductsBoard } from '@/components/templates'
 import { useProducts, useBanners, useCategories } from '@/hooks'
-import { Category } from '@/utils/Category'
+import { Category } from '@/models/Category'
 
 interface OverviewPageProps {
   prefetchProducts?: Product[]

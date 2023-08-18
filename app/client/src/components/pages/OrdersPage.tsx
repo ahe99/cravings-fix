@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { OrderList } from '@/components/organisms'
 
 import { useOrders } from '@/hooks'
-import { Order } from '@/utils/Order'
+import { Order } from '@/models/Order'
 
 interface OrdersPageProps {}
 

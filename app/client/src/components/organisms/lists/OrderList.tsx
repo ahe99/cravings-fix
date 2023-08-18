@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 
 import { OrderItem } from '@/components/molecules'
 
-import { Order } from '@/utils/Order'
+import { Order } from '@/models/Order'
 
 interface OrderListProps {
   orders: Order[]

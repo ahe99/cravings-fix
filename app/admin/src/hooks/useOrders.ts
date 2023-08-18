@@ -8,8 +8,8 @@ import {
 
 import { useAPI } from './useAPI'
 
-import { API } from '@/utils/API'
-import { Order } from '@/utils/Order'
+import { API } from '@/API'
+import { Order } from '@/models/Order'
 
 export const useOrders = () => {
   const queryClient = useQueryClient()

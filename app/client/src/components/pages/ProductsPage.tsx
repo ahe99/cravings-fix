@@ -2,10 +2,10 @@ import React, { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useProducts, useCategories } from '@/hooks'
-import { Product } from '@/utils/Product'
+import { Product } from '@/models/Product'
 
 import { ProductsBoard } from '@/components/templates'
-import { Category } from '@/utils/Category'
+import { Category } from '@/models/Category'
 
 interface ProductsPageProps {
   prefetchProducts?: Product[]

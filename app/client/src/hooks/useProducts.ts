@@ -8,8 +8,8 @@ import {
 
 import { useAPI } from './useAPI'
 
-import { API } from '@/utils/API'
-import { Product } from '@/utils/Product'
+import { API } from '@/API'
+import { Product } from '@/models/Product'
 
 export const useProducts = (prefetchProducts: Product[]) => {
   const queryClient = useQueryClient()

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { Heading, Box } from '@chakra-ui/react'
 
-import { Order } from '@/utils/Order'
+import { Order } from '@/models/Order'
 import { Divider } from '@/components/atoms'
 
 interface OrderItemProps {

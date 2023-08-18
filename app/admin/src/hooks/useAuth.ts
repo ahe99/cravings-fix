@@ -9,8 +9,8 @@ import {
 import { isAxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-import { API } from '@/utils/API'
-import { User } from '@/utils/User'
+import { API } from '@/API'
+import { User } from '@/models/User'
 
 import { useToken, Token } from './useToken'
 import { useAPI } from './useAPI'

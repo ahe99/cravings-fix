@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-import { CartProduct } from '@/utils/Cart'
+import { CartProduct } from '@/models/Cart'
 import debounce from '@/helpers/debounce'
 
 import { Divider } from '@/components/atoms'

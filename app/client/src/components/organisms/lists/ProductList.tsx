@@ -1,6 +1,6 @@
 import { ProductCard } from '@/components/molecules'
 
-import { Product } from '@/utils/Product'
+import { Product } from '@/models/Product'
 
 interface ProductListProps {
   products: Product[]

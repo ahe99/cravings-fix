@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider } from '@chakra-ui/react'
 
-import { theme } from '@/utils/theme'
+import { theme } from '@/theme'
 
 const queryClient = new QueryClient()
 

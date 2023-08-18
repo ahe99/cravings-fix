@@ -1,7 +1,7 @@
 import { useQuery, QueryFunction } from '@tanstack/react-query'
 
-import { API } from '@/utils/API'
-import { Banner } from '@/utils/Banner'
+import { API } from '@/API'
+import { Banner } from '@/models/Banner'
 
 import { useAPI } from './useAPI'
 

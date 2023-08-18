@@ -1,7 +1,7 @@
-import { API, SERVER } from '@/utils/API'
-import { Product } from '@/utils/Product'
-import { Banner } from '@/utils/Banner'
-import { Category } from '@/utils/Category'
+import { API, SERVER } from '@/API'
+import { Product } from '@/models/Product'
+import { Banner } from '@/models/Banner'
+import { Category } from '@/models/Category'
 
 import { OverviewPage } from '@/components/pages'
 

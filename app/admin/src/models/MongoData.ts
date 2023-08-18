@@ -5,4 +5,4 @@ export type MongoData = {
   _v: number
 }
 
-export type ExtendedMongoData<T extends {} = {}> = T & MongoData
+export type ExtendedMongoData<T extends object = object> = T & MongoData

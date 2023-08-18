@@ -9,7 +9,7 @@ import {
 import { isAxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
-import { API } from '@/utils/API'
+import { API } from '@/API'
 
 import { useToken, Token } from './useToken'
 import { useAPI } from './useAPI'

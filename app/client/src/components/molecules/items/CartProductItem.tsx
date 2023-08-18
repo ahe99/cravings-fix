@@ -1,6 +1,6 @@
 import { ProductImage } from '@/components/atoms'
 
-import { CartProduct } from '@/utils/Cart'
+import { CartProduct } from '@/models/Cart'
 
 import { QuantitySelector } from '../interactive/QuantitySelector'
 

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { OrderPage } from '@/components/pages'
 
-import { Order } from '@/utils/Order'
+import { Order } from '@/models/Order'
 
 export default async function OrderRoute({
   params: { orderId },

@@ -8,7 +8,7 @@ import { Divider } from '@/components/atoms'
 import { ProductProfileCard } from '@/components/molecules'
 
 import { useOrders } from '@/hooks'
-import { Order } from '@/utils/Order'
+import { Order } from '@/models/Order'
 interface OrderPageProps {
   orderId: Order['_id']
 }

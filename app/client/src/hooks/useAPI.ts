@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-import { API } from '@/utils/API'
+import { API } from '@/API'
 import { useToken } from './useToken'
 
 type RequestMethods = 'get' | 'post' | 'put' | 'delete'

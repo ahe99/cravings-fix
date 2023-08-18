@@ -8,8 +8,8 @@ import {
 
 import { useAPI } from './useAPI'
 
-import { API } from '@/utils/API'
-import { Category } from '@/utils/Category'
+import { API } from '@/API'
+import { Category } from '@/models/Category'
 
 /**
  * @description fill the type after the type is defined

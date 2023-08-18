@@ -6,9 +6,9 @@ import {
   QueryFunction,
 } from '@tanstack/react-query'
 
-import { API } from '@/utils/API'
-import { Product } from '@/utils/Product'
-import { Cart, CartProduct } from '@/utils/Cart'
+import { API } from '@/API'
+import { Product } from '@/models/Product'
+import { Cart, CartProduct } from '@/models/Cart'
 
 import { useAuth } from './useAuth'
 import { useAPI } from './useAPI'

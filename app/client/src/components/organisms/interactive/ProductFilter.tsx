@@ -2,7 +2,7 @@ import { MdSearch } from 'react-icons/md'
 import { Box, Select } from '@chakra-ui/react'
 
 import { Checkbox, Input } from '@/components/atoms'
-import { Category } from '@/utils/Category'
+import { Category } from '@/models/Category'
 
 export const SORT_BASE_OPTIONS = [
   'ASCEND_CREATE_TIME',

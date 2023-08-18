@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 
-import { Banner } from '@/utils/Banner'
+import { Banner } from '@/models/Banner'
 import { dateSortFn } from '@/helpers/sort'
 import { useTableSearch } from '@/hooks'
 

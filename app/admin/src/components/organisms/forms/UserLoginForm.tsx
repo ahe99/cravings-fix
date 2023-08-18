@@ -1,4 +1,5 @@
 import { Button, Checkbox, Form, Input } from 'antd'
+import { MailOutlined, LockOutlined } from '@ant-design/icons'
 
 import { APIRequestUserLogin } from '@/hooks/useAuth'
 
@@ -30,7 +31,7 @@ export const UserLoginForm = ({
       name="email"
       rules={[{ required: true, message: 'Please input your username!' }]}
     >
-      <Input />
+      <Input addonBefore={<MailOutlined />} />
     </Form.Item>
 
     <Form.Item<FieldType>
@@ -38,7 +39,7 @@ export const UserLoginForm = ({
       name="password"
       rules={[{ required: true, message: 'Please input your password!' }]}
     >
-      <Input.Password />
+      <Input.Password addonBefore={<LockOutlined />} />
     </Form.Item>
 
     <Form.Item<FieldType> name="rememberMe" valuePropName="checked">

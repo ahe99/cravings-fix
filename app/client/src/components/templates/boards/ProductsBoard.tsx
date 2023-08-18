@@ -8,8 +8,8 @@ import {
   SortBaseType,
 } from '@/components/organisms'
 
-import { Product } from '@/utils/Product'
-import { Category } from '@/utils/Category'
+import { Product } from '@/models/Product'
+import { Category } from '@/models/Category'
 
 type ProductFilterType = {
   category: Category[]

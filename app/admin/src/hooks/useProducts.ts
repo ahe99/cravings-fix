@@ -6,8 +6,8 @@ import {
   QueryFunction,
 } from '@tanstack/react-query'
 
-import { API } from '@/utils/API'
-import { Product } from '@/utils/Product'
+import { API } from '@/API'
+import { Product } from '@/models/Product'
 
 import { useAPI } from './useAPI'
 

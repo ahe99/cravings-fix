@@ -2,9 +2,9 @@ import { notFound } from 'next/navigation'
 
 import { ProductPage } from '@/components/pages'
 
-import { API, SERVER } from '@/utils/API'
-import { Product } from '@/utils/Product'
-import { Category } from '@/utils/Category'
+import { API, SERVER } from '@/API'
+import { Product } from '@/models/Product'
+import { Category } from '@/models/Category'
 
 // const MAX_DISPLAY_QUANTITY = 6
 

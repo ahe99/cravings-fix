@@ -5,7 +5,7 @@ import { Button } from '@chakra-ui/react'
 import { MdArrowRight } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 
-import { CartProduct } from '@/utils/Cart'
+import { CartProduct } from '@/models/Cart'
 import { useCartProducts, useAuth } from '@/hooks'
 
 import { CartProductList } from '@/components/organisms'
