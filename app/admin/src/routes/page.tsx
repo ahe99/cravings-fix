@@ -1,18 +1,7 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { LoadingPage } from '@/components/pages'
 
 const RedirectRoute = () => {
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    navigate('/dashboard')
-  }, [])
-
-  return (
-    <div>
-      <div>fallback</div>
-    </div>
-  )
+  return <LoadingPage />
 }
 RedirectRoute.layouts = 'default'
 RedirectRoute.displayName = 'RedirectRoute'

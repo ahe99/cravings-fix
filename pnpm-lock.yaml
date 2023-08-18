@@ -64,12 +64,18 @@ importers:
       react-router-dom:
         specifier: ^6.11.2
         version: 6.11.2(react-dom@18.2.0)(react@18.2.0)
+      react-tracked:
+        specifier: ^1.7.11
+        version: 1.7.11(react-dom@18.2.0)(react@18.2.0)(scheduler@0.23.0)
       verbum:
         specifier: ^0.5.0
         version: 0.5.0(react-dom@18.2.0)(react@18.2.0)
       zod:
         specifier: ^3.21.4
         version: 3.21.4
+      zustand:
+        specifier: ^4.4.0
+        version: 4.4.0(@types/react@18.2.7)(react@18.2.0)
     devDependencies:
       '@types/node':
         specifier: 18.13.0
@@ -13768,6 +13774,26 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.0.28
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /zustand@4.4.0(@types/react@18.2.7)(react@18.2.0):
+    resolution: {integrity: sha512-2dq6wq4dSxbiPTamGar0NlIG/av0wpyWZJGeQYtUOLegIUvhM2Bf86ekPlmgpUtS5uR7HyetSiktYrGsdsyZgQ==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.7
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false

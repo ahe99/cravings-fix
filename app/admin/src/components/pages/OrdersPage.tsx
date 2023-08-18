@@ -17,15 +17,8 @@ export const OrdersPage = () => {
     <div className={CSS.orders_page}>
       <div className={CSS.header}>
         <Breadcrumbs />
-        <Button
-          type="primary"
-          className={CSS.add_button}
-          icon={<PlusOutlined />}
-        >
-          NEW
-        </Button>
       </div>
-      <Card>
+      <Card title="Latest Orders">
         <OrdersTable orders={ordersData} />
       </Card>
     </div>

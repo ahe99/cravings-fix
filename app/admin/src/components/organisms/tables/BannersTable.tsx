@@ -72,7 +72,7 @@ export const BannersTable = ({
         }
       }}
       style={{ cursor: 'pointer' }}
-      rowKey="_id"
+      rowKey="imageId"
     />
   )
 }

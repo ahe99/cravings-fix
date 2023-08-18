@@ -1,4 +1,4 @@
-import { UsersPage } from '@/components/pages/UsersPage'
+import { UsersPage } from '@/components/pages'
 
 const UsersRoute = () => {
   return <UsersPage />

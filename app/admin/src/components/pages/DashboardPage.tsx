@@ -179,14 +179,9 @@ export const DashboardPage = () => {
           gap: '1rem',
         }}
       >
-        <Card title="Bestsellers">
-          
-        </Card>
+        <Card title="Bestsellers"></Card>
         <Card title="Trending Items"></Card>
       </div>
-      <Card title="Latest Orders">
-        <OrdersTable orders={orders.query.data ?? []} />
-      </Card>
     </div>
   )
 }

@@ -8,8 +8,9 @@ export const API = {
       data: (param: string | number) => `/users/${param ?? ''}`,
       update: (param: string | number) => `/users/${param ?? ''}`,
       delete: (param: string | number) => `/users/${param ?? ''}`,
+      current: '/users/me',
       list: '/users',
-      login: '/login',
+      login: '/users/login',
       register: '/users',
     },
     products: {

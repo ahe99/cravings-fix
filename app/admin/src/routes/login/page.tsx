@@ -1,10 +1,8 @@
+import { UserLoginPage } from '@/components/pages'
+
 const LoginRoute = () => {
-  return (
-    <div>
-      <div>login</div>
-    </div>
-  )
+  return <UserLoginPage />
 }
-LoginRoute.layouts = 'content'
+LoginRoute.layouts = 'default'
 LoginRoute.displayName = 'LoginRoute'
 export default LoginRoute
