@@ -1,7 +1,5 @@
 import { RequestHandler } from 'express'
 
-import { v4 as uuidv4 } from 'uuid'
-
 import { bucketObject, getObjectUrl, putObject } from '../lib/minio.lib'
 import { BannerModel } from '../models/banner.model'
 import { responseMessage } from '../utils/errorException'

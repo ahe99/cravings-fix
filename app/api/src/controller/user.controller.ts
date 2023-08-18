@@ -3,7 +3,8 @@ import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 
 import config from '../helpers/config'
-import { UserModel } from '../models/user.model'
+import { ROLES, UserModel } from '../models/user.model'
+import { responseMessage } from '../utils/errorException'
 
 export const getAllUsers: RequestHandler = async (req, res, next) => {
   const {
@@ -48,13 +49,22 @@ export const register: RequestHandler = async (req, res, next) => {
 }
 
 export const login: RequestHandler = async (req, res, next) => {
-  const { email, password } = req.body
+  const { email, password, shouldValidAdmin } = req.body
+
   const user = await UserModel.findOne({
     email,
   }).exec()
   if (user === undefined || user === null) {
     res.status(401).json({ msg: 'Verify Failed' })
     return
+  }
+
+  if (shouldValidAdmin) {
+    if (user.role !== ROLES.ADMIN) {
+      res.status(401).json(responseMessage['401'])
+
+      return
+    }
   }
 
   try {

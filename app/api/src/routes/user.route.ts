@@ -192,9 +192,12 @@ router.post('/register', validateResource(PostUserCreateSchema), register)
  *                 type: string
  *               password:
  *                 type: string
+ *               shouldValidAdmin:
+ *                 type: boolean
  *             example:
  *               email: user@user.com
  *               password: user
+ *               shouldValidAdmin: false
  *     responses:
  *       200:
  *         description: Successfully logged in.

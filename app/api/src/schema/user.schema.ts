@@ -55,6 +55,9 @@ export const PostUserLoginSchema = z.object({
       .regex(/\S+@\S+\.\S+/),
     password: z.string().min(4),
   }),
+  query: z.object({
+    shouldValidAdmin: z.boolean().optional().default(false),
+  }),
 })
 
 export const PatchUserRequestSchema = z.object({
