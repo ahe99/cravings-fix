@@ -75,7 +75,7 @@ export const CategoriesTable = ({
         }
       }}
       style={{ cursor: 'pointer' }}
-      rowKey="_id"
+      rowKey={(row) => row._id}
     />
   )
 }

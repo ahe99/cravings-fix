@@ -11,6 +11,16 @@ import { useAPI } from './useAPI'
 import { API } from '@/API'
 import { Category } from '@/models/Category'
 
+export interface APIRequestCreateCategory {
+  name: string
+  description?: string
+}
+export interface APIRequestEditCategory {
+  _id: string
+  name?: string
+  description?: string
+}
+
 export const useCategories = () => {
   const queryClient = useQueryClient()
 
@@ -30,15 +40,36 @@ export const useCategories = () => {
     queryFn: getCategoriesData,
   })
 
+  const postCategoryData: MutationFunction<
+    unknown,
+    APIRequestCreateCategory
+  > = async (data) => {
+    const { data: response } = await request<
+      unknown,
+      APIRequestCreateCategory,
+      never
+    >('post', apiRoute.create, {
+      data,
+    })
+    return response
+  }
+
+  const createCategoryQuery = useMutation({
+    mutationKey: ['create category'],
+    mutationFn: postCategoryData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['categories'])
+    },
+  })
+
   const putCategoryData: MutationFunction<
     unknown,
-    { data: unknown; categoryId: string | number }
-  > = async ({ data, categoryId }) => {
+    APIRequestEditCategory
+  > = async (data) => {
     const { data: response } = await request<unknown, unknown, unknown>(
       'put',
-      apiRoute.update(categoryId),
+      apiRoute.update(data._id),
       {
-        params: { id: categoryId },
         data,
       },
     )
@@ -52,16 +83,12 @@ export const useCategories = () => {
     },
   })
 
-  const deleteCategory: MutationFunction<
-    unknown,
-    { categoryId: string | number }
-  > = async ({ categoryId }) => {
+  const deleteCategory: MutationFunction<unknown, Category['_id']> = async (
+    categoryId,
+  ) => {
     const { data: response } = await request<unknown>(
       'delete',
       apiRoute.delete(categoryId),
-      {
-        params: { id: categoryId },
-      },
     )
 
     return response
@@ -76,6 +103,7 @@ export const useCategories = () => {
 
   return {
     query: categoriesDataQuery,
+    create: createCategoryQuery,
     update: updateCategoryQuery,
     delete: deleteCategoryQuery,
   }
