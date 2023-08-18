@@ -1,5 +1,6 @@
 .default_layout {
   height: 100vh;
+  width: 100vw;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
 

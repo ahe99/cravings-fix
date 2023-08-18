@@ -1,13 +1,15 @@
 import { PropsWithChildren, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 import { useAuth } from '@/hooks/useAuth'
 
 import CSS from './DefaultLayout.module.css'
 
 export const DefaultLayout = ({ children }: PropsWithChildren) => {
-  const { isLoggedIn } = useAuth()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { isLoggedIn } = useAuth()
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -18,10 +20,20 @@ export const DefaultLayout = ({ children }: PropsWithChildren) => {
   }, [isLoggedIn])
 
   return (
-    <div className={CSS.default_layout}>
+    <motion.div
+      key={pathname}
+      className={CSS.default_layout}
+      initial={{ scale: 0.8, opacity: 0.2 }}
+      whileInView={{ scale: 1, opacity: 1 }}
+      exit={{
+        scale: 1,
+        opacity: 1,
+      }}
+      transition={{ ease: 'easeInOut' }}
+    >
       <DefaultAside />
       <DefaultBody>{children}</DefaultBody>
-    </div>
+    </motion.div>
   )
 }
 

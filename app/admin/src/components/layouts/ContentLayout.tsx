@@ -1,7 +1,8 @@
 import { useState, PropsWithChildren } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, Layout } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import { motion } from 'framer-motion'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -12,8 +13,9 @@ import CSS from './ContentLayout.module.css'
 const { Header, Sider, Content } = Layout
 
 export const ContentLayout = ({ children }: PropsWithChildren) => {
-  const navigate = useNavigate()
   const { logout } = useAuth()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   const [collapsed, setCollapsed] = useState(true)
 
@@ -70,7 +72,20 @@ export const ContentLayout = ({ children }: PropsWithChildren) => {
             </Button>
           </div>
         </Header>
-        <Content className={CSS.content}>{children}</Content>
+        <Content className={CSS.content}>
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            exit={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{ ease: 'easeInOut' }}
+          >
+            {children}
+          </motion.div>
+        </Content>
       </Layout>
     </Layout>
   )
