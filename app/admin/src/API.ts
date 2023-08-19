@@ -47,6 +47,8 @@ export const API = {
     },
     banners: {
       list: '/banners',
+      create: '/banners',
+      delete: (param: string | number) => `/banners/${param}`,
     },
   },
   intervals: {},

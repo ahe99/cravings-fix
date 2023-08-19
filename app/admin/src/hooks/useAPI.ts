@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import { API } from '@/API'
 import { useToken } from './useToken'
@@ -26,7 +26,8 @@ export const useAPI = () => {
   )
 
   // maybe we can specify RequestData/ RequestParams
-  interface RequestConfig<RequestData, RequestParams> {
+  interface RequestConfig<RequestData, RequestParams>
+    extends AxiosRequestConfig {
     data?: RequestData
     params?: RequestParams
   }
@@ -38,20 +39,20 @@ export const useAPI = () => {
   >(
     method: RequestMethods,
     url: string,
-    { data, params }: RequestConfig<RequestData, RequestParams> = {},
+    { data, params, ...rest }: RequestConfig<RequestData, RequestParams> = {},
   ) => {
     if (method === 'post' || method === 'put') {
       return client[method]<
         RequestResponse,
         AxiosResponse<RequestResponse>,
         RequestData
-      >(url, data, { params })
+      >(url, data, { params, ...rest })
     } else {
       return client[method]<
         RequestResponse,
         AxiosResponse<RequestResponse>,
         RequestData
-      >(url, { data, params })
+      >(url, { data, params, ...rest })
     }
   }
 

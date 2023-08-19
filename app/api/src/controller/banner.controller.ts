@@ -6,6 +6,10 @@ import { responseMessage } from '../utils/errorException'
 
 const BANNER_IMAGE_BUCKET_NAME = bucketObject.banners
 
+const getFullImageNameFromId = (imageId: string) => {
+  return `${imageId}.webp`
+}
+
 const getImagesFromImageIds = async (imageIds: string[]) => {
   if (Array.isArray(imageIds)) {
     const images = await Promise.all(
@@ -14,7 +18,7 @@ const getImagesFromImageIds = async (imageIds: string[]) => {
           imageId,
           url: await getObjectUrl({
             bucket: BANNER_IMAGE_BUCKET_NAME,
-            object: imageId,
+            object: getFullImageNameFromId(imageId),
           }),
         }
       }),
@@ -40,23 +44,6 @@ export const getAllBanners: RequestHandler = async (req, res, next) => {
   }
 }
 
-// export const updateBanner: RequestHandler = async (req, res, next) => {
-//   const id = req.params.id
-
-//   try {
-//     const updatedBanner = await BannerModel.findByIdAndUpdate(id, {
-//       ...req.body,
-//     })
-
-//     res.json({
-//       msg: 'Banner updated',
-//       objectId: updatedBanner?.id,
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 export const deleteBanner: RequestHandler = async (req, res, next) => {
   const { id } = req.params
   try {
@@ -77,7 +64,7 @@ export const addBanners: RequestHandler = async (req, res, next) => {
   const hasFiles = files !== undefined && files.length !== 0
   if (hasFiles) {
     try {
-      await Promise.all(
+      const fileIds = await Promise.all(
         files.map(async (file) => {
           const newBanner = new BannerModel()
           const { _id } = await newBanner.save()
@@ -85,7 +72,7 @@ export const addBanners: RequestHandler = async (req, res, next) => {
 
           await putObject({
             bucket: BANNER_IMAGE_BUCKET_NAME,
-            object: imageName,
+            object: getFullImageNameFromId(imageName),
             fileBuffer: file.buffer,
           })
           return imageName
@@ -94,6 +81,7 @@ export const addBanners: RequestHandler = async (req, res, next) => {
 
       res.json({
         msg: 'Banner added',
+        _ids: fileIds,
       })
     } catch (error) {
       next(error)

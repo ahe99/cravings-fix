@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 
 import { API } from '@/API'
 import { useToken } from './useToken'
@@ -26,7 +26,8 @@ export const useAPI = () => {
   )
 
   // maybe we can specify RequestData/ RequestParams
-  interface RequestConfig<RequestData, RequestParams> {
+  interface RequestConfig<RequestData, RequestParams>
+    extends AxiosRequestConfig {
     data?: RequestData
     params?: RequestParams
   }

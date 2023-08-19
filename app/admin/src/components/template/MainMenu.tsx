@@ -41,6 +41,11 @@ const MAIN_ROUTES: MenuProps['items'] = [
     icon: <FundOutlined />,
   }),
   getItem({
+    label: 'Categories',
+    key: '/categories',
+    icon: <TagsOutlined />,
+  }),
+  getItem({
     label: 'Products',
     key: '/products',
     icon: <ShoppingOutlined />,
@@ -49,11 +54,6 @@ const MAIN_ROUTES: MenuProps['items'] = [
     label: 'Orders',
     key: '/orders',
     icon: <ProfileOutlined />,
-  }),
-  getItem({
-    label: 'Categories',
-    key: '/categories',
-    icon: <TagsOutlined />,
   }),
   getItem({
     label: 'Banners',

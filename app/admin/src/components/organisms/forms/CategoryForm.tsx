@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd'
-import { EditOutlined, ProfileOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 
 import { APIRequestCreateCategory, APIRequestEditCategory } from '@/hooks'
 
