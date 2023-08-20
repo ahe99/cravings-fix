@@ -1,5 +1,5 @@
 import { Key } from 'react'
-import { Table } from 'antd'
+import { Table, Image } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 
@@ -34,7 +34,7 @@ export const BannersTable = ({
       title: 'Preview',
       dataIndex: 'url',
       render: (url: Banner['url']) => (
-        <img className={CSS.banner_image} src={url} />
+        <Image className={CSS.banner_image} src={url} />
       ),
     },
     {
@@ -54,7 +54,7 @@ export const BannersTable = ({
   const rowSelection = {
     onChange: onSelectItem,
     getCheckboxProps: (record: Banner) => ({
-      name: record._id,
+      name: record.imageId,
     }),
   }
 

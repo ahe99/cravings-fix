@@ -15,7 +15,6 @@ export const BannersPage = () => {
   const { RightDrawer, actions } = useRightDrawer()
   const banners = useBanners()
 
-  // const [clickedBanner, setClickedBanner] = useState<Banner | null>(null)
   const [selectedBanners, setSelectedBanners] = useState<Banner['imageId'][]>(
     [],
   )
@@ -29,14 +28,8 @@ export const BannersPage = () => {
     actions.open()
   }
 
-  // const onClickBannerItem = (category: Banner) => {
-  //   setClickedBanner(category)
-  //   actions.open()
-  // }
-
   const onCloseDrawer = () => {
     actions.close()
-    // setClickedBanner(null)
   }
 
   const onSubmit = async (formValues: APIRequestCreateBanner) => {
@@ -96,11 +89,7 @@ export const BannersPage = () => {
         )}
       </div>
       <Card>
-        <BannersTable
-          banners={bannersData}
-          // onClickItem={onClickBannerItem}
-          onSelectItem={onSelectItem}
-        />
+        <BannersTable banners={bannersData} onSelectItem={onSelectItem} />
       </Card>
       <RightDrawer
         onClose={onCloseDrawer}
