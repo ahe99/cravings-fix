@@ -1,5 +1,6 @@
 export * from './forms/BannerForm'
 export * from './forms/CategoryForm'
+export * from './forms/UserForm'
 export * from './forms/UserLoginForm'
 
 export * from './tables/BannersTable'

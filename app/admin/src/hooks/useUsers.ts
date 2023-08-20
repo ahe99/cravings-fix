@@ -9,7 +9,20 @@ import {
 import { useAPI } from './useAPI'
 
 import { API } from '@/API'
-import { User } from '@/models/User'
+import { Roles, User } from '@/models/User'
+
+export interface APIRequestCreateUser {
+  username?: string
+  email: string
+  password: string
+  role: Roles
+}
+export interface APIRequestEditUser {
+  _id: string
+  email?: string
+  username?: string
+  role?: Roles
+}
 
 export const useUsers = () => {
   const queryClient = useQueryClient()
@@ -28,20 +41,40 @@ export const useUsers = () => {
     queryFn: getUsersData,
   })
 
-  const putUserData: MutationFunction<
-    unknown,
-    { data: unknown; userId: string | number }
-  > = async ({ data, userId }) => {
-    const { data: response } = await request<unknown, unknown, unknown>(
-      'put',
-      apiRoute.update(userId),
-      {
-        params: { id: userId },
-        data,
-      },
-    )
+  const postUserData: MutationFunction<unknown, APIRequestCreateUser> = async (
+    data,
+  ) => {
+    const { data: response } = await request<
+      unknown,
+      APIRequestCreateUser,
+      never
+    >('post', apiRoute.create, {
+      data,
+    })
     return response
   }
+
+  const createUserQuery = useMutation({
+    mutationKey: ['create user'],
+    mutationFn: postUserData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['users'])
+    },
+  })
+
+  const putUserData: MutationFunction<unknown, APIRequestEditUser> = async (
+    data,
+  ) => {
+    const { data: response } = await request<
+      unknown,
+      APIRequestEditUser,
+      unknown
+    >('put', apiRoute.update(data._id), {
+      data,
+    })
+    return response
+  }
+
   const updateUserQuery = useMutation({
     mutationKey: ['update user'],
     mutationFn: putUserData,
@@ -50,16 +83,10 @@ export const useUsers = () => {
     },
   })
 
-  const deleteUser: MutationFunction<
-    unknown,
-    { userId: string | number }
-  > = async ({ userId }) => {
+  const deleteUser: MutationFunction<unknown, User['_id']> = async (userId) => {
     const { data: response } = await request<unknown>(
       'delete',
       apiRoute.delete(userId),
-      {
-        params: { id: userId },
-      },
     )
 
     return response
@@ -75,6 +102,7 @@ export const useUsers = () => {
 
   return {
     query: usersDataQuery,
+    create: createUserQuery,
     update: updateUserQuery,
     delete: deleteUserQuery,
   }

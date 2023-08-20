@@ -35,7 +35,13 @@ export const UsersTable = ({
       ...register('username'),
     },
     {
-      title: 'Description',
+      title: 'Email',
+      dataIndex: 'email',
+      sorter: (a, b) => sortFn(a.username, b.username),
+      ...register('username'),
+    },
+    {
+      title: 'Role',
       dataIndex: 'role',
       ellipsis: true,
       sorter: (a, b) => sortFn(a.username, b.username),

@@ -29,12 +29,14 @@ const UserSchema = new Schema(
   {
     statics: {
       toApiUserSchema: (data) => {
-        const { username, email, _id, role } = data
+        const { username, email, _id, role, createdAt, updatedAt } = data
         return {
           _id,
           username,
           email,
           role,
+          createdAt,
+          updatedAt,
         }
       },
     },

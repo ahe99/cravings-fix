@@ -75,8 +75,12 @@ export const PatchUserRequestSchema = z.object({
   body: z
     .object({
       username: z.string().min(1).max(20),
+      email: z
+        .string()
+        .min(1)
+        .regex(/\S+@\S+\.\S+/),
       password: z.string().min(4),
-      roleId: z.string().refine(
+      role: z.string().refine(
         (role) => {
           const hasRole =
             Object.keys(ROLES).findIndex((_role) => role === _role) !== -1
