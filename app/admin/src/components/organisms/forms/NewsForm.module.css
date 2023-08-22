@@ -1,0 +1,18 @@
+.news_form {
+  .info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(10rem, 1fr));
+
+    .title_policy {
+    }
+
+    .description {
+      height: 10rem;
+    }
+  }
+
+  .submit_button {
+    margin-top: 1rem;
+    width: 100%;
+  }
+}

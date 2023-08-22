@@ -17,6 +17,7 @@ import cartRoute from './routes/cart.route'
 import orderRoute from './routes/order.route'
 import bannerRoute from './routes/banner.route'
 import userRoute from './routes/user.route'
+import newsRoute from './routes/news.route'
 
 const bodyParser = require('body-parser')
 
@@ -46,6 +47,7 @@ app.use('/carts', cartRoute)
 app.use('/orders', orderRoute)
 app.use('/banners', bannerRoute)
 app.use('/users', userRoute)
+app.use('/news', newsRoute)
 
 app.use(exceptionParser)
 

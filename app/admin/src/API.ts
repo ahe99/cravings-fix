@@ -45,6 +45,13 @@ export const API = {
       delete: (param: string | number) => `/categories/${param}`,
       create: '/categories',
     },
+    news: {
+      list: '/news',
+      data: (param: string | number) => `/news/${param ?? ''}`,
+      update: (param: string | number) => `/news/${param}`,
+      delete: (param: string | number) => `/news/${param}`,
+      create: '/news',
+    },
     banners: {
       list: '/banners',
       create: '/banners',

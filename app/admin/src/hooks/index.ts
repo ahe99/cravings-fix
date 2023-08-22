@@ -1,6 +1,7 @@
 export * from './useAPI'
 export * from './useBanners'
 export * from './useCategories'
+export * from './useNews'
 export * from './useOrders'
 export * from './usePagination'
 export * from './useProducts'

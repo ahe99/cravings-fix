@@ -12,6 +12,7 @@ const breadcrumbNameMap: Record<string, string> = {
   '/banners': 'Banners',
   '/users': 'Users',
   '/news': 'News',
+  '/news/create': 'Create',
 }
 
 export const Breadcrumbs = () => {
