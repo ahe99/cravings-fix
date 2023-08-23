@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express'
+import { Types } from 'mongoose'
 
 import { bucketObject, getObjectUrl, putObject } from '../lib/minio.lib'
 import { BannerModel } from '../models/banner.model'
@@ -6,26 +7,17 @@ import { responseMessage } from '../utils/errorException'
 
 const BANNER_IMAGE_BUCKET_NAME = bucketObject.banners
 
-const getFullImageNameFromId = (imageId: string) => {
-  return `${imageId}.webp`
+const getFullImageNameFromId = (imageId: Types.ObjectId) => {
+  return `${imageId.toString()}.webp`
 }
 
-const getImagesFromImageIds = async (imageIds: string[]) => {
-  if (Array.isArray(imageIds)) {
-    const images = await Promise.all(
-      imageIds.map(async (imageId) => {
-        return {
-          imageId,
-          url: await getObjectUrl({
-            bucket: BANNER_IMAGE_BUCKET_NAME,
-            object: getFullImageNameFromId(imageId),
-          }),
-        }
-      }),
-    )
-    return images
-  } else {
-    return []
+const getImageFromImageId = async (imageId: Types.ObjectId) => {
+  return {
+    imageId,
+    url: await getObjectUrl({
+      bucket: BANNER_IMAGE_BUCKET_NAME,
+      object: getFullImageNameFromId(imageId),
+    }),
   }
 }
 
@@ -36,7 +28,12 @@ export const getAllBanners: RequestHandler = async (req, res, next) => {
     const result = await bannerQuery.exec()
     const ids = result.map(({ _id }) => _id.toString())
 
-    const bannersWithImage = await getImagesFromImageIds(ids)
+    const bannersWithImage = await Promise.all(
+      result.map(async (banner) => ({
+        ...banner,
+        ...(await getImageFromImageId(banner._id)),
+      })),
+    )
 
     res.json(bannersWithImage)
   } catch (e) {
@@ -68,14 +65,13 @@ export const addBanners: RequestHandler = async (req, res, next) => {
         files.map(async (file) => {
           const newBanner = new BannerModel()
           const { _id } = await newBanner.save()
-          const imageName = _id.toString()
 
           await putObject({
             bucket: BANNER_IMAGE_BUCKET_NAME,
-            object: getFullImageNameFromId(imageName),
+            object: getFullImageNameFromId(_id),
             fileBuffer: file.buffer,
           })
-          return imageName
+          return _id.toString()
         }),
       )
 
