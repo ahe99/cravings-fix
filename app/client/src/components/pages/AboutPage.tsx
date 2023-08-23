@@ -6,7 +6,7 @@ export const AboutPage = () => {
     <main className="page-container">
       <h1 className="mb-8 text-3xl">About Us</h1>
 
-      <p className="text-xl">
+      <p className="prose lg:prose-xl">
         <Welcome />
         <br />
         <br />

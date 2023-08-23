@@ -70,6 +70,10 @@ export const API = {
     banners: {
       list: '/banners',
     },
+    news: {
+      data: (param: string | number) => `/news/${param ?? ''}`,
+      list: '/news',
+    },
   },
   intervals: {},
   requestTimeout: {},
