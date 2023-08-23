@@ -30,20 +30,21 @@ export const NewsTable = ({
     },
     {
       title: 'Author',
-      dataIndex: 'author',
+      dataIndex: ['author', 'username'],
       sorter: (a, b) => sortFn(a.title, b.title),
       ...register('author'),
-      render: (author) => author.username,
     },
     {
       title: 'Title',
       dataIndex: 'title',
+      ellipsis: true,
       sorter: (a, b) => sortFn(a.title, b.title),
       ...register('title'),
     },
     {
       title: 'Description',
       dataIndex: 'description',
+      ellipsis: true,
       sorter: (a, b) => sortFn(a.title, b.title),
       ...register('title'),
     },

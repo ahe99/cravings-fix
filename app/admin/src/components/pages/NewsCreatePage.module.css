@@ -1,4 +1,4 @@
-.news_page {
+.news_create_page {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -9,7 +9,7 @@
     align-items: center;
     gap: 1rem;
 
-    .go_back_button {
+    .add_button {
     }
   }
 }

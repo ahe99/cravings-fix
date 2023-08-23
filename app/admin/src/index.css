@@ -32,6 +32,10 @@ body {
   margin: 0;
 }
 
+.ql-editor {
+  min-height: 30rem;
+}
+
 @media (min-width: 768px  /*var(--breakpoint-md)*/) {
 }
 @media (min-width: 640px/*var(--breakpoint-sm)*/) {

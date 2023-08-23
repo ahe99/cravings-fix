@@ -100,8 +100,6 @@ router.get('/', validateResource(GetNewsRequestSchema), getAllNews)
  */
 router.get(
   '/:id',
-  isAuth,
-  isAdmin,
   validateResource(GetSingleNewsRequestSchema),
   getSingleNews,
 )
