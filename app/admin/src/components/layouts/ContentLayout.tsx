@@ -1,4 +1,4 @@
-import { useState, PropsWithChildren } from 'react'
+import { useState, useEffect, PropsWithChildren } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, Layout } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
@@ -13,11 +13,17 @@ import CSS from './ContentLayout.module.css'
 const { Header, Sider, Content } = Layout
 
 export const ContentLayout = ({ children }: PropsWithChildren) => {
-  const { logout } = useAuth()
+  const { logout, isLoggedIn } = useAuth()
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
   const [collapsed, setCollapsed] = useState(true)
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login')
+    }
+  }, [isLoggedIn])
 
   const onClckNavItem = (key: string) => {
     navigate(key)

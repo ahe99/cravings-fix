@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   MutationFunction,
   useMutation,
@@ -39,13 +39,12 @@ export const useAuth = ({
   const { client } = useAPI()
   const navigate = useNavigate()
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   const apiRoute = API.routes.users
 
-  useEffect(() => {
-    setIsLoggedIn(Boolean(tokenStore.token))
-  }, [tokenStore.token])
+  const isLoggedIn = useMemo(
+    () => Boolean(tokenStore.token),
+    [tokenStore.token],
+  )
 
   useEffect(() => {
     if (isLoggedIn && redirectTo) {
