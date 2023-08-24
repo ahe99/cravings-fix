@@ -20,6 +20,8 @@ const config = {
   rangeEnd: Number.POSITIVE_INFINITY,
 
   endOfLine: 'lf',
-};
 
-module.exports = config;
+  plugins: ['prettier-plugin-tailwindcss'],
+}
+
+module.exports = config
