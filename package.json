@@ -7,10 +7,12 @@
     "build": "pnpm --filter=!api build",
     "dev:client": "pnpm run -C app/client dev",
     "dev:api": "pnpm run -C app/api dev",
-    "dev:admin": "pnpm run -C app/admin dev"
+    "dev:admin": "pnpm run -C app/admin dev",
+    "prepare": "husky install"
   },
-  "dependencies": {},
   "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3"
   },
