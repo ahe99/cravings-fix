@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import dotenvExpand from 'dotenv-expand'
 import path from 'path'
 
-const myEnv = dotenv.config({ path: path.resolve(__dirname, '/../../.env') })
+const myEnv = dotenv.config({ path: path.join(__dirname, '/../../.env') })
 dotenvExpand.expand(myEnv)
 
 const config = {
