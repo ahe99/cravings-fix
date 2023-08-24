@@ -34,7 +34,7 @@ export const API = {
     orders: {
       list: '/orders',
       data: (param: string | number) => `/orders/${param ?? ''}`,
-      update: (param: string | number) => `/orders/${param}`,
+      update: (param: string | number) => `/orders/price/${param}`,
       delete: (param: string | number) => `/orders/${param}`,
       create: '/orders',
     },

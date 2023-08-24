@@ -1,0 +1,7 @@
+.order_form {
+  .order_item {
+    display: flex;
+    flex-flow: row;
+    gap: 1rem;
+  }
+}

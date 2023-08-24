@@ -11,7 +11,6 @@ export type OrderProduct = ExtendedMongoData<{
 
 export type Order = ExtendedMongoData<{
   user: User
-  food: Product
   orderItems: OrderProduct[]
   totalPrice: number
 }>

@@ -11,6 +11,8 @@ import { useAPI } from './useAPI'
 import { API } from '@/API'
 import { Order } from '@/models/Order'
 
+export interface APIRequestEditOrder extends Order {}
+
 export const useOrders = () => {
   const queryClient = useQueryClient()
 
@@ -28,18 +30,18 @@ export const useOrders = () => {
     queryFn: getOrdersData,
   })
 
-  const putOrderData: MutationFunction<
-    unknown,
-    { data: unknown; orderId: string | number }
-  > = async ({ data, orderId }) => {
-    const { data: response } = await request<unknown, unknown, unknown>(
-      'put',
-      apiRoute.update(orderId),
-      {
-        params: { id: orderId },
-        data,
+  const putOrderData: MutationFunction<unknown, APIRequestEditOrder> = async (
+    data,
+  ) => {
+    const { data: response } = await request<
+      unknown,
+      Pick<APIRequestEditOrder, 'totalPrice'>,
+      unknown
+    >('put', apiRoute.update(data._id), {
+      data: {
+        totalPrice: Number(data.totalPrice),
       },
-    )
+    })
     return response
   }
   const updateOrderQuery = useMutation({
