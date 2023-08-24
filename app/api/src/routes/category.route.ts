@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import {
   getAllCategories,
   getSingleCategory,
@@ -17,6 +16,7 @@ import {
   PatchCategoryRequestSchema,
   DeleteCategoryRequestSchema,
 } from '../schema/category.schema'
+const router = express.Router()
 
 /**
  * @swagger

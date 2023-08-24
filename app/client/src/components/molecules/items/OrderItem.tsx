@@ -24,7 +24,12 @@ export const OrderItem = ({
       gap={4}
       onClick={() => onClick(_id)}
     >
-      <Box display="flex" flexFlow="row" flexWrap='wrap' justifyContent="space-between">
+      <Box
+        display="flex"
+        flexFlow="row"
+        flexWrap="wrap"
+        justifyContent="space-between"
+      >
         <Heading size="sm">
           {dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}
         </Heading>
@@ -32,7 +37,7 @@ export const OrderItem = ({
       </Box>
       <Divider />
 
-      <div className="flex flex-row justify-between text-md font-bold ">
+      <div className="text-md flex flex-row justify-between font-bold ">
         <div>Product Name</div>
         <div>Price</div>
       </div>

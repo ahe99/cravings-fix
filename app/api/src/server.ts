@@ -19,9 +19,9 @@ import bannerRoute from './routes/banner.route'
 import userRoute from './routes/user.route'
 import newsRoute from './routes/news.route'
 
-const bodyParser = require('body-parser')
+import bodyParser from 'body-parser'
 
-//mongodb
+// mongodb
 mongoose.connect(config.mongodb.uri ?? 'mongo')
 mongoose.set('strictQuery', false)
 
@@ -55,4 +55,4 @@ app.listen(port, () => {
   console.log('cravings-fix-api is running at port: ', port)
 })
 
-module.exports = app
+export default app

@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { isAuth, isAdmin } from '../middleware/auth.middleware'
@@ -22,6 +21,7 @@ import {
   PatchOrderPriceRequestSchema,
   DeleteOrderRequestSchema,
 } from '../schema/order.schema'
+const router = express.Router()
 
 /**
  * @swagger

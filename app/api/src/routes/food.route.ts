@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { upload } from '../middleware/file.middleware'
@@ -22,6 +21,7 @@ import {
   DeleteFoodRequestSchema,
   DeleteFoodImageRequestSchema,
 } from '../schema/food.schema'
+const router = express.Router()
 
 /**
  * @swagger

@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { isAuth, isAdmin } from '../middleware/auth.middleware'
@@ -20,6 +19,7 @@ import {
   deleteUser,
   getCurrentUser,
 } from '../controller/user.controller'
+const router = express.Router()
 
 /**
  * @swagger

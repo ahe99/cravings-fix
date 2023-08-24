@@ -1,4 +1,4 @@
-import { Box, Card, Divider, Heading } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import { MdOutlineTimer } from 'react-icons/md'
 import dayjs from 'dayjs'
 
@@ -15,7 +15,7 @@ export const NewsItem = ({
 }: NewsItemProps) => {
   return (
     <Box
-      className=" bg-primary-200 hover:cursor-pointer hover:opacity-40 rounded-md"
+      className=" rounded-md bg-primary-200 hover:cursor-pointer hover:opacity-40"
       p="4"
       display="flex"
       flexFlow="column"

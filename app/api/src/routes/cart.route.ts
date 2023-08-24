@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 
 import { validateResource } from '../middleware/validate.middleware'
 import { hasCart } from '../middleware/cart.middleware'
@@ -24,6 +23,7 @@ import {
   UpdateCartItemRequestSchema,
   DeleteCartItemRequestSchema,
 } from '../schema/cart.schema'
+const router = express.Router()
 
 /**
  * @swagger

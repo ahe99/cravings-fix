@@ -9,6 +9,7 @@
     "start": "next start -p 3400",
     "lint": "eslint --ext .ts,.tsx ./src && tsc --noEmit",
     "lint:next": "next lint",
+    "format": "prettier --write ./src",
     "json-server": "json-server --watch .json/main.json --port 3030"
   },
   "dependencies": {

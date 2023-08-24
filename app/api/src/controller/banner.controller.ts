@@ -23,7 +23,7 @@ const getImageFromImageId = async (imageId: Types.ObjectId) => {
 
 export const getAllBanners: RequestHandler = async (req, res, next) => {
   try {
-    let bannerQuery = BannerModel.find().lean()
+    const bannerQuery = BannerModel.find().lean()
 
     const result = await bannerQuery.exec()
     const ids = result.map(({ _id }) => _id.toString())

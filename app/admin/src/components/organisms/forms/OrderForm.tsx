@@ -38,7 +38,7 @@ export const OrderForm = {
       autoComplete="off"
     >
       <Form.Item<FieldType['Edit']> label="Buyer" name={['user', 'username']}>
-        <Input addonBefore={<EditOutlined />} disabled/>
+        <Input addonBefore={<EditOutlined />} disabled />
       </Form.Item>
 
       <Form.Item label="Items">

@@ -56,7 +56,7 @@ const MenuPortrait = () => {
   }
 
   return (
-    <Box className="h-full flex-row items-center gap-2 lg:hidden flex">
+    <Box className="flex h-full flex-row items-center gap-2 lg:hidden">
       <IconButton
         aria-label="menu"
         ref={btnRef}
@@ -101,7 +101,7 @@ const MenuPortrait = () => {
           <DrawerFooter>
             {isLoggedIn ? (
               <Button
-                className="w-full font-normal text-xl text-brown-800 duration-300 hover:bg-brown-200"
+                className="w-full text-xl font-normal text-brown-800 duration-300 hover:bg-brown-200"
                 onClick={handleLogout}
               >
                 LOGOUT
@@ -122,7 +122,7 @@ const MenuPortrait = () => {
 }
 const MenuLandscape = () => {
   return (
-    <ul className="h-full flex-row flex-shrink-0 items-center gap-2 lg:flex hidden">
+    <ul className="hidden h-full flex-shrink-0 flex-row items-center gap-2 lg:flex">
       <li>
         <Link className="cursor-pointer" href={'/'}>
           <Logo />

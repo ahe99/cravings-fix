@@ -161,7 +161,7 @@ export const deleteOrderItem: RequestHandler = async (req, res, next) => {
 
   try {
     const response = await OrderItemModel.findByIdAndDelete(orderItemId)
-    const currentOrder = await OrderModel.findOne({ userId: userId }).exec()
+    const currentOrder = await OrderModel.findOne({ userId }).exec()
     if (currentOrder !== undefined && currentOrder !== null) {
       currentOrder.orderItems = currentOrder.orderItems.filter(
         (_id) => String(_id) !== orderItemId,

@@ -6,7 +6,7 @@ import welcome from '/public/welcome.webp'
 
 export const Welcome = () => {
   return (
-    <Box className="relative w-1/2 aspect-video">
+    <Box className="relative aspect-video w-1/2">
       <Image
         alt="logo"
         src={welcome}

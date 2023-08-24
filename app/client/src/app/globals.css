@@ -37,7 +37,7 @@ body {
 }
 
 .page-container {
-  @apply respondive-width mx-auto flex flex-col p-4 sm:p-8 mt-16;
+  @apply respondive-width mx-auto mt-16 flex flex-col p-4 sm:p-8;
 }
 .header-container {
   @apply fixed z-50 flex h-16 w-screen items-center justify-center bg-primary-300;
@@ -55,5 +55,5 @@ body {
   @apply w-full lg:w-10/12;
 }
 .product-img {
-  @apply w-24 h-24 sm:w-36 md:w-44 lg:w-56 sm:h-36 md:h-44 lg:h-56;
+  @apply h-24 w-24 sm:h-36 sm:w-36 md:h-44 md:w-44 lg:h-56 lg:w-56;
 }

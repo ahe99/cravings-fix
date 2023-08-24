@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import {
   getAllNews,
   getSingleNews,
@@ -17,6 +16,7 @@ import {
   PatchNewsRequestSchema,
   DeleteNewsRequestSchema,
 } from '../schema/news.schema'
+const router = express.Router()
 
 /**
  * @swagger
@@ -98,11 +98,7 @@ router.get('/', validateResource(GetNewsRequestSchema), getAllNews)
  *       500:
  *         description: Internal server error.
  */
-router.get(
-  '/:id',
-  validateResource(GetSingleNewsRequestSchema),
-  getSingleNews,
-)
+router.get('/:id', validateResource(GetSingleNewsRequestSchema), getSingleNews)
 
 /**
  * @swagger

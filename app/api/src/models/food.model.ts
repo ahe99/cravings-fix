@@ -71,13 +71,13 @@ FoodSchema.post(['find', 'findOne'], async function (result, next) {
         result.map(async (item: any) => {
           const parsedItem = JSON.parse(JSON.stringify(item))
           item.images = await getImagesFromImageIds(parsedItem.imageIds)
-          delete item['imageIds']
+          delete item.imageIds
         }),
       )
     } else {
       const parsedItem = JSON.parse(JSON.stringify(result))
       result.images = await getImagesFromImageIds(parsedItem.imageIds)
-      delete result['imageIds']
+      delete result.imageIds
     }
   } catch (e) {
     console.log(e)

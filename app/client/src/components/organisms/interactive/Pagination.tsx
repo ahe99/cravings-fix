@@ -68,18 +68,14 @@ export const Pagination = ({
   }
 
   const handleMoveNext = () => {
-    if (currentPage === total) {
-      return
-    } else {
+    if (currentPage !== total) {
       const newNumber = currentPage + 1
       setPaginationState(getPaginationState({ total, currentPage: newNumber }))
       onChange(newNumber)
     }
   }
   const handleMovePrev = () => {
-    if (currentPage === 1) {
-      return
-    } else {
+    if (currentPage !== 1) {
       const newNumber = currentPage - 1
       setPaginationState(getPaginationState({ total, currentPage: newNumber }))
       onChange(newNumber)

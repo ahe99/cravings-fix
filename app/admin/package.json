@@ -9,6 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx && tsc --noEmit",
     "lint:next": "next lint",
+    "format": "prettier --write ./src",
     "preview": "vite preview",
     "module:check": "ncu",
     "module:update": "ncu -u"

@@ -2,12 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { Heading, Box, IconButton } from '@chakra-ui/react'
-import {
-  MdArrowLeft,
-  MdOutlineKeyboardArrowLeft,
-  MdOutlineTimer,
-  MdTimer,
-} from 'react-icons/md'
+import { MdOutlineKeyboardArrowLeft, MdOutlineTimer } from 'react-icons/md'
 
 import { News } from '@/models/News'
 import dayjs from 'dayjs'
@@ -35,7 +30,7 @@ export const NewsContentPage = ({
           onClick={() => router.back()}
         />
       </Box>
-      <Box className="grid grid-flow-row lg:grid-cols-3 gap-4">
+      <Box className="grid grid-flow-row gap-4 lg:grid-cols-3">
         <Box>
           <Heading mb={4}>{title}</Heading>
           <Box display="flex" alignItems="center" gap={1}>
@@ -44,7 +39,7 @@ export const NewsContentPage = ({
           </Box>
         </Box>
         <div
-          className="prose lg:prose-xl col-span-2"
+          className="prose col-span-2 lg:prose-xl"
           dangerouslySetInnerHTML={{
             __html: content,
           }}

@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 
 import {
   getAllBanners,
@@ -10,6 +9,7 @@ import { DeleteBannerRequestSchema } from '../schema/banner.schema'
 import { validateResource } from '../middleware/validate.middleware'
 import { isAuth, isAdmin } from '../middleware/auth.middleware'
 import { upload } from '../middleware/file.middleware'
+const router = express.Router()
 
 /**
  * @swagger

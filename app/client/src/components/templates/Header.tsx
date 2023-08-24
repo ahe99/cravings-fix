@@ -83,7 +83,7 @@ export const Header = () => {
                 h="full"
                 color="brown.800"
                 fontSize="xl"
-                className="sm:block hidden"
+                className="hidden sm:block"
               >
                 {` ${userQuery.data?.username ?? ''}, welcome!`}
               </Box>

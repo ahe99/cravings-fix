@@ -133,7 +133,7 @@ export const deleteCartItem: RequestHandler = async (req, res, next) => {
   try {
     const response = await CartItemModel.findByIdAndDelete(cartItemId)
 
-    const currentCart = await CartModel.findOne({ userId: userId }).exec()
+    const currentCart = await CartModel.findOne({ userId }).exec()
     if (currentCart !== undefined && currentCart !== null) {
       currentCart.cartItems = currentCart.cartItems.filter(
         (_id) => String(_id) !== cartItemId,

@@ -11,14 +11,14 @@ export const definition: OAS3Definition = {
     description: 'Docs to use Cravings Fix API',
   },
   components: {
-      securitySchemes: {
-          token: {
-              description: 'JWT authorization of an API',
-              type: 'apiKey',
-              in: 'header',
-              name: 'Authorization',
-          },
+    securitySchemes: {
+      token: {
+        description: 'JWT authorization of an API',
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
       },
+    },
   },
 }
 

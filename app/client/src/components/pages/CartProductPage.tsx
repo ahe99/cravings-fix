@@ -10,7 +10,7 @@ import { useCartProducts, useAuth } from '@/hooks'
 
 import { CartProductList } from '@/components/organisms'
 
-interface CartProductPageProps {}
+export interface CartProductPageProps {}
 
 export const CartProductPage = () => {
   const cartProducts = useCartProducts()
@@ -48,9 +48,7 @@ export const CartProductPage = () => {
   }
 
   const checkout = async () => {
-    if (isCartEmpty) {
-      return
-    } else {
+    if (!isCartEmpty) {
       try {
         if (isLoggedIn) {
           await cartProducts.checkout.mutateAsync()
