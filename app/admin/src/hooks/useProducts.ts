@@ -8,22 +8,25 @@ import {
 
 import { API } from '@/API'
 import { Product } from '@/models/Product'
+import { Category } from '@/models/Category'
 
 import { useAPI } from './useAPI'
+import { Override } from '@/helpers/types'
 
 export interface APIRequestCreateProduct {
   name: string
   description?: string
   stockQuantity?: number
   price: number
-  categoryId?: string
+  category?: Category
 }
 export interface APIRequestEditProduct {
+  _id: string
   name?: string
   description?: string
   stockQuantity?: number
   price?: number
-  categoryId?: string
+  category?: Category
 }
 
 export const useProducts = () => {
@@ -46,20 +49,41 @@ export const useProducts = () => {
     queryFn: getProductsData,
   })
 
-  const putProductData: MutationFunction<
+  const postProductData: MutationFunction<
     unknown,
-    { data: unknown; productId: string | number }
-  > = async ({ data, productId }) => {
-    const { data: response } = await request<unknown, unknown, unknown>(
-      'put',
-      apiRoute.update(productId),
-      {
-        params: { id: productId },
-        data,
-      },
-    )
+    APIRequestCreateProduct
+  > = async (data) => {
+    const { data: response } = await request<
+      unknown,
+      Override<APIRequestCreateProduct, { category?: Category['_id'] }>,
+      unknown
+    >('post', apiRoute.create, {
+      data: { ...data, category: data.category?._id },
+    })
     return response
   }
+  const createProductQuery = useMutation({
+    mutationKey: ['create product'],
+    mutationFn: postProductData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['products'])
+    },
+  })
+
+  const putProductData: MutationFunction<
+    unknown,
+    APIRequestEditProduct
+  > = async (data) => {
+    const { data: response } = await request<
+      unknown,
+      Override<APIRequestEditProduct, { category?: Category['_id'] }>,
+      unknown
+    >('put', apiRoute.update(data._id), {
+      data: { ...data, category: data.category?._id },
+    })
+    return response
+  }
+
   const updateProductQuery = useMutation({
     mutationKey: ['update product'],
     mutationFn: putProductData,
@@ -68,16 +92,12 @@ export const useProducts = () => {
     },
   })
 
-  const deleteProduct: MutationFunction<
-    unknown,
-    { productId: string | number }
-  > = async ({ productId }) => {
+  const deleteProduct: MutationFunction<unknown, Product['_id']> = async (
+    productId,
+  ) => {
     const { data: response } = await request<unknown>(
       'delete',
       apiRoute.delete(productId),
-      {
-        params: { id: productId },
-      },
     )
 
     return response
@@ -92,6 +112,7 @@ export const useProducts = () => {
 
   return {
     query: productsDataQuery,
+    create: createProductQuery,
     update: updateProductQuery,
     delete: deleteProductQuery,
   }

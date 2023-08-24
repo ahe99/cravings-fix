@@ -8,15 +8,6 @@ import { responseMessage } from '../utils/errorException'
 
 const FOOD_IMAGE_BUCKET_NAME = bucketObject.foods
 
-// const removeImageByFilename = async (fileName?: string) => {
-//   if (typeof fileName === 'string' && fileName !== '') {
-//     await removeObject({
-//       bucket: FOOD_IMAGE_BUCKET_NAME,
-//       object: fileName,
-//     })
-//   }
-// }
-
 export const getAllFoods: RequestHandler = async (req, res, next) => {
   const {
     query: { name, limit = '50', offset = '0' },
@@ -40,17 +31,14 @@ export const getAllFoods: RequestHandler = async (req, res, next) => {
 }
 
 export const addFood: RequestHandler = async (req, res, next) => {
-  const newFood = new FoodModel()
-  const { name, description, stockQuantity, price, categoryId } = req.body
-
-  newFood.name = name
-  newFood.description = description
-  newFood.stockQuantity = stockQuantity
-  newFood.price = price
-
-  if (categoryId) {
-    newFood.category = categoryId
-  }
+  const { name, description, stockQuantity, price, category } = req.body
+  const newFood = new FoodModel({
+    name,
+    description,
+    stockQuantity,
+    price,
+    category,
+  })
 
   try {
     const result = await newFood.save()

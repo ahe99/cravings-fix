@@ -34,12 +34,12 @@ export const PostFoodCreateSchema = z.object({
     name: z.string().max(20),
     description: z.string().optional(),
     price: z.number().min(0).default(0),
-    stockQuantity: z.number().min(0).default(0).optional(),
-    categoryId: z
+    stockQuantity: z.number().min(0).default(0),
+    category: z
       .string()
       .refine(
-        async (categoryId) => {
-          const count = await CategoryModel.find({ _id: categoryId }).count()
+        async (category) => {
+          const count = await CategoryModel.find({ _id: category }).count()
           return count !== 0
         },
         {
@@ -67,9 +67,9 @@ export const PatchFoodRequestSchema = z.object({
       description: z.string(),
       price: z.number().min(0),
       stockQuantity: z.number().min(0),
-      categoryId: z.string().refine(
-        async (categoryId) => {
-          const count = await CategoryModel.find({ _id: categoryId }).count()
+      category: z.string().refine(
+        async (category) => {
+          const count = await CategoryModel.find({ _id: category }).count()
           return count !== 0
         },
         {

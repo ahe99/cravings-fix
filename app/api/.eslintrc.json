@@ -1,15 +1,14 @@
 {
+  "parser": "@typescript-eslint/parser",
   "env": {
     "browser": true,
     "commonjs": true,
     "es2021": true
   },
-  "extends": ["standard", "eslint-config-prettier"],
+  "extends": ["standard", "plugin:@typescript-eslint/recommended"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "rules": {
-    "camelcase": "off"
-  }
+  "rules": {}
 }

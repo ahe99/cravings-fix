@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Button, Form, Input, Select, Radio } from 'antd'
+import { Button, Form, Input, Radio } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 
-import { News } from '@/models/News'
 import { APIRequestCreateNews, APIRequestEditNews } from '@/hooks'
 
 import CSS from './NewsForm.module.css'
@@ -74,7 +73,7 @@ export const NewsForm = {
             label="Description"
             name="description"
           >
-            <Input.TextArea className={CSS.description} />
+            <Input.TextArea className={CSS.description} showCount />
           </Form.Item>
         </div>
 
@@ -142,7 +141,7 @@ export const NewsForm = {
             </Form.Item>
           </div>
           <Form.Item<FieldType['Edit']> label="Description" name="description">
-            <Input.TextArea className={CSS.description} />
+            <Input.TextArea className={CSS.description} showCount />
           </Form.Item>
         </div>
 

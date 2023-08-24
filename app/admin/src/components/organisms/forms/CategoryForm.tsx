@@ -84,7 +84,7 @@ export const CategoryForm = {
       </Form.Item>
 
       <Form.Item<FieldType['Edit']> label="Description" name="description">
-        <Input.TextArea />
+        <Input.TextArea showCount />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
