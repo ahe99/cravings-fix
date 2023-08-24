@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 
-import { APIRequestUserLogin } from '@/hooks/useAuth'
+import { APIRequestUserLogin } from '@/hooks'
 
 import CSS from './UserLoginForm.module.css'
 

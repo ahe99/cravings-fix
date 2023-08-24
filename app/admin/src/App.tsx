@@ -1,5 +1,6 @@
 import { Fragment, PropsWithChildren } from 'react'
 import { Route, BrowserRouter, Routes } from 'react-router-dom'
+import { App as ANTDInstance } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
@@ -55,7 +56,9 @@ const RouteContent = () => {
 const AppContent = () => {
   return (
     <QueryProvider>
-      <RouteContent />
+      <ANTDInstance message={{ maxCount: 1 }}>
+        <RouteContent />
+      </ANTDInstance>
     </QueryProvider>
   )
 }

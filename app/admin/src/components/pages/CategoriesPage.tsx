@@ -1,15 +1,16 @@
 import { useMemo, useState, Key } from 'react'
 import { Button, Card } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
-import { AxiosError } from 'axios'
 
 import {
   useCategories,
   useRightDrawer,
+  useMessage,
   APIRequestCreateCategory,
   APIRequestEditCategory,
 } from '@/hooks'
 import { Category } from '@/models/Category'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { CategoriesTable, CategoryForm } from '@/components/organisms'
 import { Breadcrumbs } from '@/components/atoms'
@@ -18,6 +19,7 @@ import CSS from './CategoriesPage.module.css'
 
 export const CategoriesPage = () => {
   const { RightDrawer, actions } = useRightDrawer()
+  const { message } = useMessage()
   const categories = useCategories()
 
   const [clickedCategory, setClickedCategory] = useState<Category | null>(null)
@@ -46,29 +48,26 @@ export const CategoriesPage = () => {
 
   const onSubmit = {
     create: async (formValues: APIRequestCreateCategory) => {
+      message.loading('In Progress...')
       try {
         await categories.create.mutateAsync(formValues)
+        message.success('Category Created!')
+
         actions.close()
       } catch (e) {
-        if (e instanceof AxiosError) {
-          console.log(e.response?.data ?? e.response)
-        } else {
-          console.log(e)
-        }
+        message.error(exceptionHandler(e))
       }
     },
     edit: async (formValues: APIRequestEditCategory) => {
+      message.loading('In Progress...')
       try {
         await categories.update.mutateAsync(formValues)
+        message.success('Category Updated!')
 
         actions.close()
         setClickedCategory(null)
       } catch (e) {
-        if (e instanceof AxiosError) {
-          console.log(e.response?.data ?? e.response)
-        } else {
-          console.log(e)
-        }
+        message.error(exceptionHandler(e))
       }
     },
   }
@@ -78,16 +77,18 @@ export const CategoriesPage = () => {
   }
 
   const onDeleteItems = async () => {
+    message.loading('In Progress...')
     try {
       for (const selectedCategoryKey of selectedCategories) {
         await categories.delete.mutateAsync(selectedCategoryKey)
       }
+      const isMultipleItemsDeleted = selectedCategories.length > 1
+      message.success(
+        isMultipleItemsDeleted ? 'Categories Deleted!' : 'Category Deleted!',
+      )
+      setSelectedCategories([])
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
 

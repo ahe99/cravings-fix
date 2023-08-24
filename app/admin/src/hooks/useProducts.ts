@@ -11,6 +11,21 @@ import { Product } from '@/models/Product'
 
 import { useAPI } from './useAPI'
 
+export interface APIRequestCreateProduct {
+  name: string
+  description?: string
+  stockQuantity?: number
+  price: number
+  categoryId?: string
+}
+export interface APIRequestEditProduct {
+  name?: string
+  description?: string
+  stockQuantity?: number
+  price?: number
+  categoryId?: string
+}
+
 export const useProducts = () => {
   const queryClient = useQueryClient()
 

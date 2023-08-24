@@ -1,15 +1,16 @@
 import { useMemo, useState, Key } from 'react'
 import { Button, Card } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
-import { AxiosError } from 'axios'
 
 import {
   useUsers,
   useRightDrawer,
+  useMessage,
   APIRequestCreateUser,
   APIRequestEditUser,
 } from '@/hooks'
 import { User } from '@/models/User'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { UsersTable, UserForm } from '@/components/organisms'
 import { Breadcrumbs } from '@/components/atoms'
@@ -18,6 +19,7 @@ import CSS from './UsersPage.module.css'
 
 export const UsersPage = () => {
   const { RightDrawer, actions } = useRightDrawer()
+  const { message } = useMessage()
   const users = useUsers()
 
   const [clickedUser, setClickedUser] = useState<User | null>(null)
@@ -40,29 +42,26 @@ export const UsersPage = () => {
 
   const onSubmit = {
     create: async (formValues: APIRequestCreateUser) => {
+      message.loading('In Progress...')
       try {
         await users.create.mutateAsync(formValues)
+        message.success('Users Created!')
+
         actions.close()
       } catch (e) {
-        if (e instanceof AxiosError) {
-          console.log(e.response?.data ?? e.response)
-        } else {
-          console.log(e)
-        }
+        message.error(exceptionHandler(e))
       }
     },
     edit: async (formValues: APIRequestEditUser) => {
+      message.loading('In Progress...')
       try {
         await users.update.mutateAsync(formValues)
+        message.success('Users Updated!')
 
         actions.close()
         setClickedUser(null)
       } catch (e) {
-        if (e instanceof AxiosError) {
-          console.log(e.response?.data ?? e.response)
-        } else {
-          console.log(e)
-        }
+        message.error(exceptionHandler(e))
       }
     },
   }
@@ -72,16 +71,18 @@ export const UsersPage = () => {
   }
 
   const onDeleteItems = async () => {
+    message.loading('In Progress...')
     try {
       for (const selectedUserKey of selectedUsers) {
         await users.delete.mutateAsync(selectedUserKey)
       }
+      const isMultipleItemsDeleted = selectedUsers.length > 1
+      message.success(
+        isMultipleItemsDeleted ? 'Users Deleted!' : 'User Deleted!',
+      )
+      setSelectedUsers([])
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
   return (

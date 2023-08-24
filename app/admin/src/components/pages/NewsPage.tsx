@@ -2,18 +2,19 @@ import { Key, useState, useMemo } from 'react'
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { AxiosError } from 'axios'
 
 import { Breadcrumbs } from '@/components/atoms'
 import { NewsTable } from '@/components/organisms'
 
 import { News } from '@/models/News'
-import { useNews } from '@/hooks/useNews'
+import { useNews, useMessage } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import CSS from './NewsPage.module.css'
 
 export const NewsPage = () => {
   const navigate = useNavigate()
+  const { message } = useMessage()
   const news = useNews()
   const [selectedNews, setSelectedNews] = useState<News['_id'][]>([])
 
@@ -26,16 +27,15 @@ export const NewsPage = () => {
   }
 
   const onDeleteItems = async () => {
+    message.loading('In Progress...')
     try {
       for (const selectedNewsKey of selectedNews) {
         await news.delete.mutateAsync(selectedNewsKey)
       }
+      message.success('News Deleted!')
+      setSelectedNews([])
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
 

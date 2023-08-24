@@ -1,12 +1,12 @@
 import { Button, Card } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { useNavigate, Navigate } from 'react-router-dom'
-import { AxiosError } from 'axios'
 
 import { Breadcrumbs } from '@/components/atoms'
 import { NewsForm } from '@/components/organisms'
 
-import { useNews, APIRequestEditNews } from '@/hooks'
+import { useNews, useMessage, APIRequestEditNews } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import CSS from './NewsEditPage.module.css'
 
@@ -16,20 +16,18 @@ interface NewsEditPageProps {
 
 export const NewsEditPage = ({ newsId }: NewsEditPageProps) => {
   const navigate = useNavigate()
+  const { message } = useMessage()
 
   const news = useNews()
 
   const onSubmit = async (formValues: APIRequestEditNews) => {
+    message.loading('In Progress...')
     try {
-      console.log('formValues', formValues)
       await news.update.mutateAsync(formValues)
+      message.success('News Updated!')
       navigate(-1)
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
 

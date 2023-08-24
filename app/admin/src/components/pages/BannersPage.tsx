@@ -1,10 +1,15 @@
 import { useState, useMemo, Key } from 'react'
 import { Button, Card } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
-import { AxiosError } from 'axios'
 
-import { useBanners, useRightDrawer, APIRequestCreateBanner } from '@/hooks'
+import {
+  useBanners,
+  useRightDrawer,
+  useMessage,
+  APIRequestCreateBanner,
+} from '@/hooks'
 import { Banner } from '@/models/Banner'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { BannersTable, BannerForm } from '@/components/organisms'
 import { Breadcrumbs } from '@/components/atoms'
@@ -13,6 +18,7 @@ import CSS from './BannersPage.module.css'
 
 export const BannersPage = () => {
   const { RightDrawer, actions } = useRightDrawer()
+  const { message } = useMessage()
   const banners = useBanners()
 
   const [selectedBanners, setSelectedBanners] = useState<Banner['imageId'][]>(
@@ -33,15 +39,13 @@ export const BannersPage = () => {
   }
 
   const onSubmit = async (formValues: APIRequestCreateBanner) => {
+    message.loading('In Progress...')
     try {
       await banners.create.mutateAsync(formValues)
+      message.success('Banner Created!')
       actions.close()
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
 
@@ -50,16 +54,18 @@ export const BannersPage = () => {
   }
 
   const onDeleteItems = async () => {
+    message.loading('In Progress...')
     try {
       for (const selectedBannerKey of selectedBanners) {
         await banners.delete.mutateAsync(selectedBannerKey)
       }
+      const isMultipleItemsDeleted = selectedBanners.length > 1
+      message.success(
+        isMultipleItemsDeleted ? 'Banners Deleted!' : 'Banner Deleted!',
+      )
+      setSelectedBanners([])
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log(e.response?.data ?? e.response)
-      } else {
-        console.log(e)
-      }
+      message.error(exceptionHandler(e))
     }
   }
 

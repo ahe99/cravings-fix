@@ -75,17 +75,9 @@ export const useAuth = ({
   })
 
   const login = async (credentials: APIRequestUserLogin) => {
-    try {
-      const token = await tokenQuery.mutateAsync(credentials)
+    const token = await tokenQuery.mutateAsync(credentials)
 
-      tokenStore.update(token)
-    } catch (e) {
-      if (isAxiosError(e)) {
-        throw e.response?.data ?? e.response
-      } else {
-        throw e
-      }
-    }
+    tokenStore.update(token)
   }
 
   const logout = () => {
@@ -115,7 +107,7 @@ export const useAuth = ({
   const postNewUser: MutationFunction<void, APIRequestUserRegister> = async (
     newUserData,
   ) => {
-    await client.post(apiRoute.register, newUserData)
+    await client.post(apiRoute.create, newUserData)
   }
 
   const register = useMutation({

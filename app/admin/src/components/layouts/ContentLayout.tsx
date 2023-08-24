@@ -4,7 +4,7 @@ import { Button, Layout } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks'
 
 import { MainMenu } from '@/components/template'
 
