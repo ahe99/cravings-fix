@@ -6,7 +6,9 @@ import { CartModel } from '../models/cart.model'
 import { OrderModel } from '../models/order.model'
 import { OrderItemModel } from '../models/orderItem.model'
 import { FoodModel } from '../models/food.model'
+
 import { parseFloat } from '../helpers/format'
+import { responseMessage } from '../utils/errorException'
 
 const createCartItem = async ({
   food,
@@ -181,7 +183,7 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
         return res.status(400).send("Can't checkout with empty cart")
       }
 
-      let orderItemIds: Types.ObjectId[] = []
+      let orderItems: Types.ObjectId[] = []
       let totalPrice = 0
 
       await Promise.all(
@@ -203,22 +205,26 @@ export const checkoutMyCart: RequestHandler = async (req, res, next) => {
 
             const { _id } = await newOrderItem.save()
 
-            orderItemIds = [...orderItemIds, _id]
+            orderItems = [...orderItems, _id]
             totalPrice += itemPrice
           }
         }),
       )
 
-      currentCart.cartItems = []
-      await currentCart.save()
-      const newOrder = new OrderModel({
-        user,
-        orderItemIds,
-        totalPrice: parseFloat(totalPrice),
-      })
-      const result = await newOrder.save()
+      if (orderItems.length !== 0) {
+        currentCart.cartItems = []
+        await currentCart.save()
+        const newOrder = new OrderModel({
+          user,
+          orderItems,
+          totalPrice: parseFloat(totalPrice),
+        })
+        const result = await newOrder.save()
 
-      res.json(result)
+        res.json(result)
+      } else {
+        res.status(400).send(responseMessage['400'])
+      }
     }
   } catch (error) {
     next(error)
