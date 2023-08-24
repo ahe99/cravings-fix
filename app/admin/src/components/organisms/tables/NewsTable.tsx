@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { News } from '@/models/News'
 import { sortFn, dateSortFn } from '@/helpers/sort'
 import { useTableSearch } from '@/hooks'
+import { DATE_TIME_FORMAT } from '@/helpers/date'
 
 interface NewsTableProps {
   news: News[]
@@ -58,13 +59,13 @@ export const NewsTable = ({
       title: 'Created At',
       dataIndex: 'createdAt',
       sorter: (a, b) => dateSortFn(dayjs(a.createdAt), dayjs(b.createdAt)),
-      render: (createdAt) => dayjs(createdAt).format('YYYY-MM-DD HH:mm'),
+      render: (createdAt) => dayjs(createdAt).format(DATE_TIME_FORMAT),
     },
     {
       title: 'Updated At',
       dataIndex: 'updatedAt',
       sorter: (a, b) => dateSortFn(dayjs(a.updatedAt), dayjs(b.updatedAt)),
-      render: (updatedAt) => dayjs(updatedAt).format('YYYY-MM-DD HH:mm'),
+      render: (updatedAt) => dayjs(updatedAt).format(DATE_TIME_FORMAT),
     },
   ]
 

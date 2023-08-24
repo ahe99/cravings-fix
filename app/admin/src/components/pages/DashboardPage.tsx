@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { Line, Liquid, Column, TinyLine } from '@ant-design/charts'
 
 import { useOrders } from '@/hooks'
+import { DATE_FORMAT } from '@/helpers/date'
 
 import { Breadcrumbs } from '@/components/atoms'
 import { OrdersTable } from '@/components/organisms'
@@ -71,10 +72,10 @@ export const DashboardPage = () => {
         <Breadcrumbs />
         <RangePicker
           defaultValue={[
-            dayjs('2023/08/01', 'YYYY-MM-DD'),
-            dayjs('2023/08/20', 'YYYY-MM-DD'),
+            dayjs('2023/08/01', DATE_FORMAT),
+            dayjs('2023/08/20', DATE_FORMAT),
           ]}
-          format={'YYYY-MM-DD'}
+          format={DATE_FORMAT}
         />
       </div>
       <div className={CSS.overview}>

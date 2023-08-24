@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { Banner } from '@/models/Banner'
 import { dateSortFn } from '@/helpers/sort'
 import { useTableSearch } from '@/hooks'
+import { DATE_TIME_FORMAT } from '@/helpers/date'
 
 import CSS from './BannersTable.module.css'
 
@@ -41,13 +42,13 @@ export const BannersTable = ({
       title: 'Created At',
       dataIndex: 'createdAt',
       sorter: (a, b) => dateSortFn(dayjs(a.createdAt), dayjs(b.createdAt)),
-      render: (createdAt) => dayjs(createdAt).format('YYYY-MM-DD HH:mm'),
+      render: (createdAt) => dayjs(createdAt).format(DATE_TIME_FORMAT),
     },
     {
       title: 'Updated At',
       dataIndex: 'updatedAt',
       sorter: (a, b) => dateSortFn(dayjs(a.updatedAt), dayjs(b.updatedAt)),
-      render: (updatedAt) => dayjs(updatedAt).format('YYYY-MM-DD HH:mm'),
+      render: (updatedAt) => dayjs(updatedAt).format(DATE_TIME_FORMAT),
     },
   ]
 
