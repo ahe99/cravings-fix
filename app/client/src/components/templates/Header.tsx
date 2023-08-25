@@ -12,12 +12,19 @@ import {
 import { MdShoppingCart, MdPerson } from 'react-icons/md'
 import Link from 'next/link'
 
-import { useAuth } from '@/hooks'
+import { useAuth, useToast } from '@/hooks'
 
 import { MainMenu } from './MainMenu'
 
 export const Header = () => {
   const { logout, isLoggedIn, userQuery } = useAuth()
+
+  const { toast } = useToast()
+
+  const handleLogout = () => {
+    logout()
+    toast.success({ title: 'Logout Successfully!' })
+  }
 
   const ProfileMenuButton = useMemo(() => {
     if (isLoggedIn) {
@@ -45,7 +52,7 @@ export const Header = () => {
             </MenuItem>
             <MenuItem
               className="h-full w-full font-bold text-red-400 hover:bg-red-100"
-              onClick={logout}
+              onClick={handleLogout}
             >
               Logout
             </MenuItem>

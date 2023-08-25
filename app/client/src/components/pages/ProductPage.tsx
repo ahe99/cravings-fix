@@ -1,17 +1,16 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { MdShoppingCart } from 'react-icons/md'
 import { Button } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
 
 import { Product } from '@/models/Product'
-import { useRecentlyViewedProducts, useCartProducts } from '@/hooks'
+import { Category } from '@/models/Category'
+import { useCartProducts, useToast } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { Divider } from '@/components/atoms'
 import { QuantitySelector, ProductProfileCard } from '@/components/molecules'
-import { ProductList } from '@/components/organisms'
-import { Category } from '@/models/Category'
 
 interface ProductPageProps {
   prefetchProduct: Product
@@ -19,28 +18,17 @@ interface ProductPageProps {
   prefetchCategories: Category[]
 }
 
-export const ProductPage = ({
-  prefetchProduct,
-  prefetchRecentlyProducts,
-  prefetchCategories,
-}: ProductPageProps) => {
+export const ProductPage = ({ prefetchProduct }: ProductPageProps) => {
   const [quantity, setQuantity] = useState(1)
 
   const cart = useCartProducts()
-  // const recentlyViewedProducts = useRecentlyViewedProducts(
-  //   prefetchRecentlyProducts,
-  // )
-
-  // useEffect(() => {
-  //   if (prefetchProduct.objectId) {
-  //     recentlyViewedProducts.create.mutateAsync(prefetchProduct)
-  //   }
-  // }, [prefetchProduct.id])
+  const { toast } = useToast()
 
   const handleAddToCart = async () => {
+    toast.loading({ title: 'In Progress...' })
     try {
       if (cart.isExistingInCart(prefetchProduct._id)) {
-        const currentCartItem = cart.query.data.find(
+        const currentCartItem = cart.query.data?.find(
           ({ food }) => food._id === prefetchProduct._id,
         )
         if (currentCartItem) {
@@ -48,21 +36,19 @@ export const ProductPage = ({
             cartItemId: currentCartItem?._id,
             quantity: currentCartItem.quantity + quantity,
           })
+          toast.success({ title: 'Food Updated!' })
         }
       } else {
         await cart.create.mutateAsync({
           productId: prefetchProduct._id,
           quantity,
         })
+        toast.success({ title: 'Food Added!' })
       }
     } catch (e) {
-      console.log(e)
+      toast.error({ title: exceptionHandler(e) })
     }
   }
-
-  // const handleClickProductCard = async (productId: Product['objectId']) => {
-  //   router.push(`products/${productId}`)
-  // }
 
   return (
     <main className="page-container gap-4">
@@ -88,11 +74,6 @@ export const ProductPage = ({
         </Button>
       </div>
       <Divider />
-      <div className="text-2xl">Recently viewed</div>
-      {/* <ProductList
-        products={prefetchRecentlyProducts}
-        onClickItem={handleClickProductCard}
-      /> */}
     </main>
   )
 }

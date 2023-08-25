@@ -17,7 +17,7 @@ import { MdMenu } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 
 import { Logo } from '@/components/atoms'
-import { useAuth } from '@/hooks'
+import { useAuth, useToast } from '@/hooks'
 
 const ROUTES = [
   {
@@ -41,6 +41,7 @@ const MenuPortrait = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
   const { isLoggedIn, logout } = useAuth()
+  const { toast } = useToast()
 
   const btnRef = useRef<any>(null)
 
@@ -49,10 +50,11 @@ const MenuPortrait = () => {
     onClose()
   }
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     router.push('/')
     logout()
     onClose()
+    toast.success({ title: 'Logout Successfully!' })
   }
 
   return (

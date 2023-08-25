@@ -1,24 +1,26 @@
+'use client'
+
 import React from 'react'
 import { Box } from '@chakra-ui/react'
-import { isAxiosError } from 'axios'
 
-import { useAuth, APIRequestUserLogin } from '@/hooks'
+import { useAuth, useToast, APIRequestUserLogin } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { UserLoginForm } from '@/components/organisms'
 import Link from 'next/link'
 
 export const LoginPage = () => {
   const { login } = useAuth({ redirectTo: '/' })
+  const { toast } = useToast()
 
   const handleLogin = async (credential: APIRequestUserLogin) => {
+    toast.loading({ title: 'In Progress...' })
+
     try {
       await login(credential)
+      toast.success({ title: 'Login Successfully!' })
     } catch (e) {
-      if (isAxiosError(e)) {
-        console.error(e.response?.data ?? e.response)
-      } else {
-        console.error(e)
-      }
+      toast.error({ title: exceptionHandler(e) })
     }
   }
 

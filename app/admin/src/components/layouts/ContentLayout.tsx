@@ -4,7 +4,7 @@ import { Button, Layout } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 
-import { useAuth } from '@/hooks'
+import { useAuth, useMessage } from '@/hooks'
 
 import { MainMenu } from '@/components/template'
 
@@ -16,6 +16,7 @@ export const ContentLayout = ({ children }: PropsWithChildren) => {
   const { logout, isLoggedIn } = useAuth()
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { message } = useMessage()
 
   const [collapsed, setCollapsed] = useState(true)
 
@@ -27,6 +28,11 @@ export const ContentLayout = ({ children }: PropsWithChildren) => {
 
   const onClckNavItem = (key: string) => {
     navigate(key)
+  }
+
+  const handleLogout = () => {
+    message.success('Logout Successfully!')
+    logout()
   }
 
   const menuAction = {
@@ -73,7 +79,7 @@ export const ContentLayout = ({ children }: PropsWithChildren) => {
           </div>
 
           <div className={CSS.right}>
-            <Button onClick={logout} type="link" size="large" danger>
+            <Button onClick={handleLogout} type="link" size="large" danger>
               LOGOUT
             </Button>
           </div>

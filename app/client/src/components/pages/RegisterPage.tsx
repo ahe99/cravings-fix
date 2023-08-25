@@ -1,25 +1,24 @@
 import React from 'react'
 import { Box, Button } from '@chakra-ui/react'
-import { isAxiosError } from 'axios'
 import Link from 'next/link'
 import { MdArrowForward } from 'react-icons/md'
 
-import { useAuth, APIRequestUserRegister } from '@/hooks'
+import { useAuth, useToast, APIRequestUserRegister } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { UserRegisterForm } from '@/components/organisms'
 
 export const RegisterPage = () => {
   const { register } = useAuth()
+  const { toast } = useToast()
 
   const handleRegister = async (credential: APIRequestUserRegister) => {
+    toast.loading({ title: 'In Progress...' })
     try {
       await register.mutateAsync(credential)
+      toast.success({ title: 'Account Created!' })
     } catch (e) {
-      if (isAxiosError(e)) {
-        console.error(e.response?.data ?? e.response)
-      } else {
-        console.error(e)
-      }
+      toast.error({ title: exceptionHandler(e) })
     }
   }
 

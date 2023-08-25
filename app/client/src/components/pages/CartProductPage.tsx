@@ -6,7 +6,8 @@ import { MdArrowRight } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 
 import { CartProduct } from '@/models/Cart'
-import { useCartProducts, useAuth } from '@/hooks'
+import { useCartProducts, useAuth, useToast } from '@/hooks'
+import { exceptionHandler } from '@/helpers/exceptionHandler'
 
 import { CartProductList } from '@/components/organisms'
 
@@ -16,6 +17,7 @@ export const CartProductPage = () => {
   const cartProducts = useCartProducts()
   const router = useRouter()
   const { isLoggedIn } = useAuth()
+  const { toast } = useToast()
 
   const cartProductsData = useMemo(
     () => cartProducts.query.data ?? [],
@@ -49,15 +51,19 @@ export const CartProductPage = () => {
 
   const checkout = async () => {
     if (!isCartEmpty) {
+      toast.loading({ title: 'In Progress...' })
       try {
         if (isLoggedIn) {
           await cartProducts.checkout.mutateAsync()
+          toast.success({ title: 'Checkout Successfully!' })
         } else {
           router.push('/login')
         }
       } catch (e) {
-        console.log(e)
+        toast.error({ title: exceptionHandler(e) })
       }
+    } else {
+      toast.info({ title: "Can't Checkout Empty Cart" })
     }
   }
 
