@@ -18,7 +18,8 @@ const config = {
   },
   minio: {
     endpoint: process.env.MINIO_HOST ?? 'minio',
-    port: parseInt(process.env.MINIO_PORT ?? '9000'),
+    region: process.env.MINIO_REGION ?? '',
+    port: parseInt(process.env.MINIO_PORT ?? ''),
     useSSL: process.env.MINIO_SSL === 'true' || false,
     accessKeyId: process.env.MINIO_ACCESS_KEY_ID ?? '',
     secretKeyId: process.env.MINIO_SECRET_KEY_ID ?? '',

@@ -4,6 +4,7 @@ import Logger from './logger.lib'
 
 const minioClient = new Minio.Client({
   endPoint: config.minio.endpoint,
+  region: config.minio.region,
   port: config.minio.port,
   useSSL: config.minio.useSSL,
   accessKey: config.minio.accessKeyId,
@@ -11,8 +12,8 @@ const minioClient = new Minio.Client({
 })
 
 export const bucketObject = {
-  foods: 'food-images',
-  banners: 'banner-images',
+  foods: 'cravings-fix-food-images',
+  banners: 'cravings-fix-banner-images',
 } as const
 export type ValidBucketNames = (typeof bucketObject)[keyof typeof bucketObject]
 
