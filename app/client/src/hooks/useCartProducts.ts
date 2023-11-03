@@ -136,7 +136,7 @@ export const useCartProducts = () => {
 
   const isExistingInCart = (productId: Product['_id']) => {
     return (
-      cartProductsDataQuery.data.findIndex(
+      cartProductsDataQuery.data?.findIndex(
         ({ food }) => food._id === productId,
       ) !== -1
     )

@@ -11,6 +11,7 @@ export * from './tables/CategoriesTable'
 export * from './tables/NewsTable'
 export * from './tables/OrdersTable'
 export * from './tables/ProductsTable'
+export * from './tables/TrendingProductsTable'
 export * from './tables/UsersTable'
 
 export * from './TextEditor'

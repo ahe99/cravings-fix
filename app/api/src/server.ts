@@ -18,6 +18,7 @@ import orderRoute from './routes/order.route'
 import bannerRoute from './routes/banner.route'
 import userRoute from './routes/user.route'
 import newsRoute from './routes/news.route'
+import trendingRoute from './routes/trending.route'
 
 import bodyParser from 'body-parser'
 
@@ -48,6 +49,7 @@ app.use('/orders', orderRoute)
 app.use('/banners', bannerRoute)
 app.use('/users', userRoute)
 app.use('/news', newsRoute)
+app.use('/trending', trendingRoute)
 
 app.use(exceptionParser)
 

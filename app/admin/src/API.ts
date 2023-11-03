@@ -57,6 +57,10 @@ export const API = {
       create: '/banners',
       delete: (param: string | number) => `/banners/${param}`,
     },
+    trending: {
+      list: '/trending',
+      bestseller: '/trending/bestseller',
+    },
   },
   intervals: {},
   requestTimeout: {},

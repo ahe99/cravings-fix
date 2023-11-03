@@ -1,12 +1,18 @@
-import { Card, DatePicker, theme } from 'antd'
+import { Card, DatePicker, Divider, Grid, theme } from 'antd'
 import dayjs from 'dayjs'
-import { Line, Liquid, Column, TinyLine } from '@ant-design/charts'
+import { Liquid, Column, TinyLine } from '@ant-design/charts'
+import {
+  ShoppingCartOutlined,
+  FolderOutlined,
+  DollarOutlined,
+} from '@ant-design/icons'
 
-import { useOrders } from '@/hooks'
+import { useTrending } from '@/hooks'
 import { DATE_FORMAT } from '@/helpers/date'
+import { Bestseller, TrendingProduct } from '@/models/Trending'
 
 import { Breadcrumbs } from '@/components/atoms'
-import { OrdersTable } from '@/components/organisms'
+import { TrendingProductsTable } from '@/components/organisms'
 
 import CSS from './DashboardPage.module.css'
 
@@ -64,7 +70,7 @@ export const DashboardPage = () => {
     token: { colorSuccess, colorWarning, colorPrimary, colorError },
   } = useToken()
 
-  const orders = useOrders()
+  const { bestsellerDataQuery, trendingProductQuery } = useTrending()
 
   return (
     <div className={CSS.dashboard_page}>
@@ -79,28 +85,28 @@ export const DashboardPage = () => {
         />
       </div>
       <div className={CSS.overview}>
-        <TrendCard
+        <TrendingCard
           values={mock.tiny.revenue}
           title="Revenue"
-          description="$3628"
+          description="$3,628"
           percentage={22}
           color={colorPrimary}
         />
-        <TrendCard
+        <TrendingCard
           values={mock.tiny.orders}
           title="Orders"
           description={840}
           percentage={-25}
           color={colorError}
         />
-        <TrendCard
+        <TrendingCard
           values={mock.tiny.visitors}
           title="Visitors"
-          description="1203"
+          description="1,203"
           percentage={49}
           color={colorSuccess}
         />
-        <TrendCard
+        <TrendingCard
           values={mock.tiny.conversion}
           title="Conversion"
           description="28%"
@@ -123,20 +129,6 @@ export const DashboardPage = () => {
               tickInterval: 200,
             }}
           />
-          {/* <Line
-            data={mock.line}
-            padding="auto"
-            xField="Date"
-            yField="profit"
-            yAxis={{
-              label: {
-                formatter: (label) => `$${label}`,
-              },
-              min: Math.min(...mock.line.map(({ profit }) => profit)),
-              tickInterval: 200,
-            }}
-            smooth={true}
-          /> */}
         </Card>
         <Card title="Cart">
           <Liquid
@@ -168,7 +160,7 @@ export const DashboardPage = () => {
               }}
             >
               <span>Abandoned Revenue</span>
-              <span>$3267</span>
+              <span>$3,267</span>
             </div>
           </div>
         </Card>
@@ -180,14 +172,87 @@ export const DashboardPage = () => {
           gap: '1rem',
         }}
       >
-        <Card title="Bestsellers"></Card>
-        <Card title="Trending Items"></Card>
+        <BestsellerCard bestseller={bestsellerDataQuery.data} />
+        <TrendingItemsCard trendingItems={trendingProductQuery.data ?? []} />
       </div>
     </div>
   )
 }
 
-const TrendCard = ({
+const TrendingItemsCard = ({
+  trendingItems = [],
+}: {
+  trendingItems: TrendingProduct[]
+}) => {
+  return (
+    <Card
+      title="Trending Items"
+      bodyStyle={{
+        overflowX: 'auto',
+      }}
+    >
+      <TrendingProductsTable trendingProducts={trendingItems} />
+    </Card>
+  )
+}
+
+const BestsellerCard = ({
+  bestseller,
+}: {
+  bestseller: Bestseller | undefined
+}) => {
+  if (bestseller === undefined) {
+    return <Card title="Bestsellers" />
+  } else {
+    return (
+      <Card title="Bestsellers">
+        <div className={CSS.bestseller_card_content}>
+          <img
+            className={CSS.bestseller_image}
+            src={bestseller.images[0] ? bestseller.images[0].url : ''}
+          />
+          <div className={CSS.bestseller_name}>{bestseller.name}</div>
+          <div className={CSS.bestseller_category}>
+            {bestseller.category.name}
+          </div>
+
+          <Divider />
+          <div className={CSS.bestseller_card_description}>
+            <div>
+              <span className={CSS.attributes}>
+                <DollarOutlined />
+                <span> </span>
+                Price:
+                <span> </span>
+              </span>
+              <span>{bestseller.price}$</span>
+            </div>
+            <div>
+              <span className={CSS.attributes}>
+                <FolderOutlined />
+                <span> </span>
+                In Stock:
+                <span> </span>
+              </span>
+              <span>{bestseller.stockQuantity}</span>
+            </div>
+            <div>
+              <span className={CSS.attributes}>
+                <ShoppingCartOutlined />
+                <span> </span>
+                Sold:
+                <span> </span>
+              </span>
+              <span>{bestseller.sold}</span>
+            </div>
+          </div>
+        </div>
+      </Card>
+    )
+  }
+}
+
+const TrendingCard = ({
   values = [],
   title = '',
   description = '',
