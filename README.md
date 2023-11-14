@@ -1,4 +1,4 @@
-<img src='./public/logo.png' style='max-width:20rem' />
+# Cravings Fix
 
 ## Intro
 
