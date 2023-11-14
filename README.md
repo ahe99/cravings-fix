@@ -14,21 +14,39 @@ A monorepo project with `client-side application`, `content management system(CM
 
 ## Client-Side
 
-<div style="display:flex;gap:0.5rem">
-  <img src='./public/client-1.png' />
-  <img src='./public/client-2.png' />
-</div>
+<table>
+  <tr>
+    <td>
+      <img src='./public/client-1.png' />
+    </td>
+    <td>
+      <img src='./public/client-2.png' />
+    </td>
+  <tr>
+</table>
 
 ## Content Management System(CMS)
 
-<div style="display:flex;gap:0.5rem">
-  <img src='./public/cms-1.png' />
-  <img src='./public/cms-2.png' />
-</div>
+<table>
+  <tr>
+    <td>
+      <img src='./public/cms-1.png' />
+    </td>
+    <td>
+      <img src='./public/cms-2.png' />
+    </td>
+  <tr>
+</table>
 
 ## RESTful API
 
-<div style="display:flex;gap:0.5rem" />
-  <img src='./public/api-1.png' />
-  <img src='./public/api-2.png' />
-</div>
+<table>
+  <tr>
+    <td>
+      <img src='./public/api-1.png' />
+    </td>
+    <td>
+      <img src='./public/api-2.png' />
+    </td>
+  <tr>
+</table>
