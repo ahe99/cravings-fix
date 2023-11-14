@@ -1,8 +1,4 @@
-<div style='max-width:20rem'>
-
-![logo](./public/logo.png)
-
-</div>
+<img src='./public/logo.png' style='max-width:20rem' />
 
 ## Intro
 
@@ -18,28 +14,21 @@ A monorepo project with `client-side application`, `content management system(CM
 
 ## Client-Side
 
-<div style='display:grid;grid-template-columns:1fr 1fr;gap:0.5rem'>
-
-![client-1](./public/client-1.png)
-
-![client-2](./public/client-2.png)
-
+<div style="display:flex;gap:0.5rem">
+  <img src='./public/client-1.png' />
+  <img src='./public/client-2.png' />
 </div>
 
 ## Content Management System(CMS)
 
-<div style='display:grid;grid-template-columns:1fr 1fr;gap:0.5rem'>
-
-![cms-1](./public/cms-1.png)
-
-![cms-2](./public/cms-2.png)
-
+<div style="display:flex;gap:0.5rem">
+  <img src='./public/cms-1.png' />
+  <img src='./public/cms-2.png' />
 </div>
 
 ## RESTful API
 
-<div style='display:grid;grid-template-columns:1fr 1fr;gap:0.5rem'>
-
-![api-1](./public/api-1.png)
-
+<div style="display:flex;gap:0.5rem" />
+  <img src='./public/api-1.png' />
+  <img src='./public/api-2.png' />
 </div>
