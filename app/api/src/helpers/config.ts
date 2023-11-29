@@ -23,6 +23,7 @@ const config = {
     useSSL: process.env.MINIO_SSL === 'true' || false,
     accessKeyId: process.env.MINIO_ACCESS_KEY_ID ?? '',
     secretKeyId: process.env.MINIO_SECRET_KEY_ID ?? '',
+    expiry: 24 * 60 * 60,
   },
   debug: process.env.DEBUG,
 } as const

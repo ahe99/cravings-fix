@@ -65,7 +65,11 @@ export const getObjectUrl = async ({
 }) => {
   const isExisting = await isObjectExisting({ bucket, object })
   if (isExisting) {
-    const presignedUrl = await minioClient.presignedGetObject(bucket, object)
+    const presignedUrl = await minioClient.presignedGetObject(
+      bucket,
+      object,
+      config.minio.expiry,
+    )
     return presignedUrl
   } else {
     return null
