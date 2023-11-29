@@ -30,10 +30,12 @@ export const Input = ({
 }: InputProps) => {
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel className="text-start" htmlFor={props.name}>
-        {label}
-        {required && <span className="text-red-600">*</span>}
-      </FormLabel>
+      {label && (
+        <FormLabel className="text-start" htmlFor={props.name}>
+          {label}
+          {required && <span className="text-red-600">*</span>}
+        </FormLabel>
+      )}
       <InputGroup variant="outline">
         {leftIcon && <InputLeftElement>{leftIcon}</InputLeftElement>}
         <InputBase
